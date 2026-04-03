@@ -5,8 +5,7 @@ class CurrencyFormatter {
   /// Full Indian Format → ₹ 1,20,000
   static final _inrFormatter = NumberFormat.currency(
     locale: 'en_IN',
-    symbol: '₹ ',
-    decimalDigits: 0,
+
   );
 
   static String format(num amount) {

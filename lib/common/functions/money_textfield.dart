@@ -81,10 +81,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../theme/AppPallete.dart';
 import 'CurrencyFormater.dart';
+import 'currencyInputFormatter.dart';
 
 class MoneyTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -110,8 +113,9 @@ class _MoneyTextFieldState extends State<MoneyTextField> {
 
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-        final value = CurrencyFormatter.parse(widget.controller.text);
-        widget.controller.text = CurrencyFormatter.format(value);
+        final value = CurrencyFormatter.parse(widget.controller.text); // get number from text
+        final formatted = NumberFormat('#,##,###', 'en_IN').format(value); // format it
+        widget.controller.text = formatted; // put back without ₹
       }
     });
   }
@@ -119,10 +123,23 @@ class _MoneyTextFieldState extends State<MoneyTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+
       controller: widget.controller,
       focusNode: _focusNode,
       keyboardType: TextInputType.number,
-      style: GoogleFonts.poppins(color: AppPallete.cardWhite),
+      style: GoogleFonts.poppins(color: AppPallete.textPrimary),
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,  // only allow numbers
+        CurrencyInputFormatter(),                // format as they type
+      ],
+      decoration: InputDecoration(
+        prefixText: "₹ ",
+            prefixStyle: GoogleFonts.poppins(
+          fontWeight: FontWeight.w600,fontSize: 20 )
+      )
+
+
+
 
 
     );

@@ -9,7 +9,7 @@ class AppTheme {
     floatingLabelBehavior: FloatingLabelBehavior.always,
     labelStyle: GoogleFonts.poppins(
       fontSize: 16,
-      color: AppPallete.primaryBlue,   // ✅ was iconBackground
+      color: AppPallete.textPrimary,   // ✅ was iconBackground
     ),
     filled: true,
     fillColor: AppPallete.surface,        // ✅ was cardWhite.withOpacity
@@ -20,7 +20,7 @@ class AppTheme {
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppPallete.primaryBlue, width: 2),
+      borderSide: const BorderSide(color: AppPallete.textPrimary, width: 2),
     ),
   );
 

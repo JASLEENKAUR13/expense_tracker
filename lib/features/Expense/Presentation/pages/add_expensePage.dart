@@ -79,6 +79,7 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
   Widget build(BuildContext context) {
 
     return  Scaffold(
+      //backgroundColor: AppPallete.textPrimary,
       appBar:  AppBar(
         title: Center(child : Text("Add Expense" ,
             style: GoogleFonts.poppins(fontSize: 25 ,
@@ -90,8 +91,7 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
 
 
 
-         foregroundColor:  AppPallete.background,
-        backgroundColor:  AppPallete.textPrimary,
+        backgroundColor:  AppPallete.background,
       ),
 
           body: Padding(padding: EdgeInsets.all(10) ,
@@ -156,6 +156,14 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                     child: ElevatedButton(onPressed: () async{
                         final dateToSave = selectedDate ?? DateTime.now();
                         print("triggered to save tran!");
+
+                        if(titleController.text.isEmpty || amountController.text.isEmpty
+                             || DateController.text.isEmpty){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Input Required Details !")),
+                          );
+
+                        }
 
                         await ref.read(ItemListProvider.notifier).addItem(
 
