@@ -24,6 +24,11 @@ class  textField extends StatelessWidget {
       maxLines: maxLines,
       minLines: minLines,
 
+      decoration: InputDecoration(
+        hintText: placeholder,
+        prefixIcon: Icon(icon),
+      ),
+
 
 
     );

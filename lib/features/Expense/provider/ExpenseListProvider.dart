@@ -21,10 +21,7 @@ class ItemNotifier extends StateNotifier<List<Expense>>{
    fetchExpenses(); // ✅ load from Supabase when app starts
   }
 
-  Future<void> fetchExpenses() async {
-    final expenses = await _services.fetchExpenses();
-    state = expenses; // ✅ actually updates state
-  }
+
 
   Future<void> addItem(
       String title , int amount  , String note ,
@@ -43,6 +40,22 @@ class ItemNotifier extends StateNotifier<List<Expense>>{
 
 
   }
+  Future<void> fetchExpenses() async {
+    final expenses = await _services.fetchExpenses();
+    state = expenses; // ✅ actually updates state
+  }
+
+  Future<void> updateItem(Expense updatedExpense) async {
+    await _services.updateExpense(updatedExpense);
+    await fetchExpenses();
+  }
+  Future<void> deleteExpense(String id ) async{
+    await _services.deleteExpense(id);
+    await fetchExpenses();
+
+  }
+
+
 
 
 

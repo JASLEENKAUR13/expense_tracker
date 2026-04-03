@@ -21,5 +21,16 @@ class ExpenseServices {
     return res.map((json) => Expense.fromJson(json)).toList();
   }
 
+  Future<void> updateExpense(Expense expense) async {
+    await supabase
+        .from('expenses')
+        .update(expense.toJson())
+        .eq('id', expense.id);
+  }
+
+  Future<void> deleteExpense(String id) async{
+    await supabase.from('expenses').delete().eq('id', id);
+  }
+
 
 }
