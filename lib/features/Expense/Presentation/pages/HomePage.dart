@@ -94,10 +94,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                     child: Consumer(builder: (context , ref , child){
                       final list = ref.watch(ItemListProvider);
 
-                      return ListView.builder( itemCount: list.length,
+                      final recent = list.take(5).toList(); // ← add this
+
+                      return ListView.builder( itemCount: recent.length,
                         itemBuilder: (context , index) {
                           return ListCard(
-                            currentExp: list[index],
+                            currentExp: recent[index],
                           );
 
 
