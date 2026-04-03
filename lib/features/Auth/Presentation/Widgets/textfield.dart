@@ -18,11 +18,12 @@ class AuthTextField extends StatelessWidget {
     return TextField(
 
 
+
       controller: controller,
       obscureText: isPassword? true : false,
       style: const TextStyle(color: Colors.white,
           fontSize: 19 , fontWeight: FontWeight.w500),
-      cursorColor: AppPallete.cardWhite,
+      cursorColor: AppPallete.textPrimary,
 
 
 

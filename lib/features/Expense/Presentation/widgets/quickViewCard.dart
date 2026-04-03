@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../common/functions/CurrencyFormater.dart';
 import '../../../../common/theme/AppPallete.dart';
 
 class QuickViewcard extends StatelessWidget {
@@ -44,7 +45,8 @@ class QuickViewcard extends StatelessWidget {
               ),
             ),
             Text(
-              '\$$amount',
+              CurrencyFormatter.compact(amount),
+
               style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontSize: 20,

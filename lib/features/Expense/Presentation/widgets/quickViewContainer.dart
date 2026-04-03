@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../common/functions/CurrencyFormater.dart';
 import '../../provider/ExpenseListProvider.dart';
 import '../../../../common/theme/AppPallete.dart';
 
@@ -46,7 +47,7 @@ class QuickViewContainer extends ConsumerWidget {
           const SizedBox(height: 7),
 
           Text(
-            "\$$balance",         // ✅ live value now
+            CurrencyFormatter.compact(balance),         // ✅ live value now
             style: GoogleFonts.poppins(
               fontSize: 42,
               color: Colors.white,
