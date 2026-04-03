@@ -81,7 +81,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Transactions" , style: GoogleFonts.poppins(fontSize: 25 , fontWeight: FontWeight.w500 ,
+                    Text("Transactions" ,
+                      style: GoogleFonts.poppins(fontSize: 25 , fontWeight: FontWeight.w500 ,
                         color: AppPallete.textPrimary),) ,
 
 
@@ -95,10 +96,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
                       return ListView.builder( itemCount: list.length,
                         itemBuilder: (context , index) {
-                          return ListCard(isCredit: list[index].is_credited,
-                            mytext: list[index].title,
-                            val: list[index].amount.toString() ,
-                            date: list[index].created_at ,
+                          return ListCard(
+                            currentExp: list[index],
                           );
 
 
@@ -107,7 +106,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                       );})
 
                 ) ,
-                //✅ Add logout button here
+
 
 
 

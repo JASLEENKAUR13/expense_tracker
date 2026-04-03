@@ -11,6 +11,7 @@ class AppTheme {
       fontSize: 16,
       color: AppPallete.textPrimary,   // ✅ was iconBackground
     ),
+
     filled: true,
     fillColor: AppPallete.surface,        // ✅ was cardWhite.withOpacity
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -22,6 +23,13 @@ class AppTheme {
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: AppPallete.textPrimary, width: 2),
     ),
+
+    hintStyle: GoogleFonts.poppins(        // ← add this
+      fontSize: 16,
+      color: AppPallete.textPrimary,    // ← whatever color you want
+      fontWeight: FontWeight.w400,
+    ),
+
   );
 
 
