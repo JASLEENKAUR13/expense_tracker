@@ -1,3 +1,4 @@
+import 'package:expense_tracker/features/Expense/Presentation/pages/alltransactionpage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,11 +25,6 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage> {
 
 
-
-
-
-
-
   @override
   Widget build(BuildContext context ) {
     //final provider = ref.watch(ItemListProvider);
@@ -39,13 +35,19 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
           IconButton(onPressed: ()=>{
             Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpensepage()))
           } ,
-              icon : Icon(Icons.add , color: AppPallete.primaryBlue, size : 25 , fontWeight: FontWeight.bold)) ,
+              icon : Icon(Icons.add ,
+                  color: AppPallete.primaryBlue, size : 25 ,
+                  fontWeight: FontWeight.bold)) ,
 
 
           IconButton(onPressed: ()=>{
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>
+                const AlltransactionPage()))
 
           },
-              icon: Icon(Icons.menu, color: AppPallete.primaryBlue, size: 25, fontWeight: FontWeight.bold,)) ,
+              icon: Icon(Icons.menu, color: AppPallete.primaryBlue,
+                size: 25, fontWeight: FontWeight.bold,)) ,
           IconButton(
               onPressed: () async {
                 ref.invalidate(ItemListProvider);
@@ -94,10 +96,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                     child: Consumer(builder: (context , ref , child){
                       final list = ref.watch(ItemListProvider);
 
-                      return ListView.builder( itemCount: list.length,
+                      final recent = list.take(5).toList(); // ← add this
+
+                      return ListView.builder( itemCount: recent.length,
                         itemBuilder: (context , index) {
                           return ListCard(
-                            currentExp: list[index],
+                            currentExp: recent[index],
                           );
 
 
