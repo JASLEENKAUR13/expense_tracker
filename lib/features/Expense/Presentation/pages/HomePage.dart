@@ -1,4 +1,5 @@
 import 'package:expense_tracker/features/Expense/Presentation/pages/alltransactionpage.dart';
+import 'package:expense_tracker/features/profile/presentation/profilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,11 +51,13 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 size: 25, fontWeight: FontWeight.bold,)) ,
           IconButton(
               onPressed: () async {
-                ref.invalidate(ItemListProvider);
-                ref.invalidate(profileProvider);
-                await Supabase.instance.client.auth.signOut();
-                print("Logged out!");
-                // AuthWrapper will automatically show OnboardingScreen
+                // ref.invalidate(ItemListProvider);
+                // ref.invalidate(profileProvider);
+                // await Supabase.instance.client.auth.signOut();
+                // print("Logged out!");
+                // // AuthWrapper will automatically show OnboardingScreen
+
+                Navigator.push(context , MaterialPageRoute(builder: (context) => ProfilePage()));
               },
               icon: Icon(Icons.logout, color: AppPallete.primaryBlue, size: 25)
           ),
