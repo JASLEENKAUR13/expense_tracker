@@ -51,10 +51,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
                 size: 25, fontWeight: FontWeight.bold,)) ,
           IconButton(
               onPressed: () async {
-                // ref.invalidate(ItemListProvider);
-                // ref.invalidate(profileProvider);
-                // await Supabase.instance.client.auth.signOut();
-                // print("Logged out!");
+
                 // // AuthWrapper will automatically show OnboardingScreen
 
                 Navigator.push(context , MaterialPageRoute(builder: (context) => ProfilePage()));

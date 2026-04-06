@@ -59,4 +59,13 @@ Future<void> saveProfile({
         profile.savingsGoalPerc == 0;
   }
 
+  Future<void> deleteAccount() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+
+    await supabase.rpc('delete_user');
+
+  }
+
 }

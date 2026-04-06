@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../common/Widgets/AlertDialogBox.dart';
 import '../../../../common/functions/CurrencyFormater.dart';
 import '../../../../common/functions/money_textfield.dart';
 import '../../../../common/theme/AppPallete.dart';
@@ -73,25 +74,12 @@ class _State extends ConsumerState<EditingPage> {
         actions:[
           IconButton(onPressed: () async{
 
-            final confirm = await showDialog(context: context, builder: (context) {
-              return AlertDialog(
-                title: Text("Delete Transaction",
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-                content: Text("Are you sure you want to delete this transaction?",
-                    style: GoogleFonts.poppins(fontSize: 16 , fontWeight: FontWeight.w500 )),
-
-                actions: [
-                  TextButton(onPressed: ()=> Navigator.pop(context , false), child: Text("Cancel" ,
-                      style: GoogleFonts.poppins(color: AppPallete.textPrimary))) ,
-                  TextButton(onPressed: ()=> Navigator.pop(context , true), child: Text("Delete" ,
-                      style: GoogleFonts.poppins(color: AppPallete.expenseRed))) ,
-
-                ],
-
-
-              );
-            });
-
+             final confirm = await AlertDialogBox(
+              context,
+              "Delete Transaction",
+              "Are you sure you want to delete this transaction",
+               "Delete"
+            );
             if(confirm == true) {
               await ref.read(ItemListProvider.notifier).deleteExpense(
                   widget.exp.id);

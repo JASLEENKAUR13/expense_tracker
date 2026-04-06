@@ -25,6 +25,11 @@ class AuthTextField extends StatelessWidget {
           fontSize: 19 , fontWeight: FontWeight.w500),
       cursorColor: AppPallete.textPrimary,
 
+      decoration: InputDecoration(
+        hintText: mylabel,
+        prefixIcon: Icon(myIcon),
+      ),
+
 
 
     );
