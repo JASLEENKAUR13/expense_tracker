@@ -176,7 +176,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
                   ),
                   SizedBox(height: 15,),
-                  dangerZone(context)
+                  dangerZone(context , ref)
 
 
 

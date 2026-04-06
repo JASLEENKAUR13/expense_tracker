@@ -1,10 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../../common/Widgets/AlertDialogBox.dart';
 import '../../../../common/theme/AppPallete.dart';
+import '../../../Auth/Presentation/authwrapper.dart';
+import '../../../Expense/provider/ExpenseListProvider.dart';
+import '../../Services/profile_services.dart';
+import '../../provider/profile_provider.dart';
 
-Widget dangerZone(BuildContext context) {
+Container dangerZone(BuildContext context ,WidgetRef ref ) {
   return Container(
     width: double.infinity,
     padding: EdgeInsets.all(15),
@@ -37,8 +44,31 @@ Widget dangerZone(BuildContext context) {
             ),
           ),
           
-          onTap: () {
+          onTap: ()  async {
             // sign out logic here
+
+            final confirm = await AlertDialogBox(
+              context,
+              "Sign Out",
+              "Are you sure you want to sign out?",
+              "Sign Out"
+
+            );
+            if(confirm == true){
+              await Supabase.instance.client.auth.signOut();
+              if (context.mounted) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const AuthWrapper()),
+                      (route) => false, // 👈 removes ALL routes below
+                );
+              }
+
+              print("Logged out!");
+
+            }
+
+
+
           },
         ),
         Divider(color: AppPallete.expenseRed.withOpacity(0.2), thickness: 1),
@@ -53,8 +83,34 @@ Widget dangerZone(BuildContext context) {
               fontSize: 18,
             ),
           ),
-          onTap: () {
-            // delete logic here
+          onTap: ()  async{
+            final confirm = await AlertDialogBox(
+                context,
+                "Delete Account",
+                "Are you sure you want to Delete your account?",
+                "Delete"
+
+            );
+
+            if (confirm == true) {
+              // 2. delete everything
+              await ProfileServices().deleteAccount();
+              await Supabase.instance.client.auth.signOut();
+
+              // 3. clear navigation stack → go to auth
+              if (context.mounted) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const AuthWrapper()),
+                      (route) => false,
+                );
+              }
+
+              print("account deleted");
+            }
+
+
+
+
           },
         ),
       ],
