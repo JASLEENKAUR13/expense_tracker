@@ -26,6 +26,8 @@ class SignUpPage extends ConsumerStatefulWidget {
 class _SignUpPageState extends ConsumerState<SignUpPage> {
   final TextEditingController signUpemailcontroller = TextEditingController();
   final TextEditingController signUppasscontroller = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneNoController = TextEditingController();
   final auth_services = Authservices();
 
 
@@ -35,7 +37,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
   void doSignUpwithEmail() async {
 
-    if(signUpemailcontroller.text.isEmpty || signUppasscontroller.text.isEmpty){
+    if(signUpemailcontroller.text.isEmpty || signUppasscontroller.text.isEmpty || nameController.text.isEmpty || phoneNoController.text.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Input Required Details !")),
       );
@@ -45,11 +47,26 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
     final email = signUpemailcontroller.text.trim();
     final pass = signUppasscontroller.text.trim();
+    final name = nameController.text.trim();
+    final phone = phoneNoController.text.trim();
+
 
     try{
 
-        await auth_services.signUpWithEmail(email, pass);
+        final user = await auth_services.signUpWithEmail(email, pass);
         print("signed Up !");
+        if (user != null) {
+          await Supabase.instance.client.from('profiles').upsert({
+            'id': user.id,
+            'email': email,
+            'user_name': name,
+            'phone_no': phone,
+            'updated_at': DateTime.now().toIso8601String(),
+          });
+        }
+
+        print("update  for ${user?.id} " );
+
 
     } catch (e) {
       print("ERROR CAUGHT: $e");
@@ -82,6 +99,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   void dispose() {
     signUpemailcontroller.dispose();
     signUppasscontroller.dispose();
+    nameController.dispose();
+    phoneNoController.dispose();
     super.dispose();
   }
 
@@ -124,11 +143,15 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
 
 
-                        const SizedBox(height: 40) ,
+                        const SizedBox(height: 20) ,
                         Align( alignment: Alignment.centerLeft ,child: Text("SIGN UP." ,
                           style: GoogleFonts.poppins(fontSize: 50 , fontWeight: FontWeight.w800 , color: AppPallete.background , height: 1.1)
                           ,),),
-                        const SizedBox(height: 40) ,
+                        const SizedBox(height: 30) ,
+                        AuthTextField(mylabel: "Enter name ", myIcon: Icons.person, controller: nameController, isPassword: false),
+                        const SizedBox(height: 20) ,
+                        AuthTextField(mylabel: "Enter Phone no. ", myIcon: Icons.phone, controller: phoneNoController, isPassword: false),
+                        const SizedBox(height: 20) ,
 
                         AuthTextField(mylabel: "Enter Email", myIcon: Icons.email, controller: signUpemailcontroller, isPassword: false),
                         const SizedBox(height: 20) ,

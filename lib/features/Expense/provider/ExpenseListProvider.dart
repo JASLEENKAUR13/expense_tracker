@@ -25,13 +25,14 @@ class ItemNotifier extends StateNotifier<List<Expense>>{
 
   Future<void> addItem(
       String title , int amount  , String note ,
-      DateTime date , bool is_credited ) async{
+      DateTime date , bool is_credited , int category_id  ) async{
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) return;
 
     final Item = Expense(
         user_id : user.id , id: '', title: title , amount: amount,
-        note: note, created_at:  date, is_credited: is_credited);
+        note: note, created_at:  date, is_credited: is_credited ,
+        category_id: category_id );
 
     await _services.addExpense(Item);
     await fetchExpenses();

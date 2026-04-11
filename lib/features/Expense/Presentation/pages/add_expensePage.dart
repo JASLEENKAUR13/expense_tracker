@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:expense_tracker/common/functions/money_textfield.dart';
+import 'package:expense_tracker/features/Expense/Presentation/widgets/categoryPillRow.dart';
 import 'package:expense_tracker/features/Expense/provider/ExpenseListProvider.dart';
 import 'package:expense_tracker/features/Expense/Presentation/functions/datepicker.dart';
 import 'package:expense_tracker/features/Expense/Presentation/functions/pickImage.dart';
@@ -29,24 +30,25 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController noteController = TextEditingController();
+  late int? selectedCategory =null ;
 
 
 
-
-  File? image ;
-  final imagePickerFunction = ImagePickerFunction();
+  //
+  // File? image ;
+  // final imagePickerFunction = ImagePickerFunction();
   DateTime? selectedDate;
 
-  Future<void> selectImage() async{
-    final curimage = await imagePickerFunction.pickImage();
-
-    if(curimage != null){
-      setState(() {
-        image = curimage;
-
-      });
-    }
-  }
+  // Future<void> selectImage() async{
+  //   final curimage = await imagePickerFunction.pickImage();
+  //
+  //   if(curimage != null){
+  //     setState(() {
+  //       image = curimage;
+  //
+  //     });
+  //   }
+  // }
 
   Future<void> selectDate() async{
     final pickeddate = await pickDate(context: context ,
@@ -100,35 +102,35 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
               child: Column(
                 children: [
 
-                  InkWell(
-                    onTap: selectImage,
-                      child : Container(
-                    height: 220,
-                    width : double.infinity,
-
-                    decoration: BoxDecoration(
-                      color: AppPallete.primaryBlue,
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: image != null ?
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(22),
-                            child: Image.file(
-                              image!,
-                              fit : BoxFit.cover,
-                              width: double.infinity,
-
-                            ),
-                        )
-                        : Center(child: IconButton(onPressed:  ()=>{selectImage()},
-                        icon: Icon(Icons.add_a_photo_rounded ,
-                          size: 40, fontWeight: FontWeight.bold ,
-                        color: AppPallete.background),),
-                  )
-
-
-
-                  )) ,
+                  // InkWell(
+                  //   onTap: selectImage,
+                  //     child : Container(
+                  //   height: 220,
+                  //   width : double.infinity,
+                  //
+                  //   decoration: BoxDecoration(
+                  //     color: AppPallete.primaryBlue,
+                  //     borderRadius: BorderRadius.circular(22),
+                  //   ),
+                  //   child: image != null ?
+                  //       ClipRRect(
+                  //         borderRadius: BorderRadius.circular(22),
+                  //           child: Image.file(
+                  //             image!,
+                  //             fit : BoxFit.cover,
+                  //             width: double.infinity,
+                  //
+                  //           ),
+                  //       )
+                  //       : Center(child: IconButton(onPressed:  ()=>{selectImage()},
+                  //       icon: Icon(Icons.add_a_photo_rounded ,
+                  //         size: 40, fontWeight: FontWeight.bold ,
+                  //       color: AppPallete.background),),
+                  // )
+                  //
+                  //
+                  //
+                  // )) ,
                   const SizedBox(height: 30,) ,
                   textField(placeholder: "Add title", mycontroller: titleController, isString: true, icon: Icons.title),
                   const SizedBox(height: 10,) ,
@@ -141,6 +143,14 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                         mycontroller: DateController,
                       isString: false, icon: Icons.calendar_month)),),
                   const SizedBox(height: 10,) ,
+                  CategoryPillsRow(onCategorySelected: (category){
+                    setState(() {
+                      selectedCategory = category;
+
+                    });
+                  }),
+
+                  const SizedBox(height:10),
                   GestureDetector(
                     onTap: ()=>setState(()=> isCredited = !isCredited),
 
@@ -158,7 +168,7 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                         print("triggered to save tran!");
 
                         if(titleController.text.isEmpty || amountController.text.isEmpty
-                             || DateController.text.isEmpty){
+                             || DateController.text.isEmpty || selectedCategory == null){
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Input Required Details !")),
                           );
@@ -173,6 +183,7 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                           noteController.text,
                           dateToSave,
                           isCredited,
+                          selectedCategory!
                         );
                         print("data added!");
                       Navigator.pop(context);
@@ -190,6 +201,9 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
 
                         ,child: const Text("Save")),
                   ) ,
+
+
+                  const SizedBox(height: 35,),
 
 
 

@@ -33,12 +33,12 @@ class Authservices {
 
   }}
 
-    Future<AuthResponse> signUpWithEmail(String email , String password) async {
+    Future<User?> signUpWithEmail(String email , String password) async {
       try{
         final response = await _supabase.auth.signUp(email: email ,
             password: password ,
           emailRedirectTo: 'io.supabase.expensetracker://login-callback/',);
-        return response;
+        return response.user;
       }catch(e){
         print("Sign Up Error: $e");
         rethrow;
