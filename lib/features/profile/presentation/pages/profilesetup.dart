@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../common/functions/CurrencyFormater.dart';
-import '../../../common/theme/AppPallete.dart';
-import '../provider/profile_provider.dart';
+import '../../../../common/functions/CurrencyFormater.dart';
+import '../../../../common/theme/AppPallete.dart';
+import '../../provider/profile_provider.dart';
 
 class ProfileSetUp extends ConsumerStatefulWidget {
   const ProfileSetUp({super.key});

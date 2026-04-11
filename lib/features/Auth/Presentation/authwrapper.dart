@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../Expense/Presentation/pages/HomePage.dart';
-import '../../profile/presentation/profilesetup.dart';
+import '../../profile/presentation/pages/profilesetup.dart';
 import '../../profile/provider/profile_provider.dart';
 import '../Services/AuthflowScreen.dart';
 import '../Services/provider/auth_provider.dart';

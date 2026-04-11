@@ -31,4 +31,20 @@ class ProfileNotifier extends AsyncNotifier<Profile?> {
       error: (_, __) => null,
     );
   }
+
+
+  Future<void> updateProfile({
+    required String userName,
+    required int phoneNo,
+    required int monthlyIncome,
+    required int savingsGoalPerc,
+  }) async {
+    await service.updateProfile(
+      userName: userName,
+      phoneNo: phoneNo,
+      monthlyIncome: monthlyIncome,
+      savingsGoalPerc: savingsGoalPerc,
+    );
+    ref.invalidateSelf(); // 👈 refreshes the profile data everywhere
+  }
 }

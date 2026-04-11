@@ -1,5 +1,5 @@
 import 'package:expense_tracker/features/Expense/Presentation/pages/alltransactionpage.dart';
-import 'package:expense_tracker/features/profile/presentation/profilePage.dart';
+import 'package:expense_tracker/features/profile/presentation/pages/profilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,33 +31,88 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     //final provider = ref.watch(ItemListProvider);
 
     return Scaffold(
+      drawer: Drawer(
+        elevation: 1,
+        backgroundColor: AppPallete.background, // dark navy background
+        surfaceTintColor: Colors.transparent,   // removes Material 3 tint
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+
+            // Header
+            DrawerHeader(
+              decoration: BoxDecoration(color: AppPallete.surface),
+              child: Text(
+                'Expenso',
+                style: TextStyle(
+                  color: AppPallete.textPrimary,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            // Menu Items
+            ListTile(
+              leading: Icon(Icons.dashboard, color: AppPallete.primaryBlue),
+              title: Text('Dashboard', style: TextStyle(color: AppPallete.textPrimary)),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
+                      (route) => false,
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.receipt_long, color: AppPallete.primaryBlue),
+              title: Text('All Transactions', style: TextStyle(color: AppPallete.textPrimary)),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const AlltransactionPage() ));
+
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.analytics, color: AppPallete.primaryBlue),
+              title: Text('Analytics', style: TextStyle(color: AppPallete.textPrimary)),
+              onTap: () {
+                //Navigator.pop(context);
+               // Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage() ));
+              },
+            ),
+
+            SizedBox(height: 400), // pushes profile down — adjust if needed
+
+            // Profile at bottom
+            ListTile(
+              leading: Icon(Icons.person, color: AppPallete.textSecondary),
+              title: Text('Profile', style: TextStyle(color: AppPallete.textSecondary , fontWeight: FontWeight.bold)),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage() ));
+              },
+            ),
+
+          ],
+        ),
+      ),
       appBar: AppBar(
         actions: [
           IconButton(onPressed: ()=>{
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpensepage()))
+
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>
+
+            const AddExpensepage()))
           } ,
               icon : Icon(Icons.add ,
                   color: AppPallete.primaryBlue, size : 25 ,
                   fontWeight: FontWeight.bold)) ,
 
 
-          IconButton(onPressed: ()=>{
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>
-                const AlltransactionPage()))
 
-          },
-              icon: Icon(Icons.menu, color: AppPallete.primaryBlue,
-                size: 25, fontWeight: FontWeight.bold,)) ,
-          IconButton(
-              onPressed: () async {
 
-                // // AuthWrapper will automatically show OnboardingScreen
-
-                Navigator.push(context , MaterialPageRoute(builder: (context) => ProfilePage()));
-              },
-              icon: Icon(Icons.logout, color: AppPallete.primaryBlue, size: 25)
-          ),
 
 
         ],

@@ -1,5 +1,6 @@
 import 'package:expense_tracker/common/functions/CurrencyFormater.dart';
 import 'package:expense_tracker/common/theme/AppPallete.dart';
+import 'package:expense_tracker/features/profile/presentation/pages/prodileEditingPage.dart';
 import 'package:expense_tracker/features/profile/presentation/widgets/customizedRow.dart';
 import 'package:expense_tracker/features/profile/presentation/widgets/dangerZone.dart';
 import 'package:expense_tracker/features/profile/provider/profile_provider.dart';
@@ -22,6 +23,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   late final username = user?.userMetadata?['name'] ?? "Unknown" ;
   late final email = user?.email;
 
+
   String getInitials(String? name, String? email) {
     if (username != null && username.isNotEmpty
         && username != "Unknown") {
@@ -34,7 +36,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     return email?[0].toUpperCase() ?? '?'; // fallback to email first letter
   }
 
-  late final profileasync = ref.watch(profileProvider);
+
 
 
 
@@ -47,6 +49,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    late final profileasync = ref.watch(profileProvider);
     return Scaffold(
       appBar: AppBar(
         title : Text("Profile" , style: GoogleFonts.poppins(
@@ -55,7 +58,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         ),),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.edit))
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditingPage()));
+          }, icon: Icon(Icons.edit))
 
         ],
       ),
@@ -86,16 +91,25 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             
             
                   ) ,
-                  SizedBox(height: 5,),
-                   Text(username ?? "Unknown" , style: GoogleFonts.poppins(
+                  SizedBox(height: 15,),
+
+
+            profileasync.when(
+              data: (profile) =>
+                  Text(
+                      profile?.user_name?.isNotEmpty == true
+                          ? profile!.user_name.toUpperCase()    // from profiles table
+                          : username.toUpperCase(), style: GoogleFonts.poppins(
                       fontSize: 24 , fontWeight: FontWeight.w500 ,
                       color : AppPallete.textPrimary
-                  ),)  ,
-                  SizedBox(height: 8,),
-                  Text(email! , style: GoogleFonts.poppins(
-                      fontSize: 18 , fontWeight: FontWeight.w400 ,
-                      color : AppPallete.textPrimary
-                  ), ) ,
+                  ),
+                    // fallback to Google metadata
+                      ),
+
+              loading: () => Center(child: CircularProgressIndicator()),
+              error: (e, _) => Text("Error loading profile"),
+            ),
+
                   SizedBox(height: 35,),
                  Container(
                    width: double.infinity,
@@ -109,17 +123,34 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                      //mainAxisAlignment: MainAxisAlignment.start,
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
-                       Text("Personal Info" , style: GoogleFonts.poppins(
-                         fontWeight: FontWeight.w500 , fontSize: 20 ,
-                         color: AppPallete.textPrimary.withOpacity(0.7)
 
-                       ),) ,
-                       const SizedBox(height: 5,),
-                       CustomizedRow("Name", username, Icons.person) ,
-                       Divider(color: AppPallete.textSecondary , thickness: 1) ,
-                       CustomizedRow("Email", email! , Icons.email) ,
-                       Divider(color: AppPallete.textSecondary , thickness: 1) ,
-                       CustomizedRow("Phone", "+91 9876543210", Icons.phone) ,
+                       profileasync.when(
+                         data: (profile) => Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text("Personal Info", style: GoogleFonts.poppins(
+                               fontWeight: FontWeight.w500, fontSize: 20,
+                               color: AppPallete.textPrimary.withOpacity(0.7),
+                             )),
+                             const SizedBox(height: 5),
+                             CustomizedRow("Name",
+                                 profile?.user_name?.isNotEmpty == true
+                                     ? profile!.user_name.toUpperCase()    // from profiles table
+                                     : username.toUpperCase(),             // fallback to Google metadata
+                                 Icons.person),
+                             Divider(color: AppPallete.textSecondary, thickness: 1),
+                             CustomizedRow("Email", email!, Icons.email),
+                             Divider(color: AppPallete.textSecondary, thickness: 1),
+                             CustomizedRow("Phone",
+                                 profile?.phone_no != 0
+                                     ? "${profile?.phone_no}"  // from profiles table
+                                     : "Not set",              // fallback
+                                 Icons.phone),
+                           ],
+                         ),
+                         loading: () => Center(child: CircularProgressIndicator()),
+                         error: (e, _) => Text("Error loading profile"),
+                       ),
 
 
 
