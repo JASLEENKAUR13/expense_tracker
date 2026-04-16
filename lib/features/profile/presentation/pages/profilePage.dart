@@ -18,23 +18,10 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
-  final user = Supabase.instance.client.auth.currentUser;
-  late final avatarurl = user?.userMetadata?['avatar_url'];
-  late final username = user?.userMetadata?['name'] ?? "Unknown" ;
-  late final email = user?.email;
 
 
-  String getInitials(String? name, String? email) {
-    if (username != null && username.isNotEmpty
-        && username != "Unknown") {
-      final parts = username.trim().split(' ');
-      if (parts.length >= 2) {
-        return '${parts[0][0]}${parts[1][0]}'.toUpperCase(); // "AK"
-      }
-      return parts[0][0].toUpperCase(); // single name → "A"
-    }
-    return email?[0].toUpperCase() ?? '?'; // fallback to email first letter
-  }
+
+
 
 
 
@@ -49,7 +36,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    final user = Supabase.instance.client.auth.currentUser;
+    late final avatarurl = user?.userMetadata?['avatar_url'];
+    late final username = user?.userMetadata?['name'] ?? "Unknown" ;
+    late final email = user?.email;
+
+    String getInitials(String? name, String? email) {
+      if (username != null && username.isNotEmpty
+          && username != "Unknown") {
+        final parts = username.trim().split(' ');
+        if (parts.length >= 2) {
+          return '${parts[0][0]}${parts[1][0]}'.toUpperCase(); // "AK"
+        }
+        return parts[0][0].toUpperCase(); // single name → "A"
+      }
+      return email?[0].toUpperCase() ?? '?'; // fallback to email first letter
+    }
     late final profileasync = ref.watch(profileProvider);
+
+
+
     return Scaffold(
       appBar: AppBar(
         title : Text("Profile" , style: GoogleFonts.poppins(
@@ -97,9 +105,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             profileasync.when(
               data: (profile) =>
                   Text(
-                      profile?.user_name?.isNotEmpty == true
-                          ? profile!.user_name.toUpperCase()    // from profiles table
-                          : username.toUpperCase(), style: GoogleFonts.poppins(
+                    (profile?.user_name?.isNotEmpty ?? false)
+                        ? profile!.user_name.toUpperCase()
+                        : username.toUpperCase(), style: GoogleFonts.poppins(
                       fontSize: 24 , fontWeight: FontWeight.w500 ,
                       color : AppPallete.textPrimary
                   ),
@@ -134,12 +142,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                              )),
                              const SizedBox(height: 5),
                              CustomizedRow("Name",
-                                 profile?.user_name?.isNotEmpty == true
-                                     ? profile!.user_name.toUpperCase()    // from profiles table
-                                     : username.toUpperCase(),             // fallback to Google metadata
+                                 (profile?.user_name?.isNotEmpty ?? false)
+                                     ? profile!.user_name.toUpperCase()
+                                     : username.toUpperCase()    // from profiles table
+                                    ,             // fallback to Google metadata
                                  Icons.person),
                              Divider(color: AppPallete.textSecondary, thickness: 1),
-                             CustomizedRow("Email", email!, Icons.email),
+                             CustomizedRow("Email", email?? "No Email", Icons.email),
                              Divider(color: AppPallete.textSecondary, thickness: 1),
                              CustomizedRow("Phone",
                                  profile?.phone_no != 0
@@ -183,16 +192,31 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
                         ),) ,
                         const SizedBox(height: 7,),
-                        profileasync.when(data: (profile) => Column(
-                          children: [
-                            CustomizedRow("Monthly Income", CurrencyFormatter.format(profile!.income_montly), Icons.account_balance_wallet) ,
-                            Divider(color: AppPallete.textSecondary , thickness: 1) ,
-                            CustomizedRow("Saving Goal Percentage", "${profile.savingsGoalPerc}%"  , Icons.savings) ,
-                          ],
+                        profileasync.when(
+                          data: (profile) {
+                            if (profile == null) {
+                              return Text("No financial data available");
+                            }
 
-                        ),
-                            error: (e ,_) => Text("Error loading finances"),
-                            loading:() => Center(child : CircularProgressIndicator()))
+                            return Column(
+                              children: [
+                                CustomizedRow(
+                                  "Monthly Income",
+                                  CurrencyFormatter.format(profile.income_montly),
+                                  Icons.account_balance_wallet,
+                                ),
+                                Divider(color: AppPallete.textSecondary, thickness: 1),
+                                CustomizedRow(
+                                  "Saving Goal Percentage",
+                                  "${profile.savingsGoalPerc}%",
+                                  Icons.savings,
+                                ),
+                              ],
+                            );
+                          },
+                          error: (e, _) => Text("Error loading finances"),
+                          loading: () => Center(child: CircularProgressIndicator()),
+                        )
 
 
 

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:expense_tracker/common/functions/money_textfield.dart';
-import 'package:expense_tracker/features/Expense/Presentation/widgets/categoryPillRow.dart';
+import 'package:expense_tracker/features/Category/presentation/categoryPillRow.dart';
 import 'package:expense_tracker/features/Expense/provider/ExpenseListProvider.dart';
 import 'package:expense_tracker/features/Expense/Presentation/functions/datepicker.dart';
 import 'package:expense_tracker/features/Expense/Presentation/functions/pickImage.dart';

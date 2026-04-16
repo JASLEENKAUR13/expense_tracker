@@ -1,4 +1,6 @@
+import 'package:expense_tracker/features/Expense/Presentation/pages/AnalyticsPage.dart';
 import 'package:expense_tracker/features/Expense/Presentation/pages/alltransactionpage.dart';
+import 'package:expense_tracker/features/Expense/Presentation/widgets/weeklyBarChart.dart';
 import 'package:expense_tracker/features/profile/presentation/pages/profilePage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../profile/provider/profile_provider.dart';
 import '../../provider/ExpenseListProvider.dart';
 import '../../../../common/theme/AppPallete.dart';
+import '../../../Category/presentation/categoryPieChart.dart';
 import '../widgets/listcard.dart';
 import '../widgets/quickViewContainer.dart';
 import 'add_expensePage.dart';
@@ -78,8 +81,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               leading: Icon(Icons.analytics, color: AppPallete.primaryBlue),
               title: Text('Analytics', style: TextStyle(color: AppPallete.textPrimary)),
               onTap: () {
-                //Navigator.pop(context);
-               // Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilePage() ));
+                Navigator.pop(context);
+               Navigator.push(context, MaterialPageRoute(builder: (context) => const AnalyticsPage() ));
               },
             ),
 
@@ -130,53 +133,72 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
       ),
       body: Padding(
           padding: const EdgeInsets.all(8),
-          child: Container(child :
-          Column(
-              children :[
-                QuickViewContainer(),
-                const SizedBox(height: 10) ,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Transactions" ,
-                      style: GoogleFonts.poppins(fontSize: 25 , fontWeight: FontWeight.w500 ,
+          child: SingleChildScrollView(
+            child: Container(child :
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children :[
+                  QuickViewContainer(),
+                  const SizedBox(height: 10) ,
+
+
+
+
+                  Text("Transactions" ,
+                    style: GoogleFonts.poppins(fontSize: 22 , fontWeight: FontWeight.w400 ,
                         color: AppPallete.textPrimary),) ,
 
 
-                  ],
-                ),
-
-                const SizedBox(height: 8) ,
-                Expanded(
-                    child: Consumer(builder: (context , ref , child){
-                      final list = ref.watch(ItemListProvider);
-
-                      final recent = list.take(5).toList(); // ← add this
-
-                      return ListView.builder( itemCount: recent.length,
-                        itemBuilder: (context , index) {
-                          return ListCard(
-                            currentExp: recent[index],
-                          );
 
 
-                        },
+                  const SizedBox(height: 8) ,
 
-                      );})
+                  Consumer(builder: (context , ref , child){
+                        final list = ref.watch(ItemListProvider);
+            
+                        final recent = list.take(5).toList(); // ← add this
 
-                ) ,
+            
+                       return  list.isEmpty ? Center(child: Text("No expenses yet")) : ListView.builder( itemCount: recent.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context , index) {
+                            return ListCard(
+                              currentExp: recent[index] ,
+                            );
+            
+            
+                          },
+            
+                        );}) ,
+            
 
+            
+                  const SizedBox(height: 3) ,
+            
+                  Text("Category Spending" ,
+                    style: GoogleFonts.poppins(fontSize: 22 , fontWeight: FontWeight.w400 ,
+                        color: AppPallete.textPrimary),) ,
 
-
-
-              ]
-          ) ,
-
-
-
-
-
-
+                  const SizedBox(height: 20) ,
+            
+                  CategoryPieChart()
+            
+            
+            
+            
+            
+            
+            
+            
+                ]
+            ) ,
+            
+            
+            
+            
+            
+            
+            ),
           )
       ),
     );
