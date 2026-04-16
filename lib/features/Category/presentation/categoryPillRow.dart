@@ -2,23 +2,32 @@ import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../Category/category.dart';
-import '../../../Category/provider/CategoryProvider.dart';
+import '../category.dart';
+import '../provider/CategoryProvider.dart';
 
 class CategoryPillsRow extends ConsumerStatefulWidget {
+  final int? initialCategory;
   final Function(int) onCategorySelected; // Callback when category is selected
 
   const CategoryPillsRow({
     Key? key,
-    required this.onCategorySelected,
+    required this.onCategorySelected, this.initialCategory,
   }) : super(key: key);
+
+
 
   @override
   ConsumerState<CategoryPillsRow> createState() => _CategoryPillsRowState();
 }
 
 class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
-  int? selectedCategory = null;
+  late int? selectedCategory; // ✅ Changed to late
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCategory = widget.initialCategory; // ✅ Set from prop
+  }
 
 
 

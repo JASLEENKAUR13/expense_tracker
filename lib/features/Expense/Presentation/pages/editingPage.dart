@@ -12,6 +12,7 @@ import '../../expense.dart';
 import '../../provider/ExpenseListProvider.dart';
 import '../functions/datepicker.dart';
 import '../widgets/StatusPill.dart';
+import '../../../Category/presentation/categoryPillRow.dart';
 import '../widgets/text_field.dart';
 
 class EditingPage  extends ConsumerStatefulWidget {
@@ -29,6 +30,10 @@ class _State extends ConsumerState<EditingPage> {
   TextEditingController noteController = TextEditingController();
   DateTime? selectedDate;
   late bool iscredited;
+
+  int? selectedCategory =null ;
+
+
 
   Future<void> selectDate() async{
     final pickeddate = await pickDate(context: context ,
@@ -53,6 +58,8 @@ class _State extends ConsumerState<EditingPage> {
     selectedDate = widget.exp.created_at;
     DateController.text = "${widget.exp.created_at.day}/${widget.exp.created_at.month}/${widget.exp.created_at.year}";
     iscredited = widget.exp.is_credited;
+    selectedCategory = widget.exp.category_id;
+
   }
   @override
   Widget build(BuildContext context) {
@@ -110,11 +117,20 @@ class _State extends ConsumerState<EditingPage> {
                     mycontroller: DateController,
                     isString: false, icon: Icons.calendar_month)),),
               const SizedBox(height: 10,) ,
+              CategoryPillsRow(onCategorySelected: (category){
+                setState(() {
+                  selectedCategory = category;
+
+                });
+              } , initialCategory: widget.exp.category_id,),
+              const SizedBox(height: 10,) ,
+
               GestureDetector(
                 onTap: ()=>setState(()=> iscredited = !iscredited),
 
                 child: StatusPill(isCredited: iscredited),
               ),
+
 
 
 
@@ -139,6 +155,7 @@ class _State extends ConsumerState<EditingPage> {
                     note: noteController.text,
                     created_at: dateToSave,
                     is_credited: iscredited,
+                    category_id: selectedCategory
 
 
                   );
