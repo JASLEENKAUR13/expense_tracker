@@ -31,13 +31,37 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   final auth_services = Authservices();
 
 
+  bool isValidEmail(String email) {
+    return RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+    ).hasMatch(email);
+  }
+
+
 
 
 
 
   void doSignUpwithEmail() async {
 
-    if(signUpemailcontroller.text.isEmpty || signUppasscontroller.text.isEmpty || nameController.text.isEmpty || phoneNoController.text.isEmpty){
+    final email = signUpemailcontroller.text.trim();
+    final pass = signUppasscontroller.text.trim();
+    // final name = nameController.text.trim();
+    // final phone = phoneNoController.text.trim();
+
+
+
+    if (!isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Enter a valid email address")),
+      );
+      return;
+    }
+
+
+
+
+    if(signUpemailcontroller.text.isEmpty || signUppasscontroller.text.isEmpty  ){
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Input Required Details !")),
       );
@@ -45,25 +69,21 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
     }
 
-    final email = signUpemailcontroller.text.trim();
-    final pass = signUppasscontroller.text.trim();
-    final name = nameController.text.trim();
-    final phone = phoneNoController.text.trim();
+
 
 
     try{
 
         final user = await auth_services.signUpWithEmail(email, pass);
         print("signed Up !");
-        if (user != null) {
-          await Supabase.instance.client.from('profiles').upsert({
-            'id': user.id,
-            'email': email,
-            'user_name': name,
-            'phone_no': phone,
-            'updated_at': DateTime.now().toIso8601String(),
-          });
-        }
+        // if (user != null) {
+        //   await Supabase.instance.client.from('profiles').upsert({
+        //     'id': user.id,
+        //     'email': email,
+        //
+        //     'updated_at': DateTime.now().toIso8601String(),
+        //   });
+        // }
 
         print("update  for ${user?.id} " );
 
@@ -83,7 +103,15 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         message = "Please wait 40 seconds before trying again.";
       } else if (e.toString().contains('already registered')) {
         message = "This email is already registered. Try signing in!";
+      }else if (e.toString().contains('invalid email')) {
+        message = "Invalid email format. Please enter a valid email address.";
+      }else if (e.toString().contains('invalid password')) {
+        message = "Invalid Password";
+      }else if (e.toString().contains('invalid phone')) {
+        message = "Invalid Phone Number";
       }
+
+
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
@@ -99,8 +127,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   void dispose() {
     signUpemailcontroller.dispose();
     signUppasscontroller.dispose();
-    nameController.dispose();
-    phoneNoController.dispose();
+    // nameController.dispose();
+    // phoneNoController.dispose();
     super.dispose();
   }
 
@@ -148,10 +176,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                           style: GoogleFonts.poppins(fontSize: 50 , fontWeight: FontWeight.w800 , color: AppPallete.background , height: 1.1)
                           ,),),
                         const SizedBox(height: 30) ,
-                        AuthTextField(mylabel: "Enter name ", myIcon: Icons.person, controller: nameController, isPassword: false),
-                        const SizedBox(height: 20) ,
-                        AuthTextField(mylabel: "Enter Phone no. ", myIcon: Icons.phone, controller: phoneNoController, isPassword: false),
-                        const SizedBox(height: 20) ,
+                        // AuthTextField(mylabel: "Enter name ", myIcon: Icons.person, controller: nameController, isPassword: false),
+                        // const SizedBox(height: 20) ,
+                        // AuthTextField(mylabel: "Enter Phone no. ", myIcon: Icons.phone, controller: phoneNoController, isPassword: false),
+                       // const SizedBox(height: 20) ,
 
                         AuthTextField(mylabel: "Enter Email", myIcon: Icons.email, controller: signUpemailcontroller, isPassword: false),
                         const SizedBox(height: 20) ,

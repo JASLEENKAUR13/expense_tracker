@@ -77,7 +77,7 @@ final monthlyBudgetProvider = Provider<int>((ref) {
   );
 });
 
-final incomeProvider = StateProvider<int>((ref) {
+final incomeProvider = Provider<int>((ref) {
   final list = ref.watch(ItemListProvider);
   return list.where(
       (e) => e.is_credited
@@ -85,7 +85,7 @@ final incomeProvider = StateProvider<int>((ref) {
   
 });
 
-final expenseProvider = StateProvider<int>((ref){
+final expenseProvider = Provider<int>((ref){
   final list = ref.watch(ItemListProvider);
   return list.where( (e) => !e.is_credited).fold(0 , (sum , e) => sum + e.amount);
 

@@ -144,45 +144,90 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
 
 
 
-                  Text("Transactions" ,
-                    style: GoogleFonts.poppins(fontSize: 22 , fontWeight: FontWeight.w400 ,
-                        color: AppPallete.textPrimary),) ,
 
 
 
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final list = ref.watch(ItemListProvider);
+                      final recent = list.take(5).toList();
 
-                  const SizedBox(height: 8) ,
+                      if (list.isEmpty) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.track_changes,
+                                  size: 70,
+                                  color: AppPallete.textSecondary,
+                                ),
+                                const SizedBox(height: 15),
+                                Text(
+                                  "Track your expenses",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppPallete.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  "Start adding your first expense 💰",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: AppPallete.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
 
-                  Consumer(builder: (context , ref , child){
-                        final list = ref.watch(ItemListProvider);
-            
-                        final recent = list.take(5).toList(); // ← add this
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Transactions",
+                            style: GoogleFonts.poppins(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w400,
+                              color: AppPallete.textPrimary,
+                            ),
+                          ),
 
-            
-                       return  list.isEmpty ? Center(child: Text("No expenses yet")) : ListView.builder( itemCount: recent.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context , index) {
-                            return ListCard(
-                              currentExp: recent[index] ,
-                            );
-            
-            
-                          },
-            
-                        );}) ,
-            
+                          const SizedBox(height: 8),
 
-            
-                  const SizedBox(height: 3) ,
-            
-                  Text("Category Spending" ,
-                    style: GoogleFonts.poppins(fontSize: 22 , fontWeight: FontWeight.w400 ,
-                        color: AppPallete.textPrimary),) ,
+                          ListView.builder(
+                            itemCount: recent.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return ListCard(currentExp: recent[index]);
+                            },
+                          ),
 
-                  const SizedBox(height: 20) ,
-            
-                  CategoryPieChart()
-            
+                          const SizedBox(height: 20),
+
+                          Text(
+                            "Category Spending",
+                            style: GoogleFonts.poppins(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w400,
+                              color: AppPallete.textPrimary,
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          CategoryPieChart(),
+                        ],
+                      );
+                    },
+                  ),
             
             
             

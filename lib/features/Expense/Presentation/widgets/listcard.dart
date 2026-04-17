@@ -60,91 +60,88 @@ class _ListCardState extends ConsumerState<ListCard> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              // LEFT SIDE (icon + text)
+              Expanded( // 👈 THIS is where Expanded should be
                 child: Row(
                   children: [
-                    // ✅ UPDATED: Category Icon with Color
                     Container(
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: categoryColor.withOpacity(0.25), // ✅ Category color background
+                        color: categoryColor.withOpacity(0.25),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        categoryIcon, // ✅ Category icon
-                        color: categoryColor, // ✅ Category color
+                        categoryIcon,
+                        color: categoryColor,
                         size: 20,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
+
                     const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // ✅ Transaction Title
-                            Text(
-                              widget.currentExp.title,
-                              style: GoogleFonts.poppins(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
+
+                    Expanded( // 👈 THIS controls text width
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.currentExp.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             ),
-                            // ✅ NEW: Category Name + Date
-                            Row(
-                              children: [
-                                Text(
+                          ),
+
+                          const SizedBox(height: 4),
+
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
                                   matchedCategory?.name ?? "Other",
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w500,
                                     color: AppPallete.textSecondary,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  DateFormat('d MMM yyyy')
-                                      .format(widget.currentExp.created_at),
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppPallete.textPrimary,
-                                  ),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                DateFormat('d MMM yyyy')
+                                    .format(widget.currentExp.created_at),
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  color: AppPallete.textPrimary,
                                 ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    )
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-              // ✅ Amount with Income/Expense color
-              widget.currentExp.is_credited
-                  ? Text(
-                "+" + CurrencyFormatter.compact(widget.currentExp.amount),
+
+              const SizedBox(width: 10),
+
+              // RIGHT SIDE (amount)
+              Text(
+                (widget.currentExp.is_credited ? "+" : "-") +
+                    CurrencyFormatter.compact(widget.currentExp.amount),
                 style: GoogleFonts.poppins(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: AppPallete.incomeGreen,
+                  color: widget.currentExp.is_credited
+                      ? AppPallete.incomeGreen
+                      : AppPallete.expenseRed,
                 ),
-              )
-                  : Text(
-                "-" + CurrencyFormatter.compact(widget.currentExp.amount),
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: AppPallete.expenseRed,
-                ),
-              )
+              ),
             ],
-          ),
+          )
         ),
       ),
     );
