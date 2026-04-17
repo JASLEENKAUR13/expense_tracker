@@ -44,27 +44,7 @@ class _State extends ConsumerState<AlltransactionPage> {
             child: Text("All Transaction",
                 style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold, fontSize: 24))),
-        actions: [
-          IconButton(
-              onPressed: () async {
-                final result = await showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: AppPallete.background,
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.vertical(top: Radius.circular(24)),
-                  ),
-                  builder: (context) =>
-                      FilterSheet(currentFilter: selectedFilter),
-                );
-                if (result != null)
-                  setState(() => selectedFilter = result);
-              },
-              icon: Icon(Icons.filter_list,
-                  color: AppPallete.textPrimary,
-                  fontWeight: FontWeight.w500))
-        ],
+
       ),
       body: Padding(
         padding: EdgeInsets.all(10),

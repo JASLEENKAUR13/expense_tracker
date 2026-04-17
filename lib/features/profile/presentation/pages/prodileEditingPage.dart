@@ -56,6 +56,10 @@ class _State extends ConsumerState<ProfileEditingPage> {
   @override
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(profileProvider);
+    bool isValidPhone(String phone) {
+      return RegExp(r'^[0-9]{10}$').hasMatch(phone);
+    }
+
 
     // Pre-fill fields once profile data loads
     profileAsync.whenData((profile) {
@@ -199,6 +203,16 @@ class _State extends ConsumerState<ProfileEditingPage> {
               height: 52,
               child: ElevatedButton(
                 onPressed: () {
+
+                  if(!_phoneController.text.isEmpty && !isValidPhone(_phoneController.text) ){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Invalid Phone Number !")),
+
+
+                    );
+                    return;
+
+                  }
                   if(_nameController.text.isEmpty || _phoneController.text.isEmpty ||
                       _incomeController.text.isEmpty || _savingsController.text.isEmpty){
                     ScaffoldMessenger.of(context).showSnackBar(

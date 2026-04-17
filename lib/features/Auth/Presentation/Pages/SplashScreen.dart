@@ -1,33 +1,36 @@
+import 'package:expense_tracker/features/Auth/Presentation/authwrapper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../../common/theme/AppPallete.dart'; // Ensure this path matches your project
 
-class MySplashScreenUI extends StatelessWidget {
-  const MySplashScreenUI({super.key});
+class CustomSplashScreen extends StatefulWidget {
+  const CustomSplashScreen({super.key});
+
+  @override
+  State<CustomSplashScreen> createState() => _CustomSplashScreenState();
+}
+
+class _CustomSplashScreenState extends State<CustomSplashScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const AuthWrapper()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppPallete.background, // Uses your custom background color
+      backgroundColor: const Color(0xFF0C183F),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Your App Branding
-            Text(
-              "EXPENSO",
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                color: AppPallete.primaryBlue, // Your brand's blue
-                letterSpacing: 2,
-              ),
-            ),
-            const SizedBox(height: 30),
-            // A professional spinner that matches your theme
-            const CircularProgressIndicator(
-              color: AppPallete.primaryBlue,
-            ),
-          ],
+        child: Image.asset(
+          "lib/pict/logo.png",
+          width: 120, // 👈 YOU control size now
         ),
       ),
     );
