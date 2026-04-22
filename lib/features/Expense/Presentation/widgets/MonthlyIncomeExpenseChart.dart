@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/theme/AppPallete.dart';
@@ -35,32 +36,32 @@ class MonthlyIncomeExpenseChart extends ConsumerWidget {
 
       return BarChartGroupData(
         x: index,
-        barsSpace: 4,
+        barsSpace: 4.w,
         barRods: [
           // 💚 Income
           BarChartRodData(
             toY: income.toDouble(),
             color: AppPallete.incomeGreen,
-            width: 8,
-            borderRadius: BorderRadius.circular(4),
+            width: 8.w,
+            borderRadius: BorderRadius.circular(4.r),
           ),
 
           // ❤️ Expense
           BarChartRodData(
             toY: expense.toDouble(),
             color: AppPallete.expenseRed,
-            width: 8,
-            borderRadius: BorderRadius.circular(4),
+            width: 8.w,
+            borderRadius: BorderRadius.circular(4.r),
           ),
         ],
       );
     }).toList();
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding:  EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: AppPallete.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,28 +69,28 @@ class MonthlyIncomeExpenseChart extends ConsumerWidget {
           Text(
             "Monthly Income vs Expense",
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: AppPallete.textPrimary,
             ),
           ),
-          const SizedBox(height: 20),
+         SizedBox(height: 20.h),
 
            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   children: [
-                    Container(width: 10, height: 10, color: AppPallete.incomeGreen),
-                    SizedBox(width: 4),
+                    Container(width: 10.w, height: 10.h, color: AppPallete.incomeGreen),
+                    SizedBox(width: 4.w),
                     Text("Income"),
                   ],
                 ),
-                SizedBox(width: 16),
+                SizedBox(width: 16.sp),
                 Row(
                   children: [
-                    Container(width: 10, height: 10, color: AppPallete.expenseRed),
-                    SizedBox(width: 4),
+                    Container(width: 10.w, height: 10.h, color: AppPallete.expenseRed),
+                    SizedBox(width: 4.w),
                     Text("Expense"),
                   ],
                 ),
@@ -127,7 +128,7 @@ class MonthlyIncomeExpenseChart extends ConsumerWidget {
 
                         return Text(
                           months[index],
-                          style:  GoogleFonts.poppins(fontSize: 10 ,color: AppPallete.textPrimary  ),
+                          style:  GoogleFonts.poppins(fontSize: 10.sp ,color: AppPallete.textPrimary  ),
                         );
                       },
                     ),

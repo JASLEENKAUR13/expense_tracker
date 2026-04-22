@@ -1,21 +1,17 @@
 import 'package:expense_tracker/common/theme/AppPallete.dart';
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Widgets/_buildPage.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback onFinished;
   const OnboardingScreen({super.key, required this.onFinished});
 
-
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-
-
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
@@ -27,7 +23,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
     {
       'title': 'Track & Grow',
-      'quote': 'Small changes make a big differencess',
+      'quote': 'Small changes make a big difference',
       'imgPath': 'lib/common/theme/icons/CollectingMoney.json',
     },
     {
@@ -44,9 +40,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _onPageChanged(int page) {
-    setState(() {
-      _currentPage = page;
-    });
+    setState(() => _currentPage = page);
   }
 
   void _skipToEnd() {
@@ -64,20 +58,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      _navigateToHome();
+      widget.onFinished();
     }
   }
-  void _navigateToHome() {
-    widget.onFinished();
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(                          // ✅ ONE Scaffold here only
       backgroundColor: AppPallete.textPrimary,
-      body: SafeArea(
+      body: SafeArea(                         // ✅ ONE SafeArea here only
         child: Column(
           children: [
             // Skip button
@@ -85,26 +74,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24.w,
+                    vertical: 16.h,          // ✅ reduced from 32 to avoid waste
+                  ),
                   child: TextButton(
                     onPressed: _skipToEnd,
                     style: TextButton.styleFrom(
-                      foregroundColor: AppPallete.iconBackground.withOpacity(0.7),
+                      foregroundColor:
+                      AppPallete.iconBackground.withOpacity(0.7),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Skip',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
+                        letterSpacing: -0.5,
                       ),
                     ),
                   ),
                 ),
               )
             else
-              const SizedBox(height: 56),
+              SizedBox(height: 52.h),
 
-            // PageView
+            // PageView — takes all remaining space
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -120,12 +114,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
 
-            // Page indicators and navigation
+            // Bottom section — fixed, never scrolls
             Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h),
               child: Column(
+                mainAxisSize: MainAxisSize.min,  // ✅ only takes what it needs
                 children: [
-                  // Page indicators
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
@@ -133,13 +127,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           (index) => _buildIndicator(index == _currentPage),
                     ),
                   ),
-
-                  const SizedBox(height: 32),
-
-                  // Next/Get Started button
+                  SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: 56.h,
                     child: ElevatedButton(
                       onPressed: _nextPage,
                       style: ElevatedButton.styleFrom(
@@ -147,15 +138,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         foregroundColor: AppPallete.textPrimary,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(16.r),
                         ),
                       ),
                       child: Text(
                         _currentPage == _pages.length - 1
                             ? 'Get Started'
                             : 'Next',
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.5,
                         ),
@@ -174,9 +165,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _buildIndicator(bool isActive) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      height: 8,
-      width: isActive ? 24 : 8,
+      margin: EdgeInsets.symmetric(horizontal: 4.w),
+      height: 8.h,
+      width: isActive ? 24.w : 8.w,
       decoration: BoxDecoration(
         color: isActive
             ? AppPallete.iconBackground

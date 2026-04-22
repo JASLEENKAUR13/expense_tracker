@@ -1,17 +1,10 @@
-
-
-import 'package:expense_tracker/features/Auth/Presentation/Widgets/textfield.dart';
-
 import 'package:expense_tracker/common/theme/AppPallete.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:expense_tracker/features/Auth/Presentation/Widgets/textfield.dart';
+import 'package:expense_tracker/features/Auth/Services/AuthServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-
-import '../../Services/AuthServices.dart';
-
-
 
 class SignInPage extends ConsumerStatefulWidget {
   final VoidCallback onSwitch;
@@ -22,52 +15,30 @@ class SignInPage extends ConsumerStatefulWidget {
 }
 
 class _SignInPageState extends ConsumerState<SignInPage> {
-
-
   final TextEditingController signInemailcontroller = TextEditingController();
   final TextEditingController signInpasscontroller = TextEditingController();
   final auth_services = Authservices();
 
-
-
-
-
-
   void doSignInwithEmail() async {
-
-    if(signInemailcontroller.text.isEmpty || signInpasscontroller.text.isEmpty){
+    if (signInemailcontroller.text.isEmpty || signInpasscontroller.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Input Required Details !")),
+        const SnackBar(content: Text("Input Required Details!")),
       );
       return;
-
     }
 
     final email = signInemailcontroller.text.trim();
     final pass = signInpasscontroller.text.trim();
 
-    try{
-
-        await auth_services.signInWithEmail(email, pass);
-        print("Signed in successfully!");
-
-
-
-
-
-
-    }catch(e){
-      print("Sign in error: $e");
-
+    try {
+      await auth_services.signInWithEmail(email, pass);
+    } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Sign in failed: $e")),
         );
       }
-
     }
-
-
   }
 
   @override
@@ -77,152 +48,123 @@ class _SignInPageState extends ConsumerState<SignInPage> {
     super.dispose();
   }
 
-
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-       // resizeToAvoidBottomInset: false,
-      body:GestureDetector(
+      backgroundColor: AppPallete.textPrimary,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 48.h),
 
+              Text(
+                "SIGN IN.",
+                style: GoogleFonts.poppins(
+                  fontSize: 48.sp,
+                  fontWeight: FontWeight.w800,
+                  color: AppPallete.background,
+                  height: 1.1,
+                ),
+              ),
 
+              SizedBox(height: 40.h),
 
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration:const  BoxDecoration(
+              AuthTextField(
+                mylabel: "Enter Email",
+                myIcon: Icons.email,
+                controller: signInemailcontroller,
+                isPassword: false,
+              ),
 
-            color: AppPallete.textPrimary,
+              SizedBox(height: 20.h),
 
+              AuthTextField(
+                mylabel: "Enter Password",
+                myIcon: Icons.lock,
+                controller: signInpasscontroller,
+                isPassword: true,
+              ),
 
-          ),
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(padding: EdgeInsetsGeometry.all(16),
-               child : Column(
-                  mainAxisAlignment:  MainAxisAlignment.center,
-                 children: [
-                   const SizedBox(height: 60),
+              SizedBox(height: 40.h),
 
-
-
-
-                   const SizedBox(height: 40 ,) ,
-
-
-                   const SizedBox(height: 40) ,
-                  Align( alignment: Alignment.centerLeft ,child: Text("SIGN IN." ,
-                     style: GoogleFonts.poppins(fontSize: 50 , fontWeight: FontWeight.w800 , color: AppPallete.background , height: 1.1)
-                   ,),),
-                   const SizedBox(height: 40) ,
-
-                   AuthTextField(mylabel: "Enter Email", myIcon: Icons.email, controller: signInemailcontroller, isPassword: false),
-                   const SizedBox(height: 20) ,
-                   AuthTextField(mylabel: "Enter Password", myIcon: Icons.lock, controller: signInpasscontroller, isPassword: true),
-                   const SizedBox(height: 50) ,
-
-                   ElevatedButton(onPressed: () => doSignInwithEmail(),
-                       style: ElevatedButton.styleFrom(
-                         backgroundColor: AppPallete.cardWhite,
-                         foregroundColor:AppPallete.textPrimary,
-
-                         padding: EdgeInsetsGeometry.all(18),
-                         shape: const CircleBorder(),
-                         elevation: 10,
-
-
-
-
-
-                       ),
-
-
-                        child: const Icon(Icons.arrow_right_alt_rounded , size: 40 , fontWeight: FontWeight.bold,),
-            ),
-
-                   const SizedBox(height: 45),
-                   ElevatedButton(onPressed: ()async {
-                     final res = await auth_services.signInWithGoogle();
-                     if (!res && mounted) {
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         const SnackBar(content: Text("Google Authentication failed!")),
-                       );
-                     }
-
-                   },
-                     style: ButtonStyle(
-                         backgroundColor:WidgetStatePropertyAll(AppPallete.cardWhite),
-                         foregroundColor:
-                         WidgetStatePropertyAll(AppPallete.textPrimary),
-                         minimumSize: WidgetStatePropertyAll(const Size(double.infinity, 55)),
-                         shape: WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))
-
-
-                     ),
-
-                     child:
-                     Row(
-
-                       mainAxisAlignment:MainAxisAlignment.spaceAround ,
-                       children: [
-                         Image.asset('lib/common/theme/icons/google.png' ,
-                           color: AppPallete.textPrimary,),
-                         Text("Continue With Google" ,
-                           style: GoogleFonts.poppins(
-                             fontSize: 19,
-                             fontWeight: FontWeight.w700,
-
-
-                           ),
-                         )
-                       ],
-                     ),
-
-
-                   ) ,
-
-                   const SizedBox(height: 45),
-
-
-
-                   TextButton(
-                     onPressed: widget.onSwitch,
-                     child: Text(
-                       "New Saver? Sign Up",
-                       style: GoogleFonts.poppins(
-                         fontWeight: FontWeight.w600,
-                         fontSize: 18,
-                         color: AppPallete.cardWhite
-                       ),
-                     ),
-                   ),
-
-
-
-
-
-
-
-
-
-
-
-
-                 ]
-                )
-
-                  ,
+              // Arrow button centered
+              Center(
+                child: ElevatedButton(
+                  onPressed: doSignInwithEmail,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppPallete.cardWhite,
+                    foregroundColor: AppPallete.textPrimary,
+                    padding: EdgeInsets.all(18.w),
+                    shape: const CircleBorder(),
+                    elevation: 10,
                   ),
-            ),
+                  child: Icon(Icons.arrow_right_alt_rounded, size: 40.sp),
+                ),
+              ),
+
+              SizedBox(height: 40.h),
+
+              // Google button
+              ElevatedButton(
+                onPressed: () async {
+                  final res = await auth_services.signInWithGoogle();
+                  if (!res && mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Google Authentication failed!")),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppPallete.cardWhite,
+                  foregroundColor: AppPallete.textPrimary,
+                  minimumSize: Size(double.infinity, 55.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.r),
+                  ),
+                  elevation: 0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'lib/common/theme/icons/google.png',
+                      height: 24.h,
+                      color: AppPallete.textPrimary,
+                    ),
+                    SizedBox(width: 12.w),
+                    Text(
+                      "Continue With Google",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 32.h),
+
+              Center(
+                child: TextButton(
+                  onPressed: widget.onSwitch,
+                  child: Text(
+                    "New Saver? Sign Up",
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16.sp,
+                      color: AppPallete.cardWhite,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-      ));
+      ),
+    );
   }
 }

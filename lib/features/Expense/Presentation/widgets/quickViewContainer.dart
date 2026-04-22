@@ -2,6 +2,7 @@
 import 'package:expense_tracker/features/Expense/Presentation/widgets/quickViewCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/functions/CurrencyFormater.dart';
@@ -9,7 +10,7 @@ import '../../provider/ExpenseListProvider.dart';
 import '../../../../common/theme/AppPallete.dart';
 
 class QuickViewContainer extends ConsumerWidget {
-  const QuickViewContainer({super.key});
+   QuickViewContainer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,39 +23,39 @@ class QuickViewContainer extends ConsumerWidget {
 
 
     return Container(
-      height: 220,
+      height: 200.h,
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding:  EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: AppPallete.primaryBlue,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(22.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 5, left: 8),
+            padding:  EdgeInsets.only(top: 5.h, left: 8.h),
             child: Text(
               "Total Balance",
               style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w500,
-                fontSize: 20,
+                fontSize: 20.sp,
                 color: Colors.white60,
               ),
             ),
           ),
 
-          const SizedBox(height: 7),
+           SizedBox(height: 7.h),
 
           Text(
             CurrencyFormatter.compact(balance),         // ✅ live value now
             style: GoogleFonts.poppins(
-              fontSize: 42,
+              fontSize: 42.sp,
               color: Colors.white,
             ),
           ),
 
-          const SizedBox(height: 10),
+           SizedBox(height: 10.h),
 
           Row(
             children: [

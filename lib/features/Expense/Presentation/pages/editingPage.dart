@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/Widgets/AlertDialogBox.dart';
@@ -17,7 +18,7 @@ import '../widgets/text_field.dart';
 
 class EditingPage  extends ConsumerStatefulWidget {
   final Expense exp;
-  const EditingPage({super.key, required this.exp});
+   EditingPage({super.key, required this.exp});
 
   @override
   ConsumerState<EditingPage> createState() => _State();
@@ -68,7 +69,7 @@ class _State extends ConsumerState<EditingPage> {
       //backgroundColor: AppPallete.textPrimary,
       appBar:  AppBar(
         title: Center(child : Text("Edit Expense" ,
-            style: GoogleFonts.poppins(fontSize: 25 ,
+            style: GoogleFonts.poppins(fontSize: 25.sp ,
                 fontWeight: FontWeight.w500 , color: AppPallete.textPrimary)) ,
 
         ),
@@ -79,6 +80,7 @@ class _State extends ConsumerState<EditingPage> {
 
         backgroundColor:  AppPallete.background,
         actions:[
+
           IconButton(onPressed: () async{
 
              final confirm = await AlertDialogBox(
@@ -98,46 +100,51 @@ class _State extends ConsumerState<EditingPage> {
         ]
       ),
 
-      body: Padding(padding: EdgeInsets.all(10) ,
+      body: Padding(padding: EdgeInsets.all(10.w) ,
         child:
         Container(
           child: Column(
             children: [
 
 
-              const SizedBox(height: 30,) ,
+               SizedBox(height: 30.h,) ,
+              GestureDetector(
+                onTap: ()=>setState(()=> iscredited = !iscredited),
+
+                child: StatusPill(isCredited: iscredited , onChanged: (value) {
+                  setState(() {
+                    iscredited = value;
+                  });
+                },),
+              ),
+              SizedBox(height: 10.h,) ,
               textField(placeholder: "Add title", mycontroller: titleController, isString: true, icon: Icons.title),
-              const SizedBox(height: 10,) ,
+               SizedBox(height: 10.h,) ,
               MoneyTextField(controller: amountController, label: "Enter Amount"),
-              const SizedBox(height: 10,) ,
+               SizedBox(height: 10.h,) ,
               textField(placeholder: "Add Note", mycontroller: noteController, isString: true, icon: Icons.note , maxLines: 3  ),
-              const SizedBox(height: 10,) ,
+               SizedBox(height: 10.h,) ,
               InkWell( onTap: selectDate,
                 child : AbsorbPointer(child: textField(placeholder: "Select a date",
                     mycontroller: DateController,
                     isString: false, icon: Icons.calendar_month)),),
-              const SizedBox(height: 10,) ,
+               SizedBox(height: 10.h,) ,
               CategoryPillsRow(onCategorySelected: (category){
                 setState(() {
                   selectedCategory = category;
 
                 });
               } , initialCategory: widget.exp.category_id,),
-              const SizedBox(height: 10,) ,
-
-              GestureDetector(
-                onTap: ()=>setState(()=> iscredited = !iscredited),
-
-                child: StatusPill(isCredited: iscredited),
-              ),
+               SizedBox(height: 10.h,) ,
 
 
 
 
-              const Spacer(),
+
+               Spacer(),
               SizedBox(
-                width: double.infinity,
-                height: 50 ,
+                width: 700.w,
+                height: 50.h ,
                 child: ElevatedButton(onPressed: () async{
                   final dateToSave = selectedDate ?? DateTime.now();
                   print("triggered to save tran!");
@@ -174,11 +181,11 @@ class _State extends ConsumerState<EditingPage> {
                         foregroundColor: AppPallete.background,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14)
+                            borderRadius: BorderRadius.circular(14.r)
                         )
                     )
 
-                    ,child: const Text("Update ")),
+                    ,child:  Text("Update ")),
               ) ,
 
 

@@ -1,12 +1,12 @@
 import 'package:expense_tracker/common/functions/CurrencyFormater.dart';
 import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:expense_tracker/features/profile/presentation/pages/prodileEditingPage.dart';
-import 'package:expense_tracker/features/profile/presentation/widgets/customizedRow.dart';
-import 'package:expense_tracker/features/profile/presentation/widgets/dangerZone.dart';
 import 'package:expense_tracker/features/profile/provider/profile_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:expense_tracker/features/profile/presentation/widgets/dangerZone.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,230 +19,275 @@ class ProfilePage extends ConsumerStatefulWidget {
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  String getInitials(String? name, String? email) {
+    if (name != null && name.isNotEmpty && name != "Unknown") {
+      final parts = name.trim().split(' ');
+      if (parts.length >= 2) {
+        return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+      }
+      return parts[0][0].toUpperCase();
+    }
+    return email?[0].toUpperCase() ?? '?';
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     final user = Supabase.instance.client.auth.currentUser;
-    late final avatarurl = user?.userMetadata?['avatar_url'];
-    late final username = user?.userMetadata?['name'] ?? "Unknown" ;
-    late final email = user?.email;
+    final avatarurl = user?.userMetadata?['avatar_url'];
+    final username = user?.userMetadata?['name'] ?? "Unknown";
+    final email = user?.email;
 
-    String getInitials(String? name, String? email) {
-      if (username != null && username.isNotEmpty
-          && username != "Unknown") {
-        final parts = username.trim().split(' ');
-        if (parts.length >= 2) {
-          return '${parts[0][0]}${parts[1][0]}'.toUpperCase(); // "AK"
-        }
-        return parts[0][0].toUpperCase(); // single name → "A"
-      }
-      return email?[0].toUpperCase() ?? '?'; // fallback to email first letter
-    }
-    late final profileasync = ref.watch(profileProvider);
-
-
+    final profileAsync = ref.watch(profileProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title : Text("Profile" , style: GoogleFonts.poppins(
-            fontSize: 25 , fontWeight: FontWeight.w500 ,
-            color : AppPallete.textPrimary
-        ),),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditingPage()));
-          }, icon: Icon(Icons.edit))
+      backgroundColor: AppPallete.background,
 
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          "Profile",
+          style: GoogleFonts.poppins(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w600,
+            color: AppPallete.textPrimary,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ProfileEditingPage()),
+              );
+            },
+            icon: Icon(Icons.edit, size: 20.sp),
+          ),
         ],
       ),
 
-      body: Padding(padding: EdgeInsets.all(8) ,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          children: [
 
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: double.infinity,
-              //height: double.infinity,
-              child: Column(
-            
-                crossAxisAlignment: CrossAxisAlignment.center,
-            
-                children: [
-                  SizedBox(height: 17,),
-                  CircleAvatar(
-                radius: 40,
-                backgroundImage: avatarurl != null?
-                NetworkImage(avatarurl) : null,
-            
+            /// 🔵 Avatar Section
+            SizedBox(height: 10.h),
+
+            CircleAvatar(
+              radius: 48.r,
+              backgroundColor: AppPallete.primaryBlue.withOpacity(0.15),
+              child: CircleAvatar(
+                radius: 44.r,
+                backgroundImage:
+                avatarurl != null ? NetworkImage(avatarurl) : null,
                 backgroundColor: AppPallete.primaryBlue,
-                child: avatarurl == null ? Text(
-                getInitials(username, email) , style: GoogleFonts.poppins(
-                fontSize: 25 , fontWeight: FontWeight.w500 ,
-                ) ): null,
-            
-            
-            
-                  ) ,
-                  SizedBox(height: 15,),
-
-
-            profileasync.when(
-              data: (profile) =>
-                  Text(
-                    (profile?.user_name?.isNotEmpty ?? false)
-                        ? profile!.user_name.toUpperCase()
-                        : username.toUpperCase(), style: GoogleFonts.poppins(
-                      fontSize: 24 , fontWeight: FontWeight.w500 ,
-                      color : AppPallete.textPrimary
+                child: avatarurl == null
+                    ? Text(
+                  getInitials(username, email),
+                  style: GoogleFonts.poppins(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppPallete.background,
                   ),
-                    // fallback to Google metadata
-                      ),
-
-              loading: () => Center(child: CircularProgressIndicator()),
-              error: (e, _) => Text("Error loading profile"),
+                )
+                    : null,
+              ),
             ),
 
-                  SizedBox(height: 35,),
-                 Container(
-                   width: double.infinity,
-                   padding: EdgeInsets.all(15),
-                   decoration: BoxDecoration(
-                     color: AppPallete.surface,
-                     borderRadius: BorderRadius.circular(10)
+            SizedBox(height: 14.h),
 
-                   ),
-                   child: Column(
-                     //mainAxisAlignment: MainAxisAlignment.start,
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-
-                       profileasync.when(
-                         data: (profile) => Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           children: [
-                             Text("Personal Info", style: GoogleFonts.poppins(
-                               fontWeight: FontWeight.w500, fontSize: 20,
-                               color: AppPallete.textPrimary.withOpacity(0.7),
-                             )),
-                             const SizedBox(height: 5),
-                             CustomizedRow("Name",
-                                 (profile?.user_name?.isNotEmpty ?? false)
-                                     ? profile!.user_name.toUpperCase()
-                                     : username.toUpperCase()    // from profiles table
-                                    ,             // fallback to Google metadata
-                                 Icons.person),
-                             Divider(color: AppPallete.textSecondary, thickness: 1),
-                             CustomizedRow("Email", email?? "No Email", Icons.email),
-                             Divider(color: AppPallete.textSecondary, thickness: 1),
-                             CustomizedRow("Phone",
-                                 profile?.phone_no != 0
-                                     ? "${profile?.phone_no}"  // from profiles table
-                                     : "Not set",              // fallback
-                                 Icons.phone),
-                           ],
-                         ),
-                         loading: () => Center(child: CircularProgressIndicator()),
-                         error: (e, _) => Text("Error loading profile"),
-                       ),
-
-
-
-
-
-
-                     ],
-                   ),
-
-                 ) ,
-
-
-
-                  SizedBox(height: 15,),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        color: AppPallete.surface,
-                        borderRadius: BorderRadius.circular(10)
-
-                    ),
-                    child: Column(
-
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Finances" , style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500 , fontSize: 20 ,
-                            color: AppPallete.textPrimary.withOpacity(0.7)
-
-                        ),) ,
-                        const SizedBox(height: 7,),
-                        profileasync.when(
-                          data: (profile) {
-                            if (profile == null) {
-                              return Text("No financial data available");
-                            }
-
-                            return Column(
-                              children: [
-                                CustomizedRow(
-                                  "Monthly Income",
-                                  CurrencyFormatter.format(profile.income_montly),
-                                  Icons.account_balance_wallet,
-                                ),
-                                Divider(color: AppPallete.textSecondary, thickness: 1),
-                                CustomizedRow(
-                                  "Saving Goal Percentage",
-                                  "${profile.savingsGoalPerc}%",
-                                  Icons.savings,
-                                ),
-                              ],
-                            );
-                          },
-                          error: (e, _) => Text("Error loading finances"),
-                          loading: () => Center(child: CircularProgressIndicator()),
-                        )
-
-
-
-
-
-
-
-
-
-                      ],
-                    ),
-
-                  ),
-                  SizedBox(height: 15,),
-                  dangerZone(context , ref)
-
-
-
-
-                ],
-            
+            /// 🔤 Username
+            profileAsync.when(
+              data: (profile) => Text(
+                (profile?.user_name?.isNotEmpty ?? false)
+                    ? profile!.user_name
+                    : username,
+                style: GoogleFonts.poppins(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppPallete.textPrimary,
+                ),
               ),
+              loading: () => const CircularProgressIndicator(),
+              error: (_, __) => const Text("Error"),
+            ),
+
+            SizedBox(height: 28.h),
+
+            /// 🧾 Personal Info Card
+            _buildCard(
+              title: "Personal Info",
+              child: profileAsync.when(
+                data: (profile) {
+                  return Column(
+                    children: [
+                      _row("Name",
+                          profile?.user_name ?? username, Icons.person),
+
+                      _divider(),
+
+                      _row("Email", email ?? "No Email", Icons.email),
+
+                      _divider(),
+
+                      _row(
+                        "Phone",
+                        profile?.phone_no != 0
+                            ? "${profile?.phone_no}"
+                            : "Not set",
+                        Icons.phone,
+                      ),
+                    ],
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (_, __) => const Text("Error loading"),
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+
+            /// 💰 Finance Card
+            _buildCard(
+              title: "Finances",
+              child: profileAsync.when(
+                data: (profile) {
+                  if (profile == null) {
+                    return const Text("No data");
+                  }
+
+                  return Column(
+                    children: [
+                      _row(
+                        "Monthly Income",
+                        CurrencyFormatter.format(profile.income_montly),
+                        Icons.account_balance_wallet,
+                      ),
+
+                      _divider(),
+
+                      _row(
+                        "Saving Goal",
+                        "${profile.savingsGoalPerc}%",
+                        Icons.savings,
+                      ),
+                    ],
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (_, __) => const Text("Error loading"),
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+
+            /// ⚠️ Danger Zone
+            dangerZone(context, ref),
+
+            SizedBox(height: 20.h),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 🔹 Card Widget
+  Widget _buildCard({required String title, required Widget child}) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: AppPallete.surface,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: AppPallete.textSecondary.withOpacity(0.08),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: AppPallete.textPrimary,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          child,
+        ],
+      ),
+    );
+  }
+
+  /// 🔹 Row Widget (Professional)
+  Widget _row(String title, String info, IconData icon) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.h),
+      child: Row(
+        children: [
+          Container(
+            height: 42.h,
+            width: 42.h,
+            decoration: BoxDecoration(
+              color: AppPallete.primaryBlue.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(12.r),
+            ),
+            child: Icon(
+              icon,
+              color: AppPallete.primaryBlue,
+              size: 20.sp,
             ),
           ),
 
+          SizedBox(width: 14.w),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppPallete.textSecondary,
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  info,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.poppins(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppPallete.textPrimary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  /// 🔹 Divider
+  Widget _divider() {
+    return Divider(
+      height: 18.h,
+      thickness: 0.6,
+      color: AppPallete.textSecondary.withOpacity(0.15),
     );
   }
 }

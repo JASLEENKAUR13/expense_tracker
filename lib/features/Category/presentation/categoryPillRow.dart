@@ -1,6 +1,7 @@
 import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../category.dart';
 import '../provider/CategoryProvider.dart';
@@ -9,7 +10,7 @@ class CategoryPillsRow extends ConsumerStatefulWidget {
   final int? initialCategory;
   final Function(int) onCategorySelected; // Callback when category is selected
 
-  const CategoryPillsRow({
+   CategoryPillsRow({
     Key? key,
     required this.onCategorySelected, this.initialCategory,
   }) : super(key: key);
@@ -35,20 +36,20 @@ class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
   Widget build(BuildContext context) {
     final categories = ref.watch(categoryProvider);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 12.0.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Label
-          const Text(
+         Text(
             'Select Category',
             style: TextStyle(
               color: AppPallete.textSecondary, // textSecondary
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10.h),
 
           // Pills Row
           SingleChildScrollView(
@@ -58,7 +59,7 @@ class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
                 bool isSelected = selectedCategory == category.id;
 
                 return Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding:  EdgeInsets.only(right: 8.0.w),
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -68,15 +69,15 @@ class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
                       widget.onCategorySelected(category.id);
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 10.0,
+                      padding:  EdgeInsets.symmetric(
+                        horizontal: 16.0.w,
+                        vertical: 10.0.h,
                       ),
                       decoration: BoxDecoration(
                         color: isSelected
                             ?  AppPallete.primaryBlue
                             :  AppPallete.surface, // surface when not selected
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.r),
                         border: Border.all(
                           color: isSelected
                               ?  AppPallete.primaryBlue
@@ -90,7 +91,7 @@ class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
                           color: isSelected
                               ? AppPallete.textPrimary
                               : AppPallete.textSecondary,
-                          fontSize: 13,
+                          fontSize: 13.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

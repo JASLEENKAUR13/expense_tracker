@@ -2,6 +2,7 @@ import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -13,7 +14,7 @@ import '../widgets/FilterSheet.dart';
 import '../widgets/listcard.dart';
 
 class AlltransactionPage extends ConsumerStatefulWidget {
-  const AlltransactionPage({super.key});
+   AlltransactionPage({super.key});
 
   @override
   ConsumerState<AlltransactionPage> createState() => _State();
@@ -40,14 +41,14 @@ class _State extends ConsumerState<AlltransactionPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-            child: Text("All Transaction",
+        centerTitle: true,
+        title:  Text("All Transaction",
                 style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold, fontSize: 24))),
+                    fontWeight: FontWeight.bold, fontSize: 22.sp)),
 
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,7 +58,7 @@ class _State extends ConsumerState<AlltransactionPage> {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding:  EdgeInsets.only(right: 8.0.w),
                     child: FilterChip(
                       label: Text("All"),
                       selected: selectedFilter == "All",
@@ -74,7 +75,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding:  EdgeInsets.only(right: 8.0.w),
                     child: FilterChip(
                       label: Text("Income"),
                       selected: selectedFilter == "Income",
@@ -91,7 +92,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding:  EdgeInsets.only(right: 8.0.w),
                     child: FilterChip(
                       label: Text("Expense"),
                       selected: selectedFilter == "Expense",
@@ -110,7 +111,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+          SizedBox(height: 12.h),
 
             // ✅ ROW 2: Category Filter Pills
             SingleChildScrollView(
@@ -123,7 +124,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                   ...categories.map((category) {
                     bool isSelected = selectedCategory == category.id;
                     return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
+                      padding:  EdgeInsets.only(right: 8.0.w),
                       child: FilterChip(
                         label: Text(category.name),
                         selected: isSelected,
@@ -143,19 +144,19 @@ class _State extends ConsumerState<AlltransactionPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+             SizedBox(height: 12.h),
 
             // ✅ Active Filters Display
             if (selectedFilter != "All" || selectedCategory != null)
               Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding:  EdgeInsets.only(bottom: 12.h),
                 child: Wrap(
                   spacing: 8,
                   children: [
                     if (selectedFilter != "All")
                       Chip(
                         label: Text(selectedFilter),
-                        deleteIcon: Icon(Icons.close, size: 16),
+                        deleteIcon: Icon(Icons.close, size: 16.w),
                         onDeleted: () =>
                             setState(() => selectedFilter = "All"),
                         backgroundColor: AppPallete.primaryBlue,
@@ -169,7 +170,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                         label: Text(categories
                             .firstWhere((c) => c.id == selectedCategory)
                             .name),
-                        deleteIcon: Icon(Icons.close, size: 16),
+                        deleteIcon: Icon(Icons.close, size: 16.w),
                         onDeleted: () =>
                             setState(() => selectedCategory = null),
                         backgroundColor: AppPallete.primaryBlue,
@@ -190,7 +191,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                   "No transactions found",
                   style: GoogleFonts.poppins(
                     color: AppPallete.textSecondary,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                 ),
               )
@@ -206,10 +207,10 @@ class _State extends ConsumerState<AlltransactionPage> {
                       // Date header
                       Padding(
                         padding:
-                        const EdgeInsets.symmetric(vertical: 8),
+                         EdgeInsets.symmetric(vertical: 8.h),
                         child: Text(date,
                             style: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppPallete.textPrimary
                                     .withOpacity(0.8))),
