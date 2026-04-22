@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riverpod/src/framework.dart';
 
@@ -9,13 +10,13 @@ import '../../provider/ExpenseListProvider.dart';
 import '../../provider/weeklySpendingProvider.dart';
 
 class WeeklyBarChart extends ConsumerWidget {
-  const WeeklyBarChart({super.key});
+   WeeklyBarChart({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
     String _monthName(int month) {
-      const months = [
+       const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
       ];
@@ -48,18 +49,18 @@ class WeeklyBarChart extends ConsumerWidget {
           BarChartRodData(
             toY: amount.toDouble(),
             color: AppPallete.primaryBlue,
-            width: 18,
-            borderRadius: BorderRadius.circular(6),
+            width: 18.w,
+            borderRadius: BorderRadius.circular(6.r),
           ),
         ],
       );
     }).toList();
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding:  EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: AppPallete.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,9 +109,9 @@ class WeeklyBarChart extends ConsumerWidget {
             ],
           ),
 
-          const SizedBox(height: 20),
+           SizedBox(height: 20.h),
           SizedBox(
-            height: 200,
+            height: 200.h,
             child: BarChart(
               BarChartData(
                 maxY: maxY,
@@ -131,7 +132,7 @@ class WeeklyBarChart extends ConsumerWidget {
                         return Text(
                           days[value.toInt()],
                           style: GoogleFonts.poppins(
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             color: AppPallete.textPrimary,
                           ),
                         );

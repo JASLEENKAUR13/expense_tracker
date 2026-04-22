@@ -1,22 +1,14 @@
-
 import 'package:expense_tracker/features/Auth/Presentation/Widgets/textfield.dart';
 import 'package:expense_tracker/features/Auth/Services/AuthServices.dart';
-
 import 'package:expense_tracker/common/theme/AppPallete.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
-
-
-
-
 class SignUpPage extends ConsumerStatefulWidget {
   final VoidCallback onSwitch;
-
   const SignUpPage({super.key, required this.onSwitch});
 
   @override
@@ -26,266 +18,184 @@ class SignUpPage extends ConsumerStatefulWidget {
 class _SignUpPageState extends ConsumerState<SignUpPage> {
   final TextEditingController signUpemailcontroller = TextEditingController();
   final TextEditingController signUppasscontroller = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneNoController = TextEditingController();
   final auth_services = Authservices();
 
-
   bool isValidEmail(String email) {
-    return RegExp(
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-    ).hasMatch(email);
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
-
-
-
-
-
   void doSignUpwithEmail() async {
-
     final email = signUpemailcontroller.text.trim();
     final pass = signUppasscontroller.text.trim();
-    // final name = nameController.text.trim();
-    // final phone = phoneNoController.text.trim();
 
-
+    // ✅ Check empty FIRST, then format
+    if (email.isEmpty || pass.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Input Required Details!")),
+      );
+      return;
+    }
 
     if (!isValidEmail(email)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Enter a valid email address")),
+        const SnackBar(content: Text("Enter a valid email address")),
       );
       return;
     }
 
-
-
-
-    if(signUpemailcontroller.text.isEmpty || signUppasscontroller.text.isEmpty  ){
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Input Required Details !")),
-      );
-      return;
-
-    }
-
-
-
-
-    try{
-
-        final user = await auth_services.signUpWithEmail(email, pass);
-        print("signed Up !");
-        // if (user != null) {
-        //   await Supabase.instance.client.from('profiles').upsert({
-        //     'id': user.id,
-        //     'email': email,
-        //
-        //     'updated_at': DateTime.now().toIso8601String(),
-        //   });
-        // }
-
-        print("update  for ${user?.id} " );
-
-
+    try {
+      final user = await auth_services.signUpWithEmail(email, pass);
+      print("Signed up! ID: ${user?.id}");
     } catch (e) {
-      print("ERROR CAUGHT: $e");
-  if (mounted) {
+      if (mounted) {
+        String message = "Sign up failed. Please try again.";
 
-    print("ERROR CAUGHT: $e");
-    if (mounted) {
-      String message = "Sign up failed. Please try again.";
+        if (e is AuthWeakPasswordException) {
+          message = "Weak password! Use at least 6 characters.";
+        } else if (e.toString().contains('rate_limit') ||
+            e.toString().contains('40 seconds')) {
+          message = "Please wait 40 seconds before trying again.";
+        } else if (e.toString().contains('already registered')) {
+          message = "Email already registered. Try signing in!";
+        } else if (e.toString().contains('invalid email')) {
+          message = "Invalid email format.";
+        } else if (e.toString().contains('invalid password')) {
+          message = "Invalid Password.";
+        }
 
-      if (e is AuthWeakPasswordException) {
-        message = "Weak password! Use at least 6 characters with letters and numbers.";
-      } else if (e.toString().contains('rate_limit') ||
-          e.toString().contains('40 seconds')) {
-        message = "Please wait 40 seconds before trying again.";
-      } else if (e.toString().contains('already registered')) {
-        message = "This email is already registered. Try signing in!";
-      }else if (e.toString().contains('invalid email')) {
-        message = "Invalid email format. Please enter a valid email address.";
-      }else if (e.toString().contains('invalid password')) {
-        message = "Invalid Password";
-      }else if (e.toString().contains('invalid phone')) {
-        message = "Invalid Phone Number";
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
       }
-
-
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
     }
-  }
-  }
-
-
   }
 
   @override
   void dispose() {
     signUpemailcontroller.dispose();
     signUppasscontroller.dispose();
-    // nameController.dispose();
-    // phoneNoController.dispose();
     super.dispose();
   }
-
-
-
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
-        body:GestureDetector(
+      backgroundColor: AppPallete.textPrimary,  // ✅ no Container needed
+      body: SafeArea(                            // ✅ no GestureDetector needed
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, // ✅ cleaner than Align
+            children: [
+              SizedBox(height: 48.h),
 
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration:const  BoxDecoration(
-
-              color: AppPallete.textPrimary,
-
-
-            ),
-            child: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(padding: EdgeInsetsGeometry.all(16),
-                  child : Column(
-                      mainAxisAlignment:  MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 60),
-
-
-
-
-
-
-
-
-                        const SizedBox(height: 20) ,
-                        Align( alignment: Alignment.centerLeft ,child: Text("SIGN UP." ,
-                          style: GoogleFonts.poppins(fontSize: 50 , fontWeight: FontWeight.w800 , color: AppPallete.background , height: 1.1)
-                          ,),),
-                        const SizedBox(height: 30) ,
-                        // AuthTextField(mylabel: "Enter name ", myIcon: Icons.person, controller: nameController, isPassword: false),
-                        // const SizedBox(height: 20) ,
-                        // AuthTextField(mylabel: "Enter Phone no. ", myIcon: Icons.phone, controller: phoneNoController, isPassword: false),
-                       // const SizedBox(height: 20) ,
-
-                        AuthTextField(mylabel: "Enter Email", myIcon: Icons.email, controller: signUpemailcontroller, isPassword: false),
-                        const SizedBox(height: 20) ,
-                        AuthTextField(mylabel: "Enter Password", myIcon: Icons.lock, controller: signUppasscontroller, isPassword: true),
-                        const SizedBox(height: 50) ,
-
-                        ElevatedButton(onPressed: ()=> doSignUpwithEmail(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppPallete.cardWhite,
-                            foregroundColor:AppPallete.textPrimary,
-
-                            padding: EdgeInsetsGeometry.all(18),
-                            shape: const CircleBorder(),
-                            elevation: 10,
-
-
-
-
-
-                          ),
-
-
-                          child: const Icon(Icons.arrow_right_alt_rounded , size: 40 , fontWeight: FontWeight.bold,),
-                        ),
-                        const SizedBox(height: 45),
-                        const Divider(),
-                        const SizedBox(height: 45),
-                        ElevatedButton(onPressed: () async {
-                          final res = await auth_services.signInWithGoogle();
-                          if (!res && mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Google Authentication failed!")),
-                            );
-                          }
-
-                        },
-                          style: ButtonStyle(
-                              backgroundColor:WidgetStatePropertyAll(AppPallete.cardWhite),
-                              foregroundColor:
-                              WidgetStatePropertyAll(AppPallete.textPrimary),
-                              minimumSize: WidgetStatePropertyAll(const Size(double.infinity, 55)),
-                              shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))
-
-
-                          ),
-
-                          child:
-                          Row(
-
-                            mainAxisAlignment:MainAxisAlignment.spaceAround ,
-                            children: [
-                              Image.asset('lib/common/theme/icons/google.png' , color: AppPallete.textPrimary,),
-                              Text("Continue With Google" ,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w700,
-
-
-                                ),
-                              )
-                            ],
-                          ),
-
-
-                        ) ,
-                        const SizedBox(height: 40,),
-
-                        TextButton(
-                          onPressed: widget.onSwitch,
-                          child: Text(
-                            "Already a Saver? Sign In",
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18,
-                              color: AppPallete.cardWhite,
-                            ),
-                          ),
-                        ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      ]
-                  )
-
-                  ,
+              Text(
+                "SIGN UP.",
+                style: GoogleFonts.poppins(
+                  fontSize: 48.sp,
+                  fontWeight: FontWeight.w800,
+                  color: AppPallete.background,
+                  height: 1.1,
                 ),
               ),
-            ),
+
+              SizedBox(height: 40.h),
+
+              AuthTextField(
+                mylabel: "Enter Email",
+                myIcon: Icons.email,
+                controller: signUpemailcontroller,
+                isPassword: false,
+              ),
+
+              SizedBox(height: 20.h),
+
+              AuthTextField(
+                mylabel: "Enter Password",
+                myIcon: Icons.lock,
+                controller: signUppasscontroller,
+                isPassword: true,
+              ),
+
+              SizedBox(height: 40.h),
+
+              Center(
+                child: ElevatedButton(
+                  onPressed: doSignUpwithEmail,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppPallete.cardWhite,
+                    foregroundColor: AppPallete.textPrimary,
+                    padding: EdgeInsets.all(18.w), // ✅ EdgeInsets not EdgeInsetsGeometry
+                    shape: const CircleBorder(),
+                    elevation: 10,
+                  ),
+                  child: Icon(Icons.arrow_right_alt_rounded, size: 40.sp),
+                ),
+              ),
+
+              SizedBox(height: 40.h),
+
+              const Divider(),
+
+              SizedBox(height: 40.h),
+
+              ElevatedButton(
+                onPressed: () async {
+                  final res = await auth_services.signInWithGoogle();
+                  if (!res && mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Google Authentication failed!")),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppPallete.cardWhite,
+                  foregroundColor: AppPallete.textPrimary,
+                  minimumSize: Size(double.infinity, 55.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.r),
+                  ),
+                  elevation: 0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center, // ✅ center not spaceAround
+                  children: [
+                    Image.asset(
+                      'lib/common/theme/icons/google.png',
+                      color: AppPallete.textPrimary,
+                      height: 24.h,
+                    ),
+                    SizedBox(width: 12.w),
+                    Text(
+                      "Continue With Google",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 32.h),
+
+              Center(
+                child: TextButton(
+                  onPressed: widget.onSwitch,
+                  child: Text(
+                    "Already a Saver? Sign In",
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16.sp,
+                      color: AppPallete.cardWhite,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

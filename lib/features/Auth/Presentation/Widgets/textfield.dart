@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 import '../../../../common/theme/AppPallete.dart';
@@ -21,8 +22,8 @@ class AuthTextField extends StatelessWidget {
 
       controller: controller,
       obscureText: isPassword? true : false,
-      style: const TextStyle(color: Colors.white,
-          fontSize: 19 , fontWeight: FontWeight.w500),
+      style:  TextStyle(color: Colors.white,
+          fontSize: 19.sp , fontWeight: FontWeight.w500),
       cursorColor: AppPallete.textPrimary,
 
       decoration: InputDecoration(

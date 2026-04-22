@@ -47,6 +47,7 @@ dependencies:
   fl_chart: ^1.2.0
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.7
+  flutter_screenutil: ^5.9.3
 
 
 dev_dependencies:

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../provider/MontlySpendingProvider.dart';
@@ -39,10 +40,10 @@ class _MonthlySpendingChartState
         : monthlyData.values.reduce((a, b) => a > b ? a : b) * 1.2;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding:  EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: AppPallete.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,12 +51,12 @@ class _MonthlySpendingChartState
           Text(
             "Monthly Spending",
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: 18.sp,
               fontWeight: FontWeight.w600,
               color: AppPallete.textPrimary,
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
 
           SizedBox(
             height: 220,
@@ -80,7 +81,7 @@ class _MonthlySpendingChartState
                   ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
-                      reservedSize: 28,
+                      reservedSize: 28.w,
                       showTitles: true,
                       getTitlesWidget: (value, meta) {
                         final index = value.toInt();
@@ -92,7 +93,7 @@ class _MonthlySpendingChartState
                           child: Text(
                             months[index],
                             style: GoogleFonts.poppins(
-                              fontSize: 10,
+                              fontSize: 10.sp,
                               color: AppPallete.textPrimary,
                               fontWeight: FontWeight.w500,
                             ),
@@ -137,9 +138,9 @@ class _MonthlySpendingChartState
                         }
 
                         return FlDotCirclePainter(
-                          radius: 4,
+                          radius: 4.r,
                           color: AppPallete.primaryBlue,
-                          strokeWidth: 1,
+                          strokeWidth: 1.w,
                           strokeColor: Colors.white,
                         );
                       },

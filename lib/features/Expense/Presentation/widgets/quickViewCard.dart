@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/functions/CurrencyFormater.dart';
@@ -11,7 +12,7 @@ class QuickViewcard extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const QuickViewcard({
+   QuickViewcard({
     required this.label,
     required this.amount,
     required this.icon,
@@ -24,15 +25,15 @@ class QuickViewcard extends StatelessWidget {
       children: [
         // Icon bubble
         Container(
-          padding: const EdgeInsets.all(6),
+          padding:  EdgeInsets.all(6.w),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.6),
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
           ),
-          child: Icon(icon, color: color, size: 28),
+          child: Icon(icon, color: color, size: 28.sp),
         ),
 
-        const SizedBox(width: 8),
+         SizedBox(width: 8.w),
 
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +42,7 @@ class QuickViewcard extends StatelessWidget {
               label,
               style: GoogleFonts.poppins(
                 color: AppPallete.cardWhite,
-                fontSize: 16,
+                fontSize: 16.sp,
               ),
             ),
             Text(
@@ -49,7 +50,7 @@ class QuickViewcard extends StatelessWidget {
 
               style: GoogleFonts.poppins(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),

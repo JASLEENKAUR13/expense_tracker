@@ -131,7 +131,19 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                   //
                   //
                   // )) ,
+
+
                   const SizedBox(height: 30,) ,
+                  GestureDetector(
+                    onTap: ()=>setState(()=> isCredited = !isCredited),
+
+                    child: StatusPill(isCredited: isCredited , onChanged: (value){
+                      setState(() {
+                        isCredited = value;
+                      });
+                    },),
+                  ),
+                  const SizedBox(height: 10,) ,
                   textField(placeholder: "Add title", mycontroller: titleController, isString: true, icon: Icons.title),
                   const SizedBox(height: 10,) ,
                  MoneyTextField(controller: amountController, label: "Enter Amount"),
@@ -151,11 +163,7 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                   }),
 
                   const SizedBox(height:10),
-                  GestureDetector(
-                    onTap: ()=>setState(()=> isCredited = !isCredited),
 
-                    child: StatusPill(isCredited: isCredited),
-                  ),
 
 
 

@@ -3,6 +3,7 @@ import 'package:expense_tracker/features/Expense/Presentation/widgets/MonthlyInc
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/theme/AppPallete.dart';
@@ -12,7 +13,7 @@ import '../widgets/weeklyBarChart.dart';
 import 'add_expensePage.dart';
 
 class AnalyticsPage extends ConsumerStatefulWidget {
-  const AnalyticsPage({super.key});
+   AnalyticsPage({super.key});
 
   @override
   ConsumerState<AnalyticsPage> createState() => _AnalyticsPageState();
@@ -32,7 +33,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
         title: Text(
           "Analytics",
           style: GoogleFonts.poppins(
-            fontSize: 25,
+            fontSize: 25.sp,
             fontWeight: FontWeight.w500,
             color: AppPallete.textPrimary,
           ),
@@ -46,19 +47,19 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.analytics_outlined,
-                size: 70, color: Colors.grey),
+                size: 70.w, color: Colors.grey),
 
-            const SizedBox(height: 16),
+             SizedBox(height: 16.h),
 
             Text(
               "No data to analyze",
               style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
 
-            const SizedBox(height: 8),
+             SizedBox(height: 8.h),
 
             Text(
               "Add expenses to analyze your spending 📊",
@@ -66,53 +67,53 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 20),
+             SizedBox(height: 20.h),
 
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const AddExpensepage(),
+                    builder: (_) =>  AddExpensepage(),
                   ),
                 );
               },
-              child: const Text("Add Expense"),
+              child:  Text("Add Expense"),
             ),
           ],
         ),
       )
           : Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              const SizedBox(height: 15),
+               SizedBox(height: 15.h),
 
               WeeklyBarChart(),
 
-              const SizedBox(height: 8),
+               SizedBox(height: 8.h),
 
               Text(
                 "Category Spending",
                 style: GoogleFonts.poppins(
-                  fontSize: 22,
+                  fontSize: 22.sp,
                   fontWeight: FontWeight.w400,
                   color: AppPallete.textPrimary,
                 ),
               ),
 
-              const SizedBox(height: 35),
+               SizedBox(height: 35.h),
 
               CategoryPieChart(),
 
-              const SizedBox(height: 35),
+               SizedBox(height: 35.h),
 
               MonthlySpendingChart(),
 
-              const SizedBox(height: 35),
+               SizedBox(height: 35.h),
 
               MonthlyIncomeExpenseChart(),
             ],

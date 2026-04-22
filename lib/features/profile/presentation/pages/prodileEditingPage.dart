@@ -2,6 +2,7 @@ import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:expense_tracker/features/profile/provider/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -26,9 +27,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
   @override
   void initState() {
     super.initState();
-
-    final username = user?.userMetadata?['name'] ?? '';
-    _nameController.text = username;
+    _nameController.text = user?.userMetadata?['name'] ?? '';
   }
 
   @override
@@ -40,35 +39,33 @@ class _State extends ConsumerState<ProfileEditingPage> {
     super.dispose();
   }
 
+  bool isValidPhone(String phone) => RegExp(r'^[0-9]{10}$').hasMatch(phone);
+
   Widget _buildSectionLabel(String label) {
     return Text(
       label,
       style: GoogleFonts.poppins(
-        fontSize: 13,
+        fontSize: 12.sp,
         fontWeight: FontWeight.w500,
         color: AppPallete.textSecondary,
       ),
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(profileProvider);
-    bool isValidPhone(String phone) {
-      return RegExp(r'^[0-9]{10}$').hasMatch(phone);
-    }
 
-
-    // Pre-fill fields once profile data loads
     profileAsync.whenData((profile) {
       if (profile != null) {
-        if (_nameController.text.isEmpty || _nameController.text == user?.userMetadata?['name']) {
-          _nameController.text = profile.user_name ?? user?.userMetadata?['name'] ?? '';
+        if (_nameController.text.isEmpty ||
+            _nameController.text == user?.userMetadata?['name']) {
+          _nameController.text =
+              profile.user_name ?? user?.userMetadata?['name'] ?? '';
         }
         if (_phoneController.text.isEmpty) {
-          _phoneController.text = profile.phone_no != 0 ? '${profile.phone_no}' : '';
+          _phoneController.text =
+          profile.phone_no != 0 ? '${profile.phone_no}' : '';
         }
         if (_incomeController.text.isEmpty) {
           _incomeController.text = '${profile.income_montly}';
@@ -83,36 +80,35 @@ class _State extends ConsumerState<ProfileEditingPage> {
       backgroundColor: AppPallete.background,
       appBar: AppBar(
         backgroundColor: AppPallete.background,
+        elevation: 0,
+        iconTheme: IconThemeData(color: AppPallete.textPrimary),
         title: Text(
           "Edit Profile",
           style: GoogleFonts.poppins(
-            fontSize: 22,
+            fontSize: 20.sp,
             fontWeight: FontWeight.w500,
             color: AppPallete.textPrimary,
           ),
         ),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: AppPallete.textPrimary),
       ),
-
-      // ── Column wraps scroll + button so button sticks to bottom ──
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
 
                   // ── Personal Info Section ──
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
                       color: AppPallete.cardWhite,
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(14.r),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,42 +116,42 @@ class _State extends ConsumerState<ProfileEditingPage> {
                         Text(
                           "Personal Info",
                           style: GoogleFonts.poppins(
-                            fontSize: 18,
+                            fontSize: 17.sp,
                             fontWeight: FontWeight.w600,
                             color: AppPallete.textPrimary.withOpacity(0.8),
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         _buildSectionLabel("Full Name"),
-                        const SizedBox(height: 6),
+                        SizedBox(height: 6.h),
                         textField(
                           mycontroller: _nameController,
                           placeholder: "Enter your name",
                           icon: Icons.person_outline,
                           isString: true,
                         ),
-                        const SizedBox(height: 14),
+                        SizedBox(height: 14.h),
                         _buildSectionLabel("Phone Number"),
-                        const SizedBox(height: 6),
-                       textField(
+                        SizedBox(height: 6.h),
+                        textField(
                           mycontroller: _phoneController,
-                          placeholder : "Enter your phone number",
-                          icon: Icons.phone_outlined, isString: true,
-
+                          placeholder: "Enter your phone number",
+                          icon: Icons.phone_outlined,
+                          isString: true,
                         ),
                       ],
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
 
                   // ── Finances Section ──
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
                       color: AppPallete.cardWhite,
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(14.r),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,23 +159,22 @@ class _State extends ConsumerState<ProfileEditingPage> {
                         Text(
                           "Finances",
                           style: GoogleFonts.poppins(
-                            fontSize: 18,
+                            fontSize: 17.sp,
                             fontWeight: FontWeight.w600,
                             color: AppPallete.textPrimary.withOpacity(0.8),
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         _buildSectionLabel("Monthly Income (₹)"),
-                        const SizedBox(height: 6),
-                        MoneyTextField (
+                        SizedBox(height: 6.h),
+                        MoneyTextField(
                           controller: _incomeController,
                           label: "Enter monthly income",
-
                         ),
-                        const SizedBox(height: 14),
+                        SizedBox(height: 14.h),
                         _buildSectionLabel("Savings Goal (%)"),
-                        const SizedBox(height: 6),
-                       textField(
+                        SizedBox(height: 6.h),
+                        textField(
                           mycontroller: _savingsController,
                           placeholder: "e.g. 30",
                           icon: Icons.savings_outlined,
@@ -189,62 +184,57 @@ class _State extends ConsumerState<ProfileEditingPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                 ],
               ),
             ),
           ),
 
-          // ── Save Button always sticks to bottom ──
+          // ── Save Button ──
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 24.h),
             child: SizedBox(
               width: double.infinity,
-              height: 52,
+              height: 52.h,
               child: ElevatedButton(
                 onPressed: () {
-
-                  if(!_phoneController.text.isEmpty && !isValidPhone(_phoneController.text) ){
+                  if (_phoneController.text.isNotEmpty &&
+                      !isValidPhone(_phoneController.text)) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Invalid Phone Number !")),
-
-
+                      const SnackBar(content: Text("Invalid Phone Number!")),
                     );
                     return;
-
                   }
-                  if(_nameController.text.isEmpty || _phoneController.text.isEmpty ||
-                      _incomeController.text.isEmpty || _savingsController.text.isEmpty){
+                  if (_nameController.text.isEmpty ||
+                      _phoneController.text.isEmpty ||
+                      _incomeController.text.isEmpty ||
+                      _savingsController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Input Required Details !")),
+                      const SnackBar(content: Text("Input Required Details!")),
                     );
-
+                    return;
                   }
-
-                  ref.watch(profileProvider.notifier).updateProfile(userName: _nameController.text.trim(), 
-                      phoneNo:int.parse( _phoneController.text.trim(),),
-                      monthlyIncome: int.parse(_incomeController.text.trim()),
-                      savingsGoalPerc: int.parse(_savingsController.text.trim())
+                  ref.read(profileProvider.notifier).updateProfile(
+                    userName: _nameController.text.trim(),
+                    phoneNo: int.parse(_phoneController.text.trim()),
+                    monthlyIncome:
+                    int.parse(_incomeController.text.trim()),
+                    savingsGoalPerc:
+                    int.parse(_savingsController.text.trim()),
                   );
-                  print("updated profie");
                   Navigator.pop(context);
-
-
-
-
-
-
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppPallete.primaryBlue,
+                  elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(14.r),
                   ),
                 ),
                 child: Text(
                   "Save Changes",
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: AppPallete.textPrimary,
                   ),
@@ -252,8 +242,6 @@ class _State extends ConsumerState<ProfileEditingPage> {
               ),
             ),
           ),
-
-          const SizedBox(height: 20,)
         ],
       ),
     );

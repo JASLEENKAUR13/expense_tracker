@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'features/Auth/Presentation/Pages/SplashScreen.dart';
@@ -31,21 +32,30 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context , WidgetRef ref) {
-    return MaterialApp(
-      title: 'EXPENSO',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        primaryColor: AppPallete.primaryBlue,
-        scaffoldBackgroundColor: AppPallete.background,
-        cardColor: AppPallete.cardWhite,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppPallete.background,
-          elevation: 0,
-        ),
-        inputDecorationTheme: AppTheme.inputDecorationTheme,
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(375 , 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context , child) {
+        return MaterialApp(
+          title: 'EXPENSO',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.dark().copyWith(
+            primaryColor: AppPallete.primaryBlue,
+            scaffoldBackgroundColor: AppPallete.background,
+            cardColor: AppPallete.cardWhite,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppPallete.background,
+              elevation: 0,
+            ),
+            inputDecorationTheme: AppTheme.inputDecorationTheme,
+          ),
 
-      home: const AuthWrapper(),
+          home: child,
+        );
+
+      },
+      child: const AuthWrapper(),
     );
   }
 }

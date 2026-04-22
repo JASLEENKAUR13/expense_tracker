@@ -1,54 +1,66 @@
-
-import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget CustomizedRow(
+import '../../../../common/theme/AppPallete.dart';
+
+Widget customizedRow(
     String title,
-    String info ,
+    String info,
     IconData icon,
-    ){
-
-  return Row(
-
-    children: [
-      Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10 ) ,
-          color : AppPallete.primaryBlue,
-
+    ) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: 10.h),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Icon Container (better look)
+        Container(
+          height: 44.h,
+          width: 44.h,
+          decoration: BoxDecoration(
+            color: AppPallete.primaryBlue.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Icon(
+            icon,
+            color: AppPallete.primaryBlue,
+            size: 22.sp,
+          ),
         ),
 
-        child: Icon(icon , color: AppPallete.background, size: 24,),
+        SizedBox(width: 14.w),
 
+        // Text Section
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppPallete.textSecondary,
+                ),
+              ),
 
+              SizedBox(height: 2.h),
 
-      ) ,
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title , style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w500 , fontSize: 14 ,
-              color: AppPallete.textPrimary.withOpacity(0.8)
-
-
-            ),) ,
-            Text(info ,  style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w500 , fontSize: 20 ,
-                color: AppPallete.textPrimary
-
-
-            ),)
-          ],
+              Text(
+                info,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppPallete.textPrimary,
+                ),
+              ),
+            ],
+          ),
         ),
-      )
-    ]
-
-
+      ],
+    ),
   );
-
 }

@@ -1,53 +1,82 @@
-import 'dart:ffi';
-
+import 'package:flutter/material.dart';
 import 'package:expense_tracker/common/theme/AppPallete.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class  StatusPill extends StatelessWidget {
-
+class StatusPill extends StatelessWidget {
   final bool isCredited;
-  const StatusPill({super.key, required this.isCredited});
+  final Function(bool) onChanged;
+
+  const StatusPill({
+    super.key,
+    required this.isCredited,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-          duration: const Duration(milliseconds: 300) ,
-        height: 50 ,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color : isCredited? AppPallete.incomeGreen : AppPallete.expenseRed,
-
-        ),
-      child: Stack(
+    return Container(
+      height: 50.h,
+      decoration: BoxDecoration(
+        color: AppPallete.cardWhite,
+        borderRadius: BorderRadius.circular(25.r),
+      ),
+      child: Row(
         children: [
-          AnimatedAlign(alignment: isCredited? Alignment.centerLeft :
-          Alignment.centerRight, duration: const Duration(milliseconds: 300),
-          child: Container(
-            width: 90,
-            height: 35,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: AppPallete.cardWhite,
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Center(
-              child: Text(
-                isCredited? "Credited" : "Debited",
-                style: TextStyle(
-                  color: isCredited? AppPallete.incomeGreen : AppPallete.expenseRed,
-                  fontWeight: FontWeight.bold,
+          // INCOME
+          Expanded(
+            child: GestureDetector(
+              onTap: () => onChanged(true),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: isCredited
+                      ? AppPallete.incomeGreen
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(25.r),
+                ),
+                child: Center(
+                  child: Text(
+                    "Income",
+                    style: TextStyle(
+                      color: isCredited
+                          ? Colors.white
+                          : AppPallete.textSecondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            )
+            ),
+          ),
 
-          )
-)
+          // EXPENSE
+          Expanded(
+            child: GestureDetector(
+              onTap: () => onChanged(false),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: !isCredited
+                      ? AppPallete.expenseRed
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(25.r),
+                ),
+                child: Center(
+                  child: Text(
+                    "Expense",
+                    style: TextStyle(
+                      color: !isCredited
+                          ? Colors.white
+                          : AppPallete.textSecondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
-      )
-      )
-
-
-      ;
+      ),
+    );
   }
 }
