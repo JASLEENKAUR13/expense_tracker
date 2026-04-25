@@ -17,9 +17,9 @@ class MySlider extends ConsumerWidget {
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
             trackHeight: 6,
-            activeTrackColor: AppPallete.iconBackground,
-            inactiveTrackColor: AppPallete.cardWhite.withOpacity(0.2),
-            thumbColor: AppPallete.iconBackground,
+            activeTrackColor: AppPallete.primaryBlue,
+            inactiveTrackColor: AppPallete.cardWhite,
+            thumbColor: AppPallete.primaryBlue,
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
             overlayShape: const RoundSliderOverlayShape(overlayRadius: 20),
             trackShape: const RoundedRectSliderTrackShape(),
@@ -49,6 +49,6 @@ class MySlider extends ConsumerWidget {
   TextStyle _labelStyle() => GoogleFonts.poppins(
     fontSize: 12.sp,
     fontWeight: FontWeight.w500,
-    color: AppPallete.iconBackground.withOpacity(0.6),
+    color: AppPallete.textPrimary,
   );
 }

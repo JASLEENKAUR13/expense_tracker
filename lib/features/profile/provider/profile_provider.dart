@@ -38,12 +38,14 @@ class ProfileNotifier extends AsyncNotifier<Profile?> {
     required int phoneNo,
     required int monthlyIncome,
     required int savingsGoalPerc,
+    required int salary_day
   }) async {
     await service.updateProfile(
       userName: userName,
       phoneNo: phoneNo,
       monthlyIncome: monthlyIncome,
       savingsGoalPerc: savingsGoalPerc,
+      salary_day: salary_day
     );
     ref.invalidateSelf(); // 👈 refreshes the profile data everywhere
   }

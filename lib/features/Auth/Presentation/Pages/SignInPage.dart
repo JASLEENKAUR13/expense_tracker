@@ -1,10 +1,13 @@
 import 'package:expense_tracker/common/theme/AppPallete.dart';
+import 'package:expense_tracker/features/Auth/Presentation/Pages/emailverificationScreen.dart';
 import 'package:expense_tracker/features/Auth/Presentation/Widgets/textfield.dart';
 import 'package:expense_tracker/features/Auth/Services/AuthServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../authwrapper.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
   final VoidCallback onSwitch;
@@ -32,6 +35,11 @@ class _SignInPageState extends ConsumerState<SignInPage> {
 
     try {
       await auth_services.signInWithEmail(email, pass);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => const AuthWrapper(),
+        ),
+      );
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

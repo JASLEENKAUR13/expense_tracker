@@ -224,7 +224,7 @@ class MyHomePage extends ConsumerWidget {
 
 
 
-                  _sectionHeader("Category Spending"),
+
                   SizedBox(height: 12.h),
 
                   CategoryPieChart(),

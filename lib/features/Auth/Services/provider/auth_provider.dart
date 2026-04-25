@@ -6,10 +6,10 @@ final authStateProvider = StreamProvider<User?>((ref) {
 
   return supabase.auth.onAuthStateChange.map(
         (event) {
-      final session = event.session;
       print("AUTH EVENT: ${event.event}");
-      print("SESSION USER: ${session?.user}");
-      return session?.user;
+      final user = event.session?.user ?? supabase.auth.currentUser;
+      print("USER: ${user?.email}");
+      return user;
     },
   );
 });

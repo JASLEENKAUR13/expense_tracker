@@ -1,4 +1,6 @@
+import 'package:expense_tracker/features/Auth/Presentation/Pages/emailverificationScreen.dart';
 import 'package:expense_tracker/features/Auth/Presentation/Widgets/textfield.dart';
+import 'package:expense_tracker/features/Auth/Presentation/authwrapper.dart';
 import 'package:expense_tracker/features/Auth/Services/AuthServices.dart';
 import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +47,22 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
 
     try {
       final user = await auth_services.signUpWithEmail(email, pass);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Verification email sent. Please check inbox.",
+          ),
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const AuthWrapper()),
+            (route) => false, // ✅ clears entire stack
+      );
+
+
+
+
       print("Signed up! ID: ${user?.id}");
     } catch (e) {
       if (mounted) {

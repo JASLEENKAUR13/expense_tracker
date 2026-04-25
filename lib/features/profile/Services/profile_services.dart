@@ -43,6 +43,7 @@ Future<void> saveProfile({
       updated_at: DateTime.now(),
       user_name: user.userMetadata?['name'] ?? '',  // 👈 from Google metadata
       phone_no: 0,
+      salary_day: 1,
 
     );
     await supabase.from('profiles').upsert(profile.toJson());
@@ -60,6 +61,7 @@ Future<void> saveProfile({
     required int phoneNo,
     required int monthlyIncome,
     required int savingsGoalPerc,
+    required int salary_day
   }) async {
     final user = supabase.auth.currentUser;
     if (user == null) return;
@@ -72,6 +74,7 @@ Future<void> saveProfile({
       'monthly_income': monthlyIncome,
       'savings_goal_percent': savingsGoalPerc,
       'updated_at': DateTime.now().toIso8601String(),
+      'salary_day' : salary_day
     });
   }
 
