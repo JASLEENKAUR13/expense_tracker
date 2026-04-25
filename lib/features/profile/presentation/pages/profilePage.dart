@@ -10,6 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../widgets/customizedRow.dart';
+import '../widgets/divider.dart';
+
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
@@ -77,7 +80,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
             CircleAvatar(
               radius: 48.r,
-              backgroundColor: AppPallete.primaryBlue.withOpacity(0.15),
+              backgroundColor: AppPallete.primaryBlue,
               child: CircleAvatar(
                 radius: 44.r,
                 backgroundImage:
@@ -123,16 +126,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 data: (profile) {
                   return Column(
                     children: [
-                      _row("Name",
+                      row("Name",
                           profile?.user_name ?? username, Icons.person),
 
-                      _divider(),
+                      divider(),
 
-                      _row("Email", email ?? "No Email", Icons.email),
+                      row("Email", email ?? "No Email", Icons.email),
 
-                      _divider(),
+                      divider(),
 
-                      _row(
+                      row(
                         "Phone",
                         profile?.phone_no != 0
                             ? "${profile?.phone_no}"
@@ -160,18 +163,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
                   return Column(
                     children: [
-                      _row(
+                      row(
                         "Monthly Income",
                         CurrencyFormatter.format(profile.income_montly),
                         Icons.account_balance_wallet,
                       ),
 
-                      _divider(),
+                      divider(),
 
-                      _row(
+                      row(
                         "Saving Goal",
                         "${profile.savingsGoalPerc}%",
                         Icons.savings,
+                      ),
+                      divider(),
+
+
+                      row(
+                        "Salary Day",
+                        "${profile.salary_day}",
+                        Icons.payment,
                       ),
                     ],
                   );
@@ -183,7 +194,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
             SizedBox(height: 16.h),
 
-            /// ⚠️ Danger Zone
+
             dangerZone(context, ref),
 
             SizedBox(height: 20.h),
@@ -230,64 +241,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
-  /// 🔹 Row Widget (Professional)
-  Widget _row(String title, String info, IconData icon) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        children: [
-          Container(
-            height: 42.h,
-            width: 42.h,
-            decoration: BoxDecoration(
-              color: AppPallete.primaryBlue.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Icon(
-              icon,
-              color: AppPallete.primaryBlue,
-              size: 20.sp,
-            ),
-          ),
 
-          SizedBox(width: 14.w),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppPallete.textSecondary,
-                  ),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  info,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppPallete.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   /// 🔹 Divider
-  Widget _divider() {
-    return Divider(
-      height: 18.h,
-      thickness: 0.6,
-      color: AppPallete.textSecondary.withOpacity(0.15),
-    );
-  }
+
 }

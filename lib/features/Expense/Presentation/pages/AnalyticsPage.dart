@@ -94,16 +94,9 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
 
               WeeklyBarChart(),
 
-               SizedBox(height: 8.h),
 
-              Text(
-                "Category Spending",
-                style: GoogleFonts.poppins(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppPallete.textPrimary,
-                ),
-              ),
+
+
 
                SizedBox(height: 35.h),
 

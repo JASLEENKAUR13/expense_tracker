@@ -3,39 +3,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../../../common/theme/AppPallete.dart';
+import '../../Expense/Services/BudgetPeriod.dart';
+import '../../profile/provider/profile_provider.dart';
 import '../provider/CategoryProvider.dart';
 import '../provider/catrgorySpendingProvider.dart';
 import '../category.dart';
 
 class CategoryPieChart extends ConsumerWidget {
-   CategoryPieChart({super.key});
+  CategoryPieChart({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categorySpending = ref.watch(categorySpendingProvider);
     final categories = ref.watch(categoryProvider);
 
-    // ✅ Guard 1: No categories
+    // ✅ Period label — calculated ONCE here, not inside loop
+    final profileAsync = ref.watch(profileProvider);
+    final periodLabel = profileAsync.when(
+      data: (profile) {
+        if (profile == null) return '';
+        final period = getCurrentBudgetPeriod(profile.salary_day);
+        return DateFormat('MMMM yyyy').format(period.start).toUpperCase();
+      },
+      loading: () => '',
+      error: (_, __) => '',
+    );
+
     if (categories.isEmpty) {
-      return  Center(child: Text("No categories available"));
+      return Center(child: Text("No categories available"));
     }
 
-    // ✅ Guard 2: No expenses
     if (categorySpending.isEmpty) {
-      return  Center(child: Text("Add expense to analyze your spending"));
+      return Center(child: Text("Add expense to analyze your spending"));
     }
 
-    // ✅ Calculate total safely
     final total = categorySpending.values.fold(0, (a, b) => a + b);
 
-    // ✅ Guard 3: Avoid divide by 0
     if (total == 0) {
-      return  Center(child: Text("No meaningful data"));
+      return Center(child: Text("No meaningful data"));
     }
 
-    // ✅ Helper to safely get category
     Category getCategory(int id) {
       try {
         return categories.firstWhere((c) => c.id == id);
@@ -44,12 +54,12 @@ class CategoryPieChart extends ConsumerWidget {
           id: -1,
           name: "Other",
           icon_name: "default",
-          color_hex: "#888888", created_at: DateTime.now(),
+          color_hex: "#888888",
+          created_at: DateTime.now(),
         );
       }
     }
 
-    // ✅ Pie Sections
     final sections = categorySpending.entries.map((entry) {
       final category = getCategory(entry.key);
       final percentage = (entry.value / total) * 100;
@@ -69,12 +79,11 @@ class CategoryPieChart extends ConsumerWidget {
       );
     }).toList();
 
-    // ✅ Legend
     final legend = categorySpending.entries.map((entry) {
       final category = getCategory(entry.key);
 
       return Padding(
-        padding:  EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+        padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
         child: Row(
           children: [
             Container(
@@ -87,8 +96,8 @@ class CategoryPieChart extends ConsumerWidget {
                 shape: BoxShape.circle,
               ),
             ),
-             SizedBox(width: 8.w),
-            Expanded( // 👈 prevents overflow
+            SizedBox(width: 8.w),
+            Expanded(
               child: Text(
                 category.name,
                 overflow: TextOverflow.ellipsis,
@@ -113,6 +122,42 @@ class CategoryPieChart extends ConsumerWidget {
 
     return Column(
       children: [
+
+        // ✅ Period label row
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Category Spending",
+              style: GoogleFonts.poppins(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                color: AppPallete.textPrimary,
+              ),
+            ),
+            if (periodLabel.isNotEmpty)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                decoration: BoxDecoration(
+                  color: AppPallete.iconBackground,
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Text(
+                  periodLabel,
+                  style: GoogleFonts.poppins(
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white54,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
+          ],
+        ),
+
+        SizedBox(height: 16.h),
+
+        // ✅ Pie chart
         SizedBox(
           height: 200.h,
           child: PieChart(
@@ -123,7 +168,10 @@ class CategoryPieChart extends ConsumerWidget {
             ),
           ),
         ),
-         SizedBox(height: 20.h),
+
+        SizedBox(height: 20.h),
+
+        // ✅ Legend
         ...legend,
       ],
     );

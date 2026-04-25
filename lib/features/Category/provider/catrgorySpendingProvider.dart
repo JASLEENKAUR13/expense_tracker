@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../Expense/provider/ExpenseListProvider.dart';
 
 final categorySpendingProvider = Provider<Map<int, int>>((ref) {
-  final list = ref.watch(ItemListProvider);
+  final list = ref.watch(currentPeriodExpenseProvider);
 
   final Map<int, int> spending = {};
 

@@ -21,6 +21,8 @@ class _State extends ConsumerState<ProfileEditingPage> {
   final _phoneController = TextEditingController();
   final _incomeController = TextEditingController();
   final _savingsController = TextEditingController();
+  final salaryDayController = TextEditingController();
+
 
   final user = Supabase.instance.client.auth.currentUser;
 
@@ -36,6 +38,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
     _phoneController.dispose();
     _incomeController.dispose();
     _savingsController.dispose();
+    salaryDayController.dispose();
     super.dispose();
   }
 
@@ -72,6 +75,9 @@ class _State extends ConsumerState<ProfileEditingPage> {
         }
         if (_savingsController.text.isEmpty) {
           _savingsController.text = '${profile.savingsGoalPerc}';
+        }
+        if(salaryDayController.text.isEmpty){
+          salaryDayController.text = '${profile.salary_day}';
         }
       }
     });
@@ -180,6 +186,18 @@ class _State extends ConsumerState<ProfileEditingPage> {
                           icon: Icons.savings_outlined,
                           isString: true,
                         ),
+
+
+                        SizedBox(height: 14.h),
+                        _buildSectionLabel("Salary Day (1-30)"),
+                        SizedBox(height: 6.h),
+
+                        textField(
+                          mycontroller: salaryDayController,
+                          placeholder: "e.g. 1",
+                          icon: Icons.payment,
+                          isString: true,
+                        ),
                       ],
                     ),
                   ),
@@ -208,7 +226,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
                   if (_nameController.text.isEmpty ||
                       _phoneController.text.isEmpty ||
                       _incomeController.text.isEmpty ||
-                      _savingsController.text.isEmpty) {
+                      _savingsController.text.isEmpty || salaryDayController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Input Required Details!")),
                     );
@@ -221,6 +239,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
                     int.parse(_incomeController.text.trim()),
                     savingsGoalPerc:
                     int.parse(_savingsController.text.trim()),
+                    salary_day: int.parse(salaryDayController.text)
                   );
                   Navigator.pop(context);
                 },

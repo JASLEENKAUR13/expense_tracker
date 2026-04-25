@@ -7,9 +7,11 @@ class Profile {
   final DateTime updated_at;
   final String user_name;
   final int phone_no;
+  final int salary_day;
 
-  Profile({required this.id , required this.email , required this.income_montly ,
-    required this.savingsGoalPerc, required this.updated_at, required this.user_name, required this.phone_no ,});
+  Profile({required this.id ,
+    required this.email , required this.income_montly ,
+    required this.savingsGoalPerc, required this.updated_at, required this.user_name, required this.phone_no, required this.salary_day ,});
 
   factory Profile.fromJson(Map<String , dynamic> json){
     // supabase sends data in map , we r coverting that map into object
@@ -20,6 +22,7 @@ class Profile {
       updated_at: DateTime.parse(json['updated_at']),
       user_name: json['user_name'] ?? '',
       phone_no: json['phone_no'] ?? 0,
+      salary_day: json['salary_day'] ?? 1
 
     );
   }
@@ -34,6 +37,7 @@ class Profile {
       'updated_at' : updated_at.toIso8601String(),
       'user_name' : user_name,
       'phone_no' : phone_no,
+      'salary_day' : salary_day
 
 
     };
@@ -49,6 +53,7 @@ class Profile {
      DateTime? updated_at,
     String? user_name,
     int? phone_no,
+    int? salary_day
 
 }
 
@@ -59,7 +64,7 @@ class Profile {
         savingsGoalPerc: savingsGoalPerc ?? this.savingsGoalPerc,
         updated_at: updated_at?? this.updated_at,
         user_name: user_name?? this.user_name,
-        phone_no: phone_no ?? this.phone_no);
+        phone_no: phone_no ?? this.phone_no, salary_day: salary_day ?? this.salary_day);
 
   }
 
