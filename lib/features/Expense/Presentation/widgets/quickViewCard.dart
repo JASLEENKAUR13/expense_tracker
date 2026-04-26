@@ -48,7 +48,7 @@ final Color color) {
                 Text(
                   "${CurrencyFormatter.compact(amount)}",
                   style: GoogleFonts.poppins(
-                    fontSize: 16.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),

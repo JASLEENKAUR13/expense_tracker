@@ -22,7 +22,7 @@ class AnalyticsPage extends ConsumerStatefulWidget {
 class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
 
 
-  @override
+
   @override
   Widget build(BuildContext context) {
 
@@ -33,7 +33,7 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
         title: Text(
           "Analytics",
           style: GoogleFonts.poppins(
-            fontSize: 25.sp,
+            fontSize: 18.sp,
             fontWeight: FontWeight.w500,
             color: AppPallete.textPrimary,
           ),
@@ -47,14 +47,14 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.analytics_outlined,
-                size: 70.w, color: Colors.grey),
+                size: 48.w, color: Colors.grey),
 
              SizedBox(height: 16.h),
 
             Text(
               "No data to analyze",
               style: GoogleFonts.poppins(
-                fontSize: 18.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -84,13 +84,13 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
         ),
       )
           : Padding(
-        padding:  EdgeInsets.all(8.0.w),
+        padding:  EdgeInsets.all(12.0.w),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-               SizedBox(height: 15.h),
+               SizedBox(height: 12.h),
 
               WeeklyBarChart(),
 
@@ -98,15 +98,15 @@ class _AnalyticsPageState extends ConsumerState<AnalyticsPage> {
 
 
 
-               SizedBox(height: 35.h),
+               SizedBox(height: 24.h),
 
               CategoryPieChart(),
 
-               SizedBox(height: 35.h),
+               SizedBox(height: 24.h),
 
               MonthlySpendingChart(),
 
-               SizedBox(height: 35.h),
+               SizedBox(height: 24.h),
 
               MonthlyIncomeExpenseChart(),
             ],

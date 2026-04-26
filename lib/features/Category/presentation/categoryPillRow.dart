@@ -45,7 +45,7 @@ class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
             'Select Category',
             style: TextStyle(
               color: AppPallete.textSecondary, // textSecondary
-              fontSize: 14.sp,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -70,8 +70,8 @@ class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
                     },
                     child: Container(
                       padding:  EdgeInsets.symmetric(
-                        horizontal: 16.0.w,
-                        vertical: 10.0.h,
+                        horizontal: 12.0.w,
+                        vertical: 8.0.h,
                       ),
                       decoration: BoxDecoration(
                         color: isSelected

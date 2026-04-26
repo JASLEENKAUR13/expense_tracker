@@ -44,11 +44,11 @@ class _State extends ConsumerState<AlltransactionPage> {
         centerTitle: true,
         title:  Text("All Transaction",
                 style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold, fontSize: 22.sp)),
+                    fontWeight: FontWeight.w500, fontSize: 18.sp)),
 
       ),
       body: Padding(
-        padding: EdgeInsets.all(10.w),
+        padding: EdgeInsets.all(12.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -191,7 +191,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                   "No transactions found",
                   style: GoogleFonts.poppins(
                     color: AppPallete.textSecondary,
-                    fontSize: 16.sp,
+                    fontSize: 14.sp,
                   ),
                 ),
               )
@@ -210,7 +210,7 @@ class _State extends ConsumerState<AlltransactionPage> {
                          EdgeInsets.symmetric(vertical: 8.h),
                         child: Text(date,
                             style: GoogleFonts.poppins(
-                                fontSize: 14.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppPallete.textPrimary
                                     .withOpacity(0.8))),

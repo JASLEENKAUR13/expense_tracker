@@ -69,7 +69,7 @@ class _State extends ConsumerState<EditingPage> {
       //backgroundColor: AppPallete.textPrimary,
       appBar:  AppBar(
         title: Center(child : Text("Edit Expense" ,
-            style: GoogleFonts.poppins(fontSize: 25.sp ,
+            style: GoogleFonts.poppins(fontSize: 18.sp ,
                 fontWeight: FontWeight.w500 , color: AppPallete.textPrimary)) ,
 
         ),
@@ -100,14 +100,14 @@ class _State extends ConsumerState<EditingPage> {
         ]
       ),
 
-      body: Padding(padding: EdgeInsets.all(10.w) ,
+      body: Padding(padding: EdgeInsets.all(12.w) ,
         child:
         Container(
           child: Column(
             children: [
 
 
-               SizedBox(height: 30.h,) ,
+               SizedBox(height: 20.h,) ,
               GestureDetector(
                 onTap: ()=>setState(()=> iscredited = !iscredited),
 
@@ -117,25 +117,25 @@ class _State extends ConsumerState<EditingPage> {
                   });
                 },),
               ),
-              SizedBox(height: 10.h,) ,
+              SizedBox(height: 8.h,) ,
               textField(placeholder: "Add title", mycontroller: titleController, isString: true, icon: Icons.title),
-               SizedBox(height: 10.h,) ,
+               SizedBox(height: 8.h,) ,
               MoneyTextField(controller: amountController, label: "Enter Amount"),
-               SizedBox(height: 10.h,) ,
+               SizedBox(height: 8.h,) ,
               textField(placeholder: "Add Note", mycontroller: noteController, isString: true, icon: Icons.note , maxLines: 3  ),
-               SizedBox(height: 10.h,) ,
+               SizedBox(height: 8.h,) ,
               InkWell( onTap: selectDate,
                 child : AbsorbPointer(child: textField(placeholder: "Select a date",
                     mycontroller: DateController,
                     isString: false, icon: Icons.calendar_month)),),
-               SizedBox(height: 10.h,) ,
+               SizedBox(height: 8.h,) ,
               CategoryPillsRow(onCategorySelected: (category){
                 setState(() {
                   selectedCategory = category;
 
                 });
               } , initialCategory: widget.exp.category_id,),
-               SizedBox(height: 10.h,) ,
+               SizedBox(height: 8.h,) ,
 
 
 
@@ -143,8 +143,8 @@ class _State extends ConsumerState<EditingPage> {
 
                Spacer(),
               SizedBox(
-                width: 700.w,
-                height: 50.h ,
+                width: double.infinity,
+                height: 48.h ,
                 child: ElevatedButton(onPressed: () async{
                   final dateToSave = selectedDate ?? DateTime.now();
                   print("triggered to save tran!");

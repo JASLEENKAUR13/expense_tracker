@@ -14,7 +14,7 @@ import '../../provider/profile_provider.dart';
 Container dangerZone(BuildContext context ,WidgetRef ref ) {
   return Container(
     width: double.infinity,
-    padding: EdgeInsets.all(15),
+    padding: EdgeInsets.all(12),
     decoration: BoxDecoration(
       color: Color(0xFF1A0E0E), // dark red tint background
       borderRadius: BorderRadius.circular(10),
@@ -26,7 +26,7 @@ Container dangerZone(BuildContext context ,WidgetRef ref ) {
           "DANGER ZONE",
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
-            fontSize: 14,
+            fontSize: 12,
             letterSpacing: 1.2,
             color: AppPallete.textSecondary,
           ),
@@ -40,7 +40,7 @@ Container dangerZone(BuildContext context ,WidgetRef ref ) {
             "Sign Out",
             style: GoogleFonts.poppins(
               color:AppPallete.expenseRed,
-              fontSize: 18,
+              fontSize: 14,
             ),
           ),
           
@@ -80,7 +80,7 @@ Container dangerZone(BuildContext context ,WidgetRef ref ) {
             "Delete Account",
             style: GoogleFonts.poppins(
               color: AppPallete.expenseRed ,
-              fontSize: 18,
+              fontSize: 14,
             ),
           ),
           onTap: ()  async{

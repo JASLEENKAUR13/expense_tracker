@@ -68,14 +68,14 @@ class _OnboardingPageState extends State<OnboardingPage>
                 widget.title,
                 style: GoogleFonts.inter(
                   color: AppPallete.iconBackground,
-                  fontSize: 30.sp,        // ✅ .sp scales with screen
+                  fontSize: 24.sp,        // ✅ .sp scales with screen
                   fontWeight: FontWeight.w300,
                   letterSpacing: -0.5,
                 ),
                 textAlign: TextAlign.center,
               ),
 
-              SizedBox(height: 24.h),     // ✅ .h scales with screen height
+              SizedBox(height: 16.h),     // ✅ .h scales with screen height
 
               Container(
                 padding: EdgeInsets.all(16.w),
@@ -85,19 +85,19 @@ class _OnboardingPageState extends State<OnboardingPage>
                 ),
                 child: Lottie.asset(
                   widget.imgPath,
-                  height: 220.h,          // ✅ reduced from 260.h
-                  width: 220.w,           // ✅ reduced from 260.w
+                  height: 150.h,          // ✅ reduced from 260.h
+                  width: 150.w,           // ✅ reduced from 260.w
                   fit: BoxFit.contain,
                 ),
               ),
 
-              SizedBox(height: 32.h),     // ✅ reduced from 48.h
+              SizedBox(height: 24.h),     // ✅ reduced from 48.h
 
               Text(
                 widget.quote,
                 style: GoogleFonts.inter(
                   color: AppPallete.iconBackground.withOpacity(0.9),
-                  fontSize: 17.sp,        // ✅ .sp scales with screen
+                  fontSize: 15.sp,        // ✅ .sp scales with screen
                   fontWeight: FontWeight.w600,
                   height: 1.4,
                   letterSpacing: 0.2,

@@ -87,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: Text(
                       'Skip',
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.w500,
                         letterSpacing: -0.5,
                       ),
@@ -130,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   SizedBox(height: 24.h),
                   SizedBox(
                     width: double.infinity,
-                    height: 56.h,
+                    height: 50.h,
                     child: ElevatedButton(
                       onPressed: _nextPage,
                       style: ElevatedButton.styleFrom(
@@ -146,7 +146,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ? 'Get Started'
                             : 'Next',
                         style: TextStyle(
-                          fontSize: 18.sp,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.5,
                         ),

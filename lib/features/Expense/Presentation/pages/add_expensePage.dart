@@ -12,6 +12,7 @@ import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:expense_tracker/features/Expense/Presentation/widgets/StatusPill.dart';
 import 'package:flutter/cupertino.dart' hide Size;
 import 'package:flutter/material.dart' hide Size;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/functions/CurrencyFormater.dart';
@@ -19,7 +20,7 @@ import '../widgets/text_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddExpensepage extends ConsumerStatefulWidget {
-  const AddExpensepage({super.key});
+   AddExpensepage({super.key});
 
   @override
   ConsumerState<AddExpensepage> createState() => _AddExpensepageState();
@@ -83,20 +84,19 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
     return  Scaffold(
       //backgroundColor: AppPallete.textPrimary,
       appBar:  AppBar(
-        title: Center(child : Text("Add Expense" ,
-            style: GoogleFonts.poppins(fontSize: 25 ,
-                fontWeight: FontWeight.w500 , color: AppPallete.textPrimary)) ,
+        centerTitle: true,
+        title: Text("Add Expense" ,
+            style: GoogleFonts.poppins(
+                fontSize: 18.sp,
 
-        ),
-
-
-
+                fontWeight: FontWeight.w500 ,
+                color: AppPallete.textPrimary)) ,
 
 
         backgroundColor:  AppPallete.background,
       ),
 
-          body: Padding(padding: EdgeInsets.all(10) ,
+          body: Padding(padding: EdgeInsets.all(12.w) ,
             child:
             Container(
               child: Column(
@@ -133,7 +133,8 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                   // )) ,
 
 
-                  const SizedBox(height: 30,) ,
+
+                  SizedBox(height: 20.h,) ,
                   GestureDetector(
                     onTap: ()=>setState(()=> isCredited = !isCredited),
 
@@ -143,18 +144,18 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                       });
                     },),
                   ),
-                  const SizedBox(height: 10,) ,
+                   SizedBox(height: 8.h,) ,
                   textField(placeholder: "Add title", mycontroller: titleController, isString: true, icon: Icons.title),
-                  const SizedBox(height: 10,) ,
+                   SizedBox(height: 8.h,) ,
                  MoneyTextField(controller: amountController, label: "Enter Amount"),
-                  const SizedBox(height: 10,) ,
+                   SizedBox(height: 8.h,) ,
                   textField(placeholder: "Add Note", mycontroller: noteController, isString: true, icon: Icons.note , maxLines: 3  ),
-                  const SizedBox(height: 10,) ,
+                   SizedBox(height: 8.h,) ,
                   InkWell( onTap: selectDate,
                     child : AbsorbPointer(child: textField(placeholder: "Select a date",
                         mycontroller: DateController,
                       isString: false, icon: Icons.calendar_month)),),
-                  const SizedBox(height: 10,) ,
+                   SizedBox(height: 8.h,) ,
                   CategoryPillsRow(onCategorySelected: (category){
                     setState(() {
                       selectedCategory = category;
@@ -162,15 +163,16 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                     });
                   }),
 
-                  const SizedBox(height:10),
+                   SizedBox(height:8.h),
 
 
 
 
-                  const Spacer(),
+                  Spacer(),
+
                   SizedBox(
                     width: double.infinity,
-                    height: 50 ,
+                    height: 48.h ,
                     child: ElevatedButton(onPressed: () async{
                         final dateToSave = selectedDate ?? DateTime.now();
                         print("triggered to save tran!");
@@ -203,15 +205,22 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                           foregroundColor: AppPallete.background,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14)
+                            borderRadius: BorderRadius.circular(12.r)
                           )
                         )
 
-                        ,child: const Text("Save")),
+                        ,child:  Text("Save" ,
+                          style: GoogleFonts.poppins(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),)),
                   ) ,
 
+                  SizedBox(height: 32.h,)
 
-                  const SizedBox(height: 35,),
+
+
 
 
 

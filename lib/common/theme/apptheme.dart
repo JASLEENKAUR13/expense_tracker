@@ -8,13 +8,13 @@ class AppTheme {
   static InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
     floatingLabelBehavior: FloatingLabelBehavior.always,
     labelStyle: GoogleFonts.poppins(
-      fontSize: 16,
+      fontSize: 13,
       color: AppPallete.textPrimary,   // ✅ was iconBackground
     ),
 
     filled: true,
     fillColor: AppPallete.surface,        // ✅ was cardWhite.withOpacity
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: AppPallete.iconBackground, width: 1.5),
@@ -25,7 +25,7 @@ class AppTheme {
     ),
 
     hintStyle: GoogleFonts.poppins(        // ← add this
-      fontSize: 16,
+      fontSize: 12,
       color: AppPallete.textPrimary,    // ← whatever color you want
       fontWeight: FontWeight.w400,
     ),

@@ -52,7 +52,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         title: Text(
           "Profile",
           style: GoogleFonts.poppins(
-            fontSize: 20.sp,
+            fontSize: 18.sp,
             fontWeight: FontWeight.w600,
             color: AppPallete.textPrimary,
           ),
@@ -71,7 +71,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       ),
 
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.all(12.w),
         child: Column(
           children: [
 
@@ -79,10 +79,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             SizedBox(height: 10.h),
 
             CircleAvatar(
-              radius: 48.r,
+              radius: 40.r,
               backgroundColor: AppPallete.primaryBlue,
               child: CircleAvatar(
-                radius: 44.r,
+                radius: 36.r,
                 backgroundImage:
                 avatarurl != null ? NetworkImage(avatarurl) : null,
                 backgroundColor: AppPallete.primaryBlue,
@@ -90,7 +90,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     ? Text(
                   getInitials(username, email),
                   style: GoogleFonts.poppins(
-                    fontSize: 22.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w600,
                     color: AppPallete.background,
                   ),
@@ -108,7 +108,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     ? profile!.user_name
                     : username,
                 style: GoogleFonts.poppins(
-                  fontSize: 20.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                   color: AppPallete.textPrimary,
                 ),
@@ -229,7 +229,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           Text(
             title,
             style: GoogleFonts.poppins(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: AppPallete.textPrimary,
             ),

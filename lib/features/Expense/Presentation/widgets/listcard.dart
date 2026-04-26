@@ -54,8 +54,8 @@ class ListCard extends ConsumerWidget {
 
             // ── Icon ───────────────────────────────
             Container(
-              width: 46.w,
-              height: 46.w,
+              width: 40.w,
+              height: 40.w,
               decoration: BoxDecoration(
                 color: categoryColor.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(14.r),
@@ -75,7 +75,7 @@ class ListCard extends ConsumerWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
-                      fontSize: 15.sp,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w600,
                       color: AppPallete.textPrimary,
                     ),
@@ -123,7 +123,7 @@ class ListCard extends ConsumerWidget {
                   (isCredited ? "+" : "-") +
                       CurrencyFormatter.compact(currentExp.amount),
                   style: GoogleFonts.poppins(
-                    fontSize: 15.sp,
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.w700,
                     color: isCredited
                         ? AppPallete.incomeGreen

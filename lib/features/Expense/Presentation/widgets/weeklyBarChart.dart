@@ -49,7 +49,7 @@ class WeeklyBarChart extends ConsumerWidget {
           BarChartRodData(
             toY: amount.toDouble(),
             color: AppPallete.primaryBlue,
-            width: 18.w,
+            width: 14.w,
             borderRadius: BorderRadius.circular(6.r),
           ),
         ],
@@ -68,7 +68,7 @@ class WeeklyBarChart extends ConsumerWidget {
 
           Text(
             "Weekly Spending",
-            style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+            style: GoogleFonts.poppins(fontWeight: FontWeight.bold , fontSize: 14.sp,),
           ),
 
           Row(
@@ -90,7 +90,13 @@ class WeeklyBarChart extends ConsumerWidget {
               Text(
                 "${weekStart.day} ${_monthName(weekStart.month)} - "
                     "${weekend.day} ${_monthName(weekend.month)}",
-                style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+
+
+                style: GoogleFonts.poppins(
+                    fontSize: 12.sp, // add this
+                    fontWeight: FontWeight.bold
+                ),
+
               ),
 
 
@@ -109,7 +115,7 @@ class WeeklyBarChart extends ConsumerWidget {
             ],
           ),
 
-           SizedBox(height: 20.h),
+           SizedBox(height: 12.h),
           SizedBox(
             height: 200.h,
             child: BarChart(

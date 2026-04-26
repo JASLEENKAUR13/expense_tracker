@@ -23,7 +23,7 @@ class AuthTextField extends StatelessWidget {
       controller: controller,
       obscureText: isPassword? true : false,
       style:  TextStyle(color: Colors.white,
-          fontSize: 19.sp , fontWeight: FontWeight.w500),
+          fontSize: 14.sp , fontWeight: FontWeight.w500),
       cursorColor: AppPallete.textPrimary,
 
       decoration: InputDecoration(
