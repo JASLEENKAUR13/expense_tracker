@@ -85,7 +85,7 @@ An installable APK is available for Android devices.
 3. Tap **Install**
 4. Open **Expenso** and sign up!
 
-**[⬇️ Download APK](YOUR_GOOGLE_DRIVE_LINK_HERE)**
+[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/JASLEENKAUR13/expenso/releases/latest/download/app-arm64-v8a-release.apk)
 
 > Tested on Android 10+ — works best on Android 12 and above.
 
