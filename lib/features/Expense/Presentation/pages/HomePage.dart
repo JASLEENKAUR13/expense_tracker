@@ -55,7 +55,7 @@ class MyHomePage extends ConsumerWidget {
                         Text(
                           "Expenso",
                           style: GoogleFonts.poppins(
-                            fontSize: 18.sp,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.w700,
                             color: AppPallete.textPrimary,
                           ),
@@ -119,7 +119,7 @@ class MyHomePage extends ConsumerWidget {
         title: Text(
           "Expenso",
           style: GoogleFonts.poppins(
-            fontSize: 22.sp,
+            fontSize: 18.sp,
             fontWeight: FontWeight.w700,
             color: AppPallete.textPrimary,
           ),
@@ -128,7 +128,7 @@ class MyHomePage extends ConsumerWidget {
           GestureDetector(
             onTap: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const AddExpensepage()),
+              MaterialPageRoute(builder: (_) => AddExpensepage()),
             ),
             child: Container(
               margin: EdgeInsets.only(right: 16.w),
@@ -151,7 +151,7 @@ class MyHomePage extends ConsumerWidget {
           final recent = list.take(5).toList();
 
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -177,14 +177,14 @@ class MyHomePage extends ConsumerWidget {
                               shape: BoxShape.circle,
                             ),
                             child: Icon(Icons.receipt_long_rounded,
-                                size: 48.sp,
+                                size: 36.sp,
                                 color: AppPallete.textSecondary),
                           ),
                           SizedBox(height: 20.h),
                           Text(
                             "No transactions yet",
                             style: GoogleFonts.poppins(
-                              fontSize: 18.sp,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
                               color: AppPallete.textPrimary,
                             ),
@@ -267,7 +267,7 @@ class MyHomePage extends ConsumerWidget {
         Text(
           title,
           style: GoogleFonts.poppins(
-            fontSize: 16.sp,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w600,
             color: AppPallete.textPrimary,
           ),

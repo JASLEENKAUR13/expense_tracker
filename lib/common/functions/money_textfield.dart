@@ -135,7 +135,7 @@ class _MoneyTextFieldState extends State<MoneyTextField> {
       decoration: InputDecoration(
         prefixText: "₹ ",
             prefixStyle: GoogleFonts.poppins(
-          fontWeight: FontWeight.w600,fontSize: 20 )
+          fontWeight: FontWeight.w600,fontSize: 16 )
       )
 
 

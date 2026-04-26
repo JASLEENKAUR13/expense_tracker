@@ -51,12 +51,12 @@ class _MonthlySpendingChartState
           Text(
             "Monthly Spending",
             style: GoogleFonts.poppins(
-              fontSize: 18.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: AppPallete.textPrimary,
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 12.h),
 
           SizedBox(
             height: 220,

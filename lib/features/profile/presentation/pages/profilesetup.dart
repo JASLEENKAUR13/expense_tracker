@@ -248,7 +248,7 @@ class _ProfileSetUpState extends ConsumerState<ProfileSetUp>
         Text(
           title,
           style: GoogleFonts.poppins(
-            fontSize: 28.sp,
+            fontSize: 22.sp,
             fontWeight: FontWeight.w700,
             color: Colors.white,
             height: 1.2,
@@ -258,7 +258,7 @@ class _ProfileSetUpState extends ConsumerState<ProfileSetUp>
         Text(
           subtitle,
           style: GoogleFonts.poppins(
-            fontSize: 14.sp,
+            fontSize: 13.sp,
             color: Colors.white38,
             fontWeight: FontWeight.w400,
           ),
@@ -280,7 +280,7 @@ class _ProfileSetUpState extends ConsumerState<ProfileSetUp>
             _fadeController.forward();
           },
           child: Container(
-            height: 54.h,
+            height: 50.h,
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.06),
@@ -291,7 +291,7 @@ class _ProfileSetUpState extends ConsumerState<ProfileSetUp>
               child: Text(
                 "← Back",
                 style: GoogleFonts.poppins(
-                  fontSize: 15.sp,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.white60,
                 ),
@@ -345,7 +345,7 @@ class _PrimaryButton extends StatelessWidget {
           child: Text(
             label,
             style: GoogleFonts.poppins(
-              fontSize: 16.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
@@ -572,7 +572,7 @@ class _FinanceStep extends StatelessWidget {
                   Text(
                     "Salary Day",
                     style: GoogleFonts.poppins(
-                      fontSize: 18.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
@@ -811,7 +811,7 @@ class _FinanceStep extends StatelessWidget {
                         Text(
                           "Saving ${CurrencyFormatter.compact(savings)} / month",
                           style: GoogleFonts.poppins(
-                            fontSize: 16.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
                             color: AppPallete.primaryBlue,
                           ),

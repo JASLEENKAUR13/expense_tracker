@@ -61,115 +61,118 @@ class _SignInPageState extends ConsumerState<SignInPage> {
     return Scaffold(
       backgroundColor: AppPallete.textPrimary,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 48.h),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+            child: Column(
 
-              Text(
-                "SIGN IN.",
-                style: GoogleFonts.poppins(
-                  fontSize: 48.sp,
-                  fontWeight: FontWeight.w800,
-                  color: AppPallete.background,
-                  height: 1.1,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 32.h),
+
+                Text(
+                  "SIGN IN.",
+                  style: GoogleFonts.poppins(
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.w800,
+                    color: AppPallete.background,
+                    height: 1.1,
+                  ),
                 ),
-              ),
 
-              SizedBox(height: 40.h),
+                SizedBox(height: 28.h),
 
-              AuthTextField(
-                mylabel: "Enter Email",
-                myIcon: Icons.email,
-                controller: signInemailcontroller,
-                isPassword: false,
-              ),
+                AuthTextField(
+                  mylabel: "Enter Email",
+                  myIcon: Icons.email,
+                  controller: signInemailcontroller,
+                  isPassword: false,
+                ),
 
-              SizedBox(height: 20.h),
+                SizedBox(height: 20.h),
 
-              AuthTextField(
-                mylabel: "Enter Password",
-                myIcon: Icons.lock,
-                controller: signInpasscontroller,
-                isPassword: true,
-              ),
+                AuthTextField(
+                  mylabel: "Enter Password",
+                  myIcon: Icons.lock,
+                  controller: signInpasscontroller,
+                  isPassword: true,
+                ),
 
-              SizedBox(height: 40.h),
+                SizedBox(height: 28.h),
 
-              // Arrow button centered
-              Center(
-                child: ElevatedButton(
-                  onPressed: doSignInwithEmail,
+                // Arrow button centered
+                Center(
+                  child: ElevatedButton(
+                    onPressed: doSignInwithEmail,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppPallete.cardWhite,
+                      foregroundColor: AppPallete.textPrimary,
+                      padding: EdgeInsets.all(14.w),
+                      shape: const CircleBorder(),
+                      elevation: 10,
+                    ),
+                    child: Icon(Icons.arrow_right_alt_rounded, size: 28.sp),
+                  ),
+                ),
+
+                SizedBox(height: 28.h),
+
+                // Google button
+                ElevatedButton(
+                  onPressed: () async {
+                    final res = await auth_services.signInWithGoogle();
+                    if (!res && mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Google Authentication failed!")),
+                      );
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppPallete.cardWhite,
                     foregroundColor: AppPallete.textPrimary,
-                    padding: EdgeInsets.all(18.w),
-                    shape: const CircleBorder(),
-                    elevation: 10,
-                  ),
-                  child: Icon(Icons.arrow_right_alt_rounded, size: 40.sp),
-                ),
-              ),
-
-              SizedBox(height: 40.h),
-
-              // Google button
-              ElevatedButton(
-                onPressed: () async {
-                  final res = await auth_services.signInWithGoogle();
-                  if (!res && mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Google Authentication failed!")),
-                    );
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppPallete.cardWhite,
-                  foregroundColor: AppPallete.textPrimary,
-                  minimumSize: Size(double.infinity, 55.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.r),
-                  ),
-                  elevation: 0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'lib/common/theme/icons/google.png',
-                      height: 24.h,
-                      color: AppPallete.textPrimary,
+                    minimumSize: Size(double.infinity, 48.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.r),
                     ),
-                    SizedBox(width: 12.w),
-                    Text(
-                      "Continue With Google",
+                    elevation: 0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'lib/common/theme/icons/google.png',
+                        height: 24.h,
+                        color: AppPallete.textPrimary,
+                      ),
+                      SizedBox(width: 12.w),
+                      Text(
+                        "Continue With Google",
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 20.h),
+
+                Center(
+                  child: TextButton(
+                    onPressed: widget.onSwitch,
+                    child: Text(
+                      "New Saver? Sign Up",
                       style: GoogleFonts.poppins(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13.sp,
+                        color: AppPallete.cardWhite,
                       ),
                     ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 32.h),
-
-              Center(
-                child: TextButton(
-                  onPressed: widget.onSwitch,
-                  child: Text(
-                    "New Saver? Sign Up",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.sp,
-                      color: AppPallete.cardWhite,
-                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

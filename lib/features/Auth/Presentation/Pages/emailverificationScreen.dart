@@ -98,8 +98,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             children: [
               // ✅ Icon with circle background
               Container(
-                width: 120.w,
-                height: 120.h,
+                width: 100.w,
+                height: 100.h,
                 decoration: BoxDecoration(
                   color:  Color(0xFF16213E),
                   shape: BoxShape.circle,
@@ -110,7 +110,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                 ),
                 child:  Icon(
                   Icons.mark_email_read_outlined,
-                  size: 56.w,
+                  size: 44.w,
                   color: Colors.blueAccent,
                 ),
               ),
@@ -120,7 +120,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
               Text(
                 "Check Your Inbox",
                 style: GoogleFonts.poppins(
-                  fontSize: 28.sp,
+                  fontSize: 22.sp,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),

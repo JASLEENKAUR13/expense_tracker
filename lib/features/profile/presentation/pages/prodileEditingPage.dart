@@ -91,7 +91,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
         title: Text(
           "Edit Profile",
           style: GoogleFonts.poppins(
-            fontSize: 20.sp,
+            fontSize: 18.sp,
             fontWeight: FontWeight.w500,
             color: AppPallete.textPrimary,
           ),
@@ -122,7 +122,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
                         Text(
                           "Personal Info",
                           style: GoogleFonts.poppins(
-                            fontSize: 17.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                             color: AppPallete.textPrimary.withOpacity(0.8),
                           ),
@@ -165,7 +165,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
                         Text(
                           "Finances",
                           style: GoogleFonts.poppins(
-                            fontSize: 17.sp,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                             color: AppPallete.textPrimary.withOpacity(0.8),
                           ),
@@ -213,7 +213,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
             padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 24.h),
             child: SizedBox(
               width: double.infinity,
-              height: 52.h,
+              height: 48.h,
               child: ElevatedButton(
                 onPressed: () {
                   if (_phoneController.text.isNotEmpty &&
@@ -253,7 +253,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
                 child: Text(
                   "Save Changes",
                   style: GoogleFonts.poppins(
-                    fontSize: 16.sp,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                     color: AppPallete.textPrimary,
                   ),

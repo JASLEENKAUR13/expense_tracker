@@ -69,12 +69,12 @@ class MonthlyIncomeExpenseChart extends ConsumerWidget {
           Text(
             "Monthly Income vs Expense",
             style: TextStyle(
-              fontSize: 18.sp,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
               color: AppPallete.textPrimary,
             ),
           ),
-         SizedBox(height: 20.h),
+         SizedBox(height: 12.h),
 
            Row(
               mainAxisAlignment: MainAxisAlignment.center,

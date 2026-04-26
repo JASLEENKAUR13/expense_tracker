@@ -38,7 +38,7 @@ class QuickViewContainer extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(22.w),
+      padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
         color: AppPallete.iconBackground,
         borderRadius: BorderRadius.circular(24.r),
@@ -94,7 +94,7 @@ class QuickViewContainer extends ConsumerWidget {
             ],
           ),
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
 
           // ── Label ──
           Text(
@@ -131,7 +131,7 @@ class QuickViewContainer extends ConsumerWidget {
                 child: Text(
                   CurrencyFormatter.compact(balance.abs()),
                   style: GoogleFonts.poppins(
-                    fontSize: 40.sp,
+                    fontSize: 32.sp,
                     fontWeight: FontWeight.w700,
                     color: isNegative
                         ? AppPallete.expenseRed
@@ -150,7 +150,7 @@ class QuickViewContainer extends ConsumerWidget {
           // ── Status message ──
 
 
-          SizedBox(height: 20.h),
+          SizedBox(height: 16.h),
 
           // ── Divider ──
           Container(
@@ -158,7 +158,7 @@ class QuickViewContainer extends ConsumerWidget {
             color: Colors.white.withOpacity(0.07),
           ),
 
-          SizedBox(height: 20.h),
+          SizedBox(height: 16.h),
 
           // ── Income & Spent ──
           Row(

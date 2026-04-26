@@ -67,7 +67,7 @@ class CategoryPieChart extends ConsumerWidget {
       return PieChartSectionData(
         value: entry.value.toDouble(),
         title: '${percentage.toStringAsFixed(1)}%',
-        radius: 60.r,
+        radius: 50.r,
         titleStyle: GoogleFonts.poppins(
           fontSize: 12.sp,
           fontWeight: FontWeight.bold,
@@ -130,7 +130,7 @@ class CategoryPieChart extends ConsumerWidget {
             Text(
               "Category Spending",
               style: GoogleFonts.poppins(
-                fontSize: 16.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: AppPallete.textPrimary,
               ),
@@ -159,12 +159,12 @@ class CategoryPieChart extends ConsumerWidget {
 
         // ✅ Pie chart
         SizedBox(
-          height: 200.h,
+          height: 180.h,
           child: PieChart(
             PieChartData(
               sections: sections,
               sectionsSpace: 2.w,
-              centerSpaceRadius: 40.r,
+              centerSpaceRadius: 36.r,
             ),
           ),
         ),

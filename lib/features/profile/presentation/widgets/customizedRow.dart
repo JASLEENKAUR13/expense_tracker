@@ -10,8 +10,8 @@ Widget row(String title, String info, IconData icon) {
     child: Row(
       children: [
         Container(
-          height: 42.h,
-          width: 42.h,
+          height: 38.h,
+          width: 38.h,
           decoration: BoxDecoration(
             color: AppPallete.primaryBlue.withOpacity(0.12),
             borderRadius: BorderRadius.circular(12.r),
@@ -42,7 +42,7 @@ Widget row(String title, String info, IconData icon) {
                 info,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.poppins(
-                  fontSize: 15.sp,
+                  fontSize: 13.sp,
                   fontWeight: FontWeight.w600,
                   color: AppPallete.textPrimary,
                 ),

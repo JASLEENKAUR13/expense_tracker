@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StatusPill extends StatelessWidget {
   final bool isCredited;
@@ -15,7 +16,7 @@ class StatusPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50.h,
+      height: 44.h,
       decoration: BoxDecoration(
         color: AppPallete.cardWhite,
         borderRadius: BorderRadius.circular(25.r),
@@ -37,11 +38,13 @@ class StatusPill extends StatelessWidget {
                 child: Center(
                   child: Text(
                     "Income",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
+                      fontSize: 13.sp,
                       color: isCredited
                           ? Colors.white
                           : AppPallete.textSecondary,
                       fontWeight: FontWeight.bold,
+
                     ),
                   ),
                 ),
@@ -64,7 +67,8 @@ class StatusPill extends StatelessWidget {
                 child: Center(
                   child: Text(
                     "Expense",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
+                      fontSize: 13.sp,
                       color: !isCredited
                           ? Colors.white
                           : AppPallete.textSecondary,
