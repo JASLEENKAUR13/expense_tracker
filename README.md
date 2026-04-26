@@ -1,50 +1,97 @@
 # Expenso 💰
-
-A personal expense tracking app built with Flutter and Supabase.
+A smart personal expense tracker built with Flutter and Supabase — India-first, privacy-focused.
 
 ## Features
 
-- 🔐 **Authentication** — Email/password and Google Sign-In
-- 👤 **Profile Setup** — Set monthly income and savings goal percentage
-- 💸 **Expense Tracking** — Add transactions with title, amount, note, date, and credit/debit status
-- 📊 **Quick Overview** — See total income, expenses, and remaining budget at a glance
-- ☁️ **Cloud Sync** — All data stored in Supabase, synced across devices
+### 🔐 Authentication
+- Email/password with full verification flow
+- Google Sign-In
+- Auto session management
+
+### 👤 Profile
+- Name, phone, monthly income, savings goal
+- Custom salary day (budget resets on your payday!)
+- Edit profile anytime
+
+### 💸 Expense Tracking
+- Add income & expenses with title, amount, note, date, category
+- Edit and delete transactions
+- Swipe to edit
+
+### 📊 Dashboard
+- Smart budget card showing current period (e.g. APRIL 2026)
+- Real-time income vs spent vs balance
+- Budget auto-resets every month based on your salary day
+- Category-wise spending pie chart
+
+### 📈 Analytics
+- Weekly spending bar chart
+- Monthly spending line chart
+- Monthly income vs expense comparison
+
+### 🗂️ Transactions
+- Filter by income/expense/category
+- Day-wise grouped history
+
+### ☁️ Cloud Sync
+- All data stored in Supabase
+- Real-time updates across devices
+- Row Level Security (RLS) enabled
 
 ## Tech Stack
-
-- **Flutter** — UI framework
-- **Riverpod** — State management
-- **Supabase** — Backend, authentication and database
+- **Flutter 3.19+** — UI framework
+- **Riverpod 2.x** — State management
+- **Supabase** — Auth, PostgreSQL database, RLS
+- **fl_chart** — Charts and graphs
 - **Google Fonts** — Typography (Poppins)
+- **flutter_screenutil** — Responsive UI
 
 ## Project Structure
-
 ```
 lib/
 ├── common/
-│   ├── functions/       # Shared utilities (currency formatter, etc.)
-│   └── theme/           # App colors and theme
+│   ├── functions/    # Currency formatter, budget period, filtering
+│   ├── theme/        # App colors and theme
+│   └── widgets/      # Shared widgets
 ├── features/
-│   ├── Auth/            # Login, signup, onboarding
-│   ├── Expense/         # Add expense, home page, providers
-│   └── profile/         # Profile setup and services
+│   ├── Auth/         # Login, signup, onboarding, verification
+│   ├── Category/     # Category list, pie chart, providers
+│   ├── Expense/      # Add/edit expense, dashboard, analytics
+│   └── profile/      # Profile setup, editing, services
 ```
-
 ## Getting Started
-
 1. Clone the repo
 2. Run `flutter pub get`
-3. Add your Supabase credentials in your env/config
+3. Create `.env` file with your Supabase credentials:
+SUPABASE_URL=your_url
+SUPABASE_ANON_KEY=your_key
 4. Run `flutter run`
 
-## Database Tables
+## Database Schema
+- `profiles` — user info, income, savings goal, salary day
+- `expenses` — all transactions per user
+- `categories` — public expense categories
 
-- `profiles` — stores user income and savings goal
-- `expenses` — stores all transactions per user
+- ## Download & Try 📲
 
-## Work in Progress 🚧
+An installable APK is available for Android devices.
 
-- Receipt image upload
-- Profile editing screen
-- App theme customization
-- Expense editing and deletion
+> **Note:** Since this app is not yet on the Play Store, you'll need to enable
+> "Install from unknown sources" in your Android settings.
+
+### Install Steps
+1. Download the APK from the link below
+2. Open the file on your Android device
+3. Tap **Install**
+4. Open **Expenso** and sign up!
+
+**[⬇️ Download APK](YOUR_GOOGLE_DRIVE_LINK_HERE)**
+
+> Tested on Android 10+ — works best on Android 12 and above.
+
+## Phase 2 Coming Soon 🚧
+- Budget alerts when >80% spent
+- Offline mode (Hive)
+- Receipt scanning with OCR
+- AI spending insights
+- WhatsApp expense reports
