@@ -134,7 +134,7 @@ class _State extends ConsumerState<EditingPage> {
                   selectedCategory = category;
 
                 });
-              } , initialCategory: widget.exp.category_id,),
+              } , selectedCategoryId: widget.exp.category_id,),
                SizedBox(height: 8.h,) ,
 
 

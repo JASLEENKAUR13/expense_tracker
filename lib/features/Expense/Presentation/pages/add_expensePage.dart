@@ -7,7 +7,7 @@ import 'package:expense_tracker/common/functions/money_textfield.dart';
 import 'package:expense_tracker/features/Category/presentation/categoryPillRow.dart';
 import 'package:expense_tracker/features/Expense/provider/ExpenseListProvider.dart';
 import 'package:expense_tracker/features/Expense/Presentation/functions/datepicker.dart';
-import 'package:expense_tracker/features/Expense/Presentation/functions/pickImage.dart';
+
 import 'package:expense_tracker/common/theme/AppPallete.dart';
 import 'package:expense_tracker/features/Expense/Presentation/widgets/StatusPill.dart';
 import 'package:flutter/cupertino.dart' hide Size;
@@ -16,6 +16,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../common/functions/CurrencyFormater.dart';
+import '../../../Category/services/AiCategoryProvider.dart';
+import '../../../Category/services/gemini_services.dart';
 import '../widgets/text_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,6 +34,33 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
   TextEditingController amountController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   late int? selectedCategory =null ;
+
+
+  @override
+  void initState() {
+    super.initState();
+    // ✅ Listen to title changes → trigger AI category suggestion
+    titleController.addListener(_onTitleChanged);
+
+
+    ref.listenManual<AiCategoryState>(
+      aiCategoryProvider,
+          (previous, next) {
+        if (next.status == AiCategoryStatus.done &&
+            next.suggestedCategoryId != null) {
+          setState(() {
+            selectedCategory = next.suggestedCategoryId;
+          });
+        }
+      },
+    );
+  }
+  // ─────────────────────────────────────────────────────
+  void _onTitleChanged() {
+    ref
+        .read(aiCategoryProvider.notifier)
+        .onTitleChanged(titleController.text);
+  }
 
 
 
@@ -70,6 +99,8 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
   @override
   void dispose() {
     // TODO: implement initState
+
+   titleController.removeListener(_onTitleChanged);
    titleController.dispose();
     amountController.dispose();
     noteController.dispose();
@@ -80,6 +111,8 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
 
   @override
   Widget build(BuildContext context) {
+    final aiCategory = ref.watch(aiCategoryProvider);
+
 
     return  Scaffold(
       //backgroundColor: AppPallete.textPrimary,
@@ -145,8 +178,12 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                     },),
                   ),
                    SizedBox(height: 8.h,) ,
-                  textField(placeholder: "Add title", mycontroller: titleController, isString: true, icon: Icons.title),
+                  textField(placeholder: "Add title",
+                      mycontroller: titleController,
+                      isString: true, icon: Icons.title),
                    SizedBox(height: 8.h,) ,
+                  _buildAiCategoryHint(aiCategory),
+                  SizedBox(height: 8.h,) ,
                  MoneyTextField(controller: amountController, label: "Enter Amount"),
                    SizedBox(height: 8.h,) ,
                   textField(placeholder: "Add Note", mycontroller: noteController, isString: true, icon: Icons.note , maxLines: 3  ),
@@ -156,13 +193,18 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                         mycontroller: DateController,
                       isString: false, icon: Icons.calendar_month)),),
                    SizedBox(height: 8.h,) ,
-                  CategoryPillsRow(onCategorySelected: (category){
-                    setState(() {
-                      selectedCategory = category;
+                  CategoryPillsRow(
+                    onCategorySelected: (category) {
+                      setState(() {
+                        selectedCategory = category;
 
-                    });
-                  }),
+                        // reset AI suggestion
+                        ref.read(aiCategoryProvider.notifier).reset();
+                      });
+                    },
 
+                    selectedCategoryId: selectedCategory,
+                  ),
                    SizedBox(height:8.h),
 
 
@@ -231,4 +273,65 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
 
     );
   }
+}
+
+
+Widget _buildAiCategoryHint(AiCategoryState aiCategory) {
+  if (aiCategory.status == AiCategoryStatus.loading) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: 4.w),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 10.w,
+              height: 10.h,
+              child: CircularProgressIndicator(
+                strokeWidth: 1.5,
+                color: AppPallete.primaryBlue,
+              ),
+            ),
+            SizedBox(width: 6.w),
+            Text(
+              'Suggesting category...',
+              style: GoogleFonts.poppins(
+                fontSize: 11.sp,
+                color: Colors.white38,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  if (aiCategory.status == AiCategoryStatus.done &&
+      aiCategory.suggestedCategoryName != null) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: 4.w),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.auto_awesome,
+                size: 12.sp, color: AppPallete.primaryBlue),
+            SizedBox(width: 4.w),
+            Text(
+              'AI suggested: ${aiCategory.suggestedCategoryName}',
+              style: GoogleFonts.poppins(
+                fontSize: 11.sp,
+                color: AppPallete.primaryBlue,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  return const SizedBox.shrink();
 }

@@ -16,10 +16,12 @@ import 'features/Auth/Presentation/authwrapper.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  print('🔑 KEY FROM MAIN: ${dotenv.env["GEMINI_API_KEY"]}');
 
   await Supabase.initialize(
     url: dotenv.env["SUPABASE_URL"]!,
     anonKey: dotenv.env["SUPABASE_ANON_KEY"]!,
+
 
   );
   runApp(const ProviderScope(child: MyApp(),)
