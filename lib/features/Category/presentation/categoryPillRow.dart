@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../category.dart';
+
 import '../provider/CategoryProvider.dart';
 
 class CategoryPillsRow extends ConsumerStatefulWidget {
-  final int? initialCategory;
+  final int? selectedCategoryId;
   final Function(int) onCategorySelected; // Callback when category is selected
 
-   CategoryPillsRow({
+  const CategoryPillsRow({
     Key? key,
-    required this.onCategorySelected, this.initialCategory,
+    required this.onCategorySelected,
+    this.selectedCategoryId,
   }) : super(key: key);
-
 
 
   @override
@@ -22,13 +22,7 @@ class CategoryPillsRow extends ConsumerStatefulWidget {
 }
 
 class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
-  late int? selectedCategory; // ✅ Changed to late
 
-  @override
-  void initState() {
-    super.initState();
-    selectedCategory = widget.initialCategory; // ✅ Set from prop
-  }
 
 
 
@@ -56,16 +50,12 @@ class _CategoryPillsRowState extends ConsumerState<CategoryPillsRow> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: categories.map((category) {
-                bool isSelected = selectedCategory == category.id;
+                bool isSelected = widget.selectedCategoryId == category.id;
 
                 return Padding(
                   padding:  EdgeInsets.only(right: 8.0.w),
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        selectedCategory= category.id;
-                      });
-                      // Call the callback to notify parent
                       widget.onCategorySelected(category.id);
                     },
                     child: Container(

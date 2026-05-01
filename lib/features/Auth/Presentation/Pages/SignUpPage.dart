@@ -1,4 +1,4 @@
-import 'package:expense_tracker/features/Auth/Presentation/Pages/emailverificationScreen.dart';
+
 import 'package:expense_tracker/features/Auth/Presentation/Widgets/textfield.dart';
 import 'package:expense_tracker/features/Auth/Presentation/authwrapper.dart';
 import 'package:expense_tracker/features/Auth/Services/AuthServices.dart';
