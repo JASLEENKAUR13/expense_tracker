@@ -1,5 +1,4 @@
 
-import 'dart:io';
 
 import 'dart:ui';
 
@@ -236,6 +235,9 @@ class _AddExpensepageState extends ConsumerState<AddExpensepage> {
                           dateToSave,
                           isCredited,
                           selectedCategory!
+
+                            ,ref.read(monthlyBudgetProvider)
+                            ,ref.watch(salaryDayProvider)
                         );
                         print("data added!");
                       Navigator.pop(context);
