@@ -44,6 +44,8 @@ Future<void> saveProfile({
       user_name: user.userMetadata?['name'] ?? '',  // 👈 from Google metadata
       phone_no: 0,
       salary_day: 1,
+      budget_alert_sent: false,
+      budget_alert_period: '',
 
     );
     await supabase.from('profiles').upsert(profile.toJson());
@@ -92,6 +94,19 @@ Future<void> saveProfile({
 
     await supabase.rpc('delete_user');
 
+  }
+
+  Future<void> updateBudgetAlert({
+    required bool alertSent,
+    required String alertPeriod,
+  }) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    await supabase.from('profiles').update({
+      'budget_alert_sent': alertSent,
+      'budget_alert_period': alertPeriod,
+    }).eq('id', user.id);
   }
 
 }

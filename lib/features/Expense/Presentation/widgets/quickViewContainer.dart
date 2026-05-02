@@ -97,13 +97,95 @@ class QuickViewContainer extends ConsumerWidget {
           SizedBox(height: 12.h),
 
           // ── Label ──
-          Text(
-            "Total Balance",
-            style: GoogleFonts.poppins(
-              fontSize: 13.sp,
-              color: Colors.white38,
-              fontWeight: FontWeight.w500,
-            ),
+          Row(
+            children: [
+              Text(
+                "Total Balance",
+                style: GoogleFonts.poppins(
+                  fontSize: 13.sp,
+                  color: Colors.white38,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(width: 6.w),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Container(
+                        padding: EdgeInsets.all(20.w),
+                        decoration: BoxDecoration(
+                          color: AppPallete.iconBackground,
+                          borderRadius: BorderRadius.circular(20.r),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.08),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.info_outline_rounded,
+                                    color: AppPallete.primaryBlue, size: 18.sp),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  "How is balance calculated?",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppPallete.textPrimary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              "Your budget is your monthly income minus your savings goal.\n\nExtra income you log is shown separately and does not affect your budget.",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                color: AppPallete.textSecondary,
+                                height: 1.6,
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 10.h),
+                                decoration: BoxDecoration(
+                                  color: AppPallete.primaryBlue.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Got it!",
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppPallete.primaryBlue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.info_outline_rounded,
+                  size: 14.sp,
+                  color: Colors.white24,
+                ),
+              ),
+            ],
           ),
 
           SizedBox(height: 4.h),
@@ -184,6 +266,8 @@ class QuickViewContainer extends ConsumerWidget {
                    AppPallete.expenseRed,
                 ),
               ),
+
+
             ],
           ),
         ],

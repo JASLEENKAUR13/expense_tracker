@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'common/services/notification_services.dart';
 import 'features/Auth/Presentation/Pages/SplashScreen.dart';
 import 'features/Auth/Presentation/authwrapper.dart';
 
@@ -15,6 +16,7 @@ import 'features/Auth/Presentation/authwrapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init(); // 👈 add this line
   await dotenv.load(fileName: ".env");
   print('🔑 KEY FROM MAIN: ${dotenv.env["GEMINI_API_KEY"]}');
 
