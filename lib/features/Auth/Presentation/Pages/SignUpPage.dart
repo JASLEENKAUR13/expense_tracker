@@ -1,4 +1,5 @@
 
+import 'package:expense_tracker/features/Auth/Presentation/Pages/emailverificationScreen.dart';
 import 'package:expense_tracker/features/Auth/Presentation/Widgets/textfield.dart';
 import 'package:expense_tracker/features/Auth/Presentation/authwrapper.dart';
 import 'package:expense_tracker/features/Auth/Services/AuthServices.dart';
@@ -56,7 +57,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         ),
       );
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const AuthWrapper()),
+        MaterialPageRoute(builder: (_) =>  EmailVerificationScreen()),
             (route) => false, // ✅ clears entire stack
       );
 

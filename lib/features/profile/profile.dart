@@ -10,13 +10,17 @@ class Profile {
   final int salary_day;
   final bool budget_alert_sent;
   final String budget_alert_period;
+  final String onesignal_player_id;
+  final String reminder_time;
+
 
   Profile({required this.id ,
     required this.email , required this.income_montly ,
     required this.savingsGoalPerc, required this.updated_at,
     required this.user_name, required this.phone_no,
     required this.salary_day, required this.budget_alert_sent,
-    required this.budget_alert_period ,});
+    required this.budget_alert_period, required this.onesignal_player_id,
+    required this.reminder_time ,});
 
   factory Profile.fromJson(Map<String , dynamic> json){
     // supabase sends data in map , we r coverting that map into object
@@ -29,7 +33,9 @@ class Profile {
       phone_no: json['phone_no'] ?? 0,
       salary_day: json['salary_day'] ?? 1,
         budget_alert_sent: json['budget_alert_sent'] ?? false,
-        budget_alert_period: json['budget_alert_period'] ?? ""
+        budget_alert_period: json['budget_alert_period'] ?? "" ,
+      onesignal_player_id: json['onesignal_player_id'] ?? "" ,
+      reminder_time: (json['reminder_time'] ?? '21:00:00').substring(0, 5),
 
 
     );
@@ -48,6 +54,8 @@ class Profile {
       'salary_day' : salary_day,
       'budget_alert_sent': budget_alert_sent ,
       'budget_alert_period': budget_alert_period ,
+      'onesignal_player_id': onesignal_player_id ,
+      'reminder_time': reminder_time,
 
 
 
@@ -67,6 +75,7 @@ class Profile {
     int? salary_day,
     bool? budget_alert_sent,
     String? budget_alert_period,
+    String? onesignal_player_id , String? reminder_time,
 
 }
 
@@ -80,7 +89,9 @@ class Profile {
         phone_no: phone_no ?? this.phone_no,
         salary_day: salary_day ?? this.salary_day ,
         budget_alert_sent: budget_alert_sent ?? this.budget_alert_sent ,
-        budget_alert_period: budget_alert_period ?? this.budget_alert_period ,
+        budget_alert_period: budget_alert_period ?? this.budget_alert_period,
+      onesignal_player_id:onesignal_player_id?? this.onesignal_player_id ,
+      reminder_time: reminder_time ?? this.reminder_time,
 
     );
 

@@ -46,14 +46,11 @@ Future<void> saveProfile({
       salary_day: 1,
       budget_alert_sent: false,
       budget_alert_period: '',
+        onesignal_player_id: '' ,
+      reminder_time: '21:00'
 
     );
     await supabase.from('profiles').upsert(profile.toJson());
-
-
-
-
-
 
 
 }
@@ -63,7 +60,8 @@ Future<void> saveProfile({
     required int phoneNo,
     required int monthlyIncome,
     required int savingsGoalPerc,
-    required int salary_day
+    required int salary_day,
+    required String reminder_time
   }) async {
     final user = supabase.auth.currentUser;
     if (user == null) return;
@@ -76,7 +74,8 @@ Future<void> saveProfile({
       'monthly_income': monthlyIncome,
       'savings_goal_percent': savingsGoalPerc,
       'updated_at': DateTime.now().toIso8601String(),
-      'salary_day' : salary_day
+      'salary_day' : salary_day ,
+      'reminder_time' : reminder_time
     });
   }
 
@@ -108,5 +107,17 @@ Future<void> saveProfile({
       'budget_alert_period': alertPeriod,
     }).eq('id', user.id);
   }
+
+
+  Future<void> saveOneSignalToken(String token) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    await supabase.from('profiles').update({
+      'onesignal_player_id': token,
+    }).eq('id', user.id);
+  }
+
+
 
 }
