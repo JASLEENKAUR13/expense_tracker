@@ -37,7 +37,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       await auth_services.signInWithEmail(email, pass);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => const AuthWrapper(),
+          builder: (_) =>  const AuthWrapper(),
         ),
       );
     } catch (e) {

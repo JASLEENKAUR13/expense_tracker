@@ -20,8 +20,11 @@ class MyHomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = Supabase.instance.client.auth.currentUser;
-    final firstName = user?.email?.split('@').first ?? "there";
+    final profileAsync = ref.watch(profileProvider);
+
+
+
+
 
     return Scaffold(
       backgroundColor: AppPallete.background,
@@ -60,13 +63,43 @@ class MyHomePage extends ConsumerWidget {
                             color: AppPallete.textPrimary,
                           ),
                         ),
-                        Text(
-                          "Hi, $firstName 👋",
-                          style: GoogleFonts.poppins(
-                            fontSize: 12.sp,
-                            color: AppPallete.textSecondary,
-                          ),
-                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Hi, ",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                color: AppPallete.textSecondary,
+                              ),
+                            ),
+
+                            profileAsync.when(
+                              data: (profile) => Text(
+                                (profile?.user_name?.isNotEmpty ?? false)
+                                    ? profile!.user_name.split(" ").first :"User" ,
+
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12.sp,
+                                  color: AppPallete.textSecondary,
+                                ),
+                              ),
+                              loading: () => const CircularProgressIndicator(),
+                              error: (_, __) => const Text("Error"),
+                            ),
+                            SizedBox(width: 4.w),
+
+                            Text(
+                              "👋 ",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12.sp,
+                                color: AppPallete.textSecondary,
+                              ),
+                            ),
+
+
+                          ],
+                        )
+
                       ],
                     ),
                   ],

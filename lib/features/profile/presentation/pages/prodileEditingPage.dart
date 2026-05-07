@@ -22,6 +22,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
   final _incomeController = TextEditingController();
   final _savingsController = TextEditingController();
   final salaryDayController = TextEditingController();
+  final reminderTimeController = TextEditingController();
 
 
   final user = Supabase.instance.client.auth.currentUser;
@@ -39,6 +40,7 @@ class _State extends ConsumerState<ProfileEditingPage> {
     _incomeController.dispose();
     _savingsController.dispose();
     salaryDayController.dispose();
+    reminderTimeController.dispose();
     super.dispose();
   }
 
@@ -78,6 +80,10 @@ class _State extends ConsumerState<ProfileEditingPage> {
         }
         if(salaryDayController.text.isEmpty){
           salaryDayController.text = '${profile.salary_day}';
+        }
+
+        if(reminderTimeController.text.isEmpty){
+          reminderTimeController.text = '${profile.reminder_time}';
         }
       }
     });
@@ -198,6 +204,32 @@ class _State extends ConsumerState<ProfileEditingPage> {
                           icon: Icons.payment,
                           isString: true,
                         ),
+
+                        SizedBox(height: 14.h),
+                        _buildSectionLabel("Reminder Time"),
+                        SizedBox(height: 6.h),
+                        GestureDetector(
+                          onTap: () async {
+                            final picked = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+                            if (picked != null) {
+                              reminderTimeController.text = picked.format(context);
+                            }
+                          },
+                          child: AbsorbPointer(
+                            child: textField(
+                              mycontroller: reminderTimeController,
+                              placeholder: "Pick reminder time",
+                              icon: Icons.alarm,
+                              isString: true,
+                            ),
+                          ),
+                        ),
+
+
+
                       ],
                     ),
                   ),
@@ -239,7 +271,8 @@ class _State extends ConsumerState<ProfileEditingPage> {
                     int.parse(_incomeController.text.trim()),
                     savingsGoalPerc:
                     int.parse(_savingsController.text.trim()),
-                    salary_day: int.parse(salaryDayController.text)
+                    salary_day: int.parse(salaryDayController.text) ,
+                    reminder_time: reminderTimeController.text ?? "21:00",
                   );
                   Navigator.pop(context);
                 },

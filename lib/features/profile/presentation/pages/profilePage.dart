@@ -37,7 +37,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     final user = Supabase.instance.client.auth.currentUser;
     final avatarurl = user?.userMetadata?['avatar_url'];
-    final username = user?.userMetadata?['name'] ?? "Unknown";
+    //final username = user?.userMetadata?['name'] ?? "User" ;
     final email = user?.email;
 
     final profileAsync = ref.watch(profileProvider);
@@ -87,15 +87,21 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 avatarurl != null ? NetworkImage(avatarurl) : null,
                 backgroundColor: AppPallete.primaryBlue,
                 child: avatarurl == null
-                    ? Text(
-                  getInitials(username, email),
-                  style: GoogleFonts.poppins(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppPallete.background,
+                    ?
+                    profileAsync.when(
+                  data: (profile) => Text(
+                    getInitials(profile?.user_name, email),
+                    style: GoogleFonts.poppins(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppPallete.background,
+                    ),
                   ),
+                  loading: () => const Text("?"),
+                  error: (_, __) => const Text("?"),
                 )
                     : null,
+
               ),
             ),
 
@@ -104,9 +110,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             /// 🔤 Username
             profileAsync.when(
               data: (profile) => Text(
-                (profile?.user_name?.isNotEmpty ?? false)
+                (profile?.user_name.isNotEmpty ?? false)
                     ? profile!.user_name
-                    : username,
+                    : "Unknown",
                 style: GoogleFonts.poppins(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
@@ -127,7 +133,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   return Column(
                     children: [
                       row("Name",
-                          profile?.user_name ?? username, Icons.person),
+                          profile?.user_name ?? "unknown", Icons.person),
 
                       divider(),
 
@@ -184,6 +190,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         "${profile.salary_day}",
                         Icons.payment,
                       ),
+
+
                     ],
                   );
                 },
@@ -193,6 +201,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
 
             SizedBox(height: 16.h),
+            _buildCard(
+              title: "Reminder",
+              child: profileAsync.when(
+                data: (profile) {
+                  return row(
+                    "Reminder Time",
+                    profile?.reminder_time ?? "Not set",
+                    Icons.notifications,
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (_, __) => const Text("Error loading"),
+              ),
+            ),
+
+            SizedBox(height: 16.h),
+
 
 
             dangerZone(context, ref),
