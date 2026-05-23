@@ -1,8 +1,6 @@
 name: Weekly Report Generator
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 4 * * 1'
 jobs:
   generate-reports:
     runs-on: ubuntu-latest
