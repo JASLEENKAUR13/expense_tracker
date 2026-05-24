@@ -11,7 +11,6 @@ const usersRes = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=id,user_na
   }
 });
 const usersJson = await usersRes.json();
-console.log('Supabase response:', JSON.stringify(usersJson));
 const users = Array.isArray(usersJson) ? usersJson : [];
 console.log(`Processing ${users.length} users`);
 
@@ -21,12 +20,12 @@ for (const user of users) {
 
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const expRes = await fetch(
-      `${SUPABASE_URL}/rest/v1/expenses?user_id=eq.${user_id}&created_at=gte.${weekAgo}&select=*`,
+      `${SUPABASE_URL}/rest/v1/expenses?user_id=eq.${user.id}&created_at=gte.${weekAgo}&select=*`,
       { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
     );
-   const expJson = await expRes.json();
-console.log('Expenses response:', JSON.stringify(expJson).substring(0, 200));
-const expenses = Array.isArray(expJson) ? expJson : [];
+    const expJson = await expRes.json();
+    const expenses = Array.isArray(expJson) ? expJson : [];
+    console.log(`Found ${expenses.length} expenses`);
 
     if (expenses.length === 0) continue;
 
@@ -65,9 +64,12 @@ Generate the full HTML report now.`
 
     const groqData = await groqRes.json();
     const htmlContent = groqData.choices?.[0]?.message?.content;
-    if (!htmlContent) continue;
+    if (!htmlContent) {
+      console.log(`No HTML generated for ${user.user_name}`);
+      continue;
+    }
 
-    await fetch(`${SUPABASE_URL}/rest/v1/reports?user_id=eq.${user.user_id}`, {
+    await fetch(`${SUPABASE_URL}/rest/v1/reports?user_id=eq.${user.id}`, {
       method: 'DELETE',
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
@@ -83,7 +85,7 @@ Generate the full HTML report now.`
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user_id: user.user_id,
+        user_id: user.id,
         html_content: htmlContent,
         week_start: weekStart,
         week_end: weekEnd,
