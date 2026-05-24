@@ -24,8 +24,9 @@ for (const user of users) {
       `${SUPABASE_URL}/rest/v1/expenses?user_id=eq.${user.user_id}&created_at=gte.${weekAgo}&select=*`,
       { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
     );
-    const expenses = await expRes.json();
-    console.log(`Found ${expenses.length} expenses`);
+   const expJson = await expRes.json();
+console.log('Expenses response:', JSON.stringify(expJson).substring(0, 200));
+const expenses = Array.isArray(expJson) ? expJson : [];
 
     if (expenses.length === 0) continue;
 
