@@ -37,7 +37,7 @@ for (const user of users) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Basic ${ONESIGNAL_REST_API_KEY}`
+      'Authorization': `Key ${ONESIGNAL_REST_API_KEY}`
     },
     body: JSON.stringify({
       app_id: ONESIGNAL_APP_ID,
