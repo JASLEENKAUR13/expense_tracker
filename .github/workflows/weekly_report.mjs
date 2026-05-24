@@ -10,7 +10,9 @@ const usersRes = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=user_id,us
     'Authorization': `Bearer ${SUPABASE_KEY}`
   }
 });
-const users = await usersRes.json();
+const usersJson = await usersRes.json();
+console.log('Supabase response:', JSON.stringify(usersJson));
+const users = Array.isArray(usersJson) ? usersJson : [];
 console.log(`Processing ${users.length} users`);
 
 for (const user of users) {
