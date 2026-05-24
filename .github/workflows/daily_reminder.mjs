@@ -1,7 +1,7 @@
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const ONESIGNAL_APP_ID = process.env.ONE_SIGNAL_APP_ID;
-const ONESIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API;
+const ONESIGNAL_APP_ID = 'bc33660c-1efc-41f5-a20b-93e6ea120066';
+const ONESIGNAL_REST_API_KEY = 'os_v2_app_xqzwmda67ra7liqlsptoueqamzvbcjndryyuhe45e3t37lku7z4lvs6f4lil4vv4hzzywahh4ijdqmzfzrxqdrv2ge4ym2ogplc5esa';
 
 const now = new Date();
 const istOffset = 5.5 * 60 * 60 * 1000;
@@ -11,8 +11,6 @@ const currentMin = istTime.getUTCMinutes().toString().padStart(2, '0');
 const currentTime = `${currentHour}:${currentMin}:00`;
 
 console.log(`Running for IST time: ${currentTime}`);
-console.log(`App ID first 8: ${ONESIGNAL_APP_ID?.substring(0, 8)}`);
-console.log(`REST KEY first 8: ${ONESIGNAL_REST_API_KEY?.substring(0, 8)}`);
 
 const res = await fetch(
   `${SUPABASE_URL}/rest/v1/profiles?reminder_time=eq.${currentTime}&select=id,user_name,onesignal_player_id`,
