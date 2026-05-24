@@ -32,14 +32,15 @@ for (const user of users) {
     continue;
   }
 
-  const notifRes = await fetch('https://onesignal.com/api/v1/notifications', {
+  const notifRes = await fetch('https://api.onesignal.com/notifications', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `key ${ONESIGNAL_REST_API_KEY}`
+      'Authorization': `Key ${ONESIGNAL_REST_API_KEY}`
     },
     body: JSON.stringify({
       app_id: ONESIGNAL_APP_ID,
+      target_channel: 'push',
       include_player_ids: [user.onesignal_player_id],
       headings: { en: "Expenso 💰" },
       contents: { en: `Hey ${user.user_name?.split(' ')[0] || 'there'}! Don't forget to log your expenses today.` }
