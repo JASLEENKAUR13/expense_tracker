@@ -1,3 +1,4 @@
+# Weekly Report Generator
 name: Weekly Report Generator
 on:
   workflow_dispatch:
