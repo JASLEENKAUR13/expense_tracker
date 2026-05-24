@@ -1,9 +1,8 @@
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
-const ONESIGNAL_REST_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
+const ONESIGNAL_APP_ID = process.env.ONE_SIGNAL_APP_ID;
+const ONESIGNAL_REST_API_KEY = process.env.ONE_SIGNAL_REST_API;
 
-// Get current IST time
 const now = new Date();
 const istOffset = 5.5 * 60 * 60 * 1000;
 const istTime = new Date(now.getTime() + istOffset);
@@ -12,6 +11,8 @@ const currentMin = istTime.getUTCMinutes().toString().padStart(2, '0');
 const currentTime = `${currentHour}:${currentMin}:00`;
 
 console.log(`Running for IST time: ${currentTime}`);
+console.log(`App ID first 8: ${ONESIGNAL_APP_ID?.substring(0, 8)}`);
+console.log(`REST KEY first 8: ${ONESIGNAL_REST_API_KEY?.substring(0, 8)}`);
 
 const res = await fetch(
   `${SUPABASE_URL}/rest/v1/profiles?reminder_time=eq.${currentTime}&select=id,user_name,onesignal_player_id`,
@@ -32,8 +33,7 @@ for (const user of users) {
     console.log(`Skipping ${user.user_name} - no onesignal id`);
     continue;
   }
-  console.log('Sending with app_id:', 'bc33660c-1efc-41f5-a20b-93e6ea120066');
-console.log('REST KEY first 10 chars:', ONESIGNAL_REST_API_KEY?.substring(0, 10));
+
   const notifRes = await fetch('https://onesignal.com/api/v1/notifications', {
     method: 'POST',
     headers: {
@@ -41,13 +41,12 @@ console.log('REST KEY first 10 chars:', ONESIGNAL_REST_API_KEY?.substring(0, 10)
       'Authorization': `Key ${ONESIGNAL_REST_API_KEY}`
     },
     body: JSON.stringify({
-      app_id:  'bc33660c-1efc-41f5-a20b-93e6ea120066',
+      app_id: ONESIGNAL_APP_ID,
       include_player_ids: [user.onesignal_player_id],
       headings: { en: "Expenso 💰" },
       contents: { en: `Hey ${user.user_name?.split(' ')[0] || 'there'}! Don't forget to log your expenses today.` }
     })
   });
-
 
   const notifData = await notifRes.json();
   console.log(`Sent to ${user.user_name}:`, JSON.stringify(notifData));
