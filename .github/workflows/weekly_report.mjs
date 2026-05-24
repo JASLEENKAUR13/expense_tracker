@@ -4,7 +4,7 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const ONESIGNAL_APP_ID = process.env.ONESIGNAL_APP_ID;
 const ONESIGNAL_REST_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
 
-const usersRes = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=user_id,user_name,onesignal_player_id`, {
+const usersRes = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=id,user_name,onesignal_player_id`, {
   headers: {
     'apikey': SUPABASE_KEY,
     'Authorization': `Bearer ${SUPABASE_KEY}`
