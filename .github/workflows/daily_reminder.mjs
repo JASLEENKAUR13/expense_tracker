@@ -1,7 +1,7 @@
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const ONESIGNAL_APP_ID = 'bc33660c-1efc-41f5-a20b-93e6ea120066';
-const ONESIGNAL_REST_API_KEY = 'os_v2_app_xqzwmda67ra7liqlsptoueqamzvbcjndryyuhe45e3t37lku7z4lvs6f4lil4vv4hzzywahh4ijdqmzfzrxqdrv2ge4ym2ogplc5esa';
+const ONESIGNAL_REST_API_KEY = 'os_v2_app_xqzwmda67ra7liqlsptoueqamzgk7hmkpvruap5hqafvzsjufqmlpkia7l4bk4kdcujqzhijbnfcdyvew5rjq72biw45mipfgye3xla';
 
 const now = new Date();
 const istOffset = 5.5 * 60 * 60 * 1000;
