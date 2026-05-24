@@ -21,7 +21,7 @@ for (const user of users) {
 
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const expRes = await fetch(
-      `${SUPABASE_URL}/rest/v1/expenses?user_id=eq.${user.user_id}&created_at=gte.${weekAgo}&select=*`,
+      `${SUPABASE_URL}/rest/v1/expenses?user_id=eq.${user_id}&created_at=gte.${weekAgo}&select=*`,
       { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
     );
    const expJson = await expRes.json();
