@@ -32,7 +32,8 @@ for (const user of users) {
     console.log(`Skipping ${user.user_name} - no onesignal id`);
     continue;
   }
-
+  console.log('Sending with app_id:', 'bc33660c-1efc-41f5-a20b-93e6ea120066');
+console.log('REST KEY first 10 chars:', ONESIGNAL_REST_API_KEY?.substring(0, 10));
   const notifRes = await fetch('https://onesignal.com/api/v1/notifications', {
     method: 'POST',
     headers: {
@@ -46,8 +47,7 @@ for (const user of users) {
       contents: { en: `Hey ${user.user_name?.split(' ')[0] || 'there'}! Don't forget to log your expenses today.` }
     })
   });
-  console.log('Sending with app_id:', 'bc33660c-1efc-41f5-a20b-93e6ea120066');
-console.log('REST KEY first 10 chars:', ONESIGNAL_REST_API_KEY?.substring(0, 10));
+
 
   const notifData = await notifRes.json();
   console.log(`Sent to ${user.user_name}:`, JSON.stringify(notifData));
