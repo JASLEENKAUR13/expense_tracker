@@ -147,7 +147,7 @@ final currentExpenseProvider = Provider<int>((ref) {
 
 // ✅ Remaining budget for current period
 final currentBudgetProvider = Provider<int>((ref) {
-  final income = ref.watch(currentIncomeProvider);
+
   final expense = ref.watch(currentExpenseProvider);
   final budget = ref.watch(monthlyBudgetProvider);
   return budget  - expense;

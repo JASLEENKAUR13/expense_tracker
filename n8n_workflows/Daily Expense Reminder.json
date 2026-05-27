@@ -1,0 +1,148 @@
+{
+  "name": "Daily Expense Reminder",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "profiles",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "onesignal_player_id",
+              "condition": "neq"
+            }
+          ]
+        }
+      },
+      "id": "bae4b0b8-7062-4adf-9df9-81eab484c6e9",
+      "name": "Fetch Profiles",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        192,
+        144
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "zpm9VYhzIPQB1vo2",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// const now = $now; // This is a Luxon DateTime object\n// //const items = $input.all();\n\n// // Convert the current time to IST and format it\n// const currentTimeInIST = now.setZone('Asia/Kolkata').toFormat('HH:mm:ss');\n// const currentShort = currentTimeInIST.slice(0, 5); // \"HH:mm\"\n\n// return item.filter(item => {\n//     const reminder = item.json.reminder_time.trim();\n//     const reminderShort = reminder.slice(0, 5); // \"HH:mm\"\n    \n//     // Check if the hour and minute match\n//     return currentShort === reminderShort; // Fixed typo: currentShort, not currentShor\n// });   \n\n// const now = $now;\n\n// // Current IST time\n// const currentTimeInIST = now\n//   .setZone('Asia/Kolkata')\n//   .toFormat('HH:mm');\n\n// const reminder = $json.reminder_time\n//   .trim()\n//   .slice(0, 5);\n\n// if (currentTimeInIST === reminder) {\n//   return $json;\n// }\n\n\n// return null;\n\nconst now = $now;\n\nconst currentTimeInIST = now\n  .setZone('Asia/Kolkata')\n  .toFormat('HH:mm');\n\nconst reminder = String($json.reminder_time || '')\n  .trim()\n  .slice(0, 5);\n\nconsole.log(\"Current:\", currentTimeInIST);\nconsole.log(\"Reminder:\", reminder);\n\nif (currentTimeInIST === reminder) {\n  return {\n    json: $json\n  };\n}\n\nreturn null;"
+      },
+      "id": "f3647140-01c3-4e75-88ee-8c9d8432da81",
+      "name": "Match Reminder Time",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        128
+      ],
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://onesignal.com/api/v1/notifications",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "os_v2_app_xqzwmda67ra7liqlsptoueqamzvbcjndryyuhe45e3t37lku7z4lvs6f4lil4vv4hzzywahh4ijdqmzfzrxqdrv2ge4ym2ogplc5esa"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"app_id\": \"bc33660c-1efc-41f5-a20b-93e6ea120066\",\n  \"include_player_ids\": [\"{{$('Match Reminder Time').item.json.onesignal_player_id }}\"],\n  \"headings\": {\n    \"en\": \"Expense Reminder 🔔\"\n  },\n  \"contents\": {\n    \"en\": \"Please add your expenses today 💸\"\n  }\n}",
+        "options": {}
+      },
+      "id": "ed394432-f9d6-40c3-bafd-cc0ed8b8638a",
+      "name": "Send OneSignal Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        640,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "82b271f3-3ba8-486c-8a81-79cf02c0b648",
+      "name": "Every 30 Minute",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        144
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Fetch Profiles": {
+      "main": [
+        [
+          {
+            "node": "Match Reminder Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Match Reminder Time": {
+      "main": [
+        [
+          {
+            "node": "Send OneSignal Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 30 Minute": {
+      "main": [
+        [
+          {
+            "node": "Fetch Profiles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f3553a20-668a-40f0-8b33-45138187d0a8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "39b7c1bf36dc373b83854334d7dcf2c9d0da3093d44b26fe8978abca424e2cc6"
+  },
+  "id": "jrcoBnJbXNPHOVRs",
+  "tags": []
+}
