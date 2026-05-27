@@ -1,13 +1,14 @@
 import 'package:expense_tracker/features/Expense/Presentation/pages/AnalyticsPage.dart';
 import 'package:expense_tracker/features/Expense/Presentation/pages/alltransactionpage.dart';
+import 'package:expense_tracker/features/chatbot/presentation/chatBotScreen.dart';
 import 'package:expense_tracker/features/profile/presentation/pages/profilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../profile/provider/profile_provider.dart';
+import '../../../reports/Services/report_services.dart';
 import '../../provider/ExpenseListProvider.dart';
 import '../../../../common/theme/AppPallete.dart';
 import '../../../Category/presentation/categoryPieChart.dart';
@@ -15,28 +16,40 @@ import '../widgets/listcard.dart';
 import '../widgets/quickViewContainer.dart';
 import 'add_expensePage.dart';
 
-class MyHomePage extends ConsumerWidget {
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();}
+
+
+
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkAndShowReportPopup(context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final profileAsync = ref.watch(profileProvider);
-
-
-
 
 
     return Scaffold(
       backgroundColor: AppPallete.background,
 
-      // ── Drawer ───────────────────────────────────
+// ── Drawer ───────────────────────────────────
       drawer: Drawer(
         backgroundColor: AppPallete.background,
         surfaceTintColor: Colors.transparent,
         child: SafeArea(
           child: Column(
             children: [
-              // Header
+// Header
               Padding(
                 padding: EdgeInsets.all(24.w),
                 child: Row(
@@ -74,17 +87,21 @@ class MyHomePage extends ConsumerWidget {
                             ),
 
                             profileAsync.when(
-                              data: (profile) => Text(
-                                (profile?.user_name?.isNotEmpty ?? false)
-                                    ? profile!.user_name.split(" ").first :"User" ,
+                              data: (profile) =>
+                                  Text(
+                                    (profile?.user_name?.isNotEmpty ?? false)
+                                        ? profile!
+                                        .user_name
+                                        .split(" ")
+                                        .first : "User",
 
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12.sp,
-                                  color: AppPallete.textSecondary,
-                                ),
-                              ),
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12.sp,
+                                      color: AppPallete.textSecondary,
+                                    ),
+                                  ),
                               loading: () => const CircularProgressIndicator(),
-                              error: (_, __) => const Text("Error"),
+                              error: (_, _) => const Text("Error"),
                             ),
                             SizedBox(width: 4.w),
 
@@ -109,7 +126,7 @@ class MyHomePage extends ConsumerWidget {
               Divider(color: AppPallete.surface.withOpacity(0.3), height: 1),
               SizedBox(height: 12.h),
 
-              // Nav items
+// Nav items
               _drawerItem(Icons.dashboard_rounded, "Dashboard", () {
                 Navigator.pop(context);
                 Navigator.pushAndRemoveUntil(
@@ -121,7 +138,7 @@ class MyHomePage extends ConsumerWidget {
               _drawerItem(Icons.receipt_long_rounded, "All Transactions", () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (_) =>  AlltransactionPage()));
+                    MaterialPageRoute(builder: (_) => AlltransactionPage()));
               }),
               _drawerItem(Icons.analytics_rounded, "Analytics", () {
                 Navigator.pop(context);
@@ -143,7 +160,7 @@ class MyHomePage extends ConsumerWidget {
         ),
       ),
 
-      // ── AppBar ───────────────────────────────────
+// ── AppBar ───────────────────────────────────
       appBar: AppBar(
         backgroundColor: AppPallete.background,
         elevation: 0,
@@ -158,11 +175,31 @@ class MyHomePage extends ConsumerWidget {
           ),
         ),
         actions: [
+
           GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => AddExpensepage()),
+            onTap: () =>
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => chatBotScreen()),
+                ),
+            child: Container(
+              margin: EdgeInsets.only(right: 16.w),
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: AppPallete.primaryBlue.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(Icons.smart_toy,
+                  color: AppPallete.primaryBlue, size: 22.sp),
             ),
+          ),
+
+          GestureDetector(
+            onTap: () =>
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => AddExpensepage()),
+                ),
             child: Container(
               margin: EdgeInsets.only(right: 16.w),
               padding: EdgeInsets.all(8.w),
@@ -177,7 +214,7 @@ class MyHomePage extends ConsumerWidget {
         ],
       ),
 
-      // ── Body ─────────────────────────────────────
+// ── Body ─────────────────────────────────────
       body: Consumer(
         builder: (context, ref, _) {
           final list = ref.watch(ItemListProvider);
@@ -190,15 +227,18 @@ class MyHomePage extends ConsumerWidget {
               children: [
                 SizedBox(height: 8.h),
 
-                // Quick stats
+// Quick stats
                 QuickViewContainer(),
 
                 SizedBox(height: 24.h),
 
-                // Empty state
+// Empty state
                 if (list.isEmpty)
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.5,
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -235,35 +275,36 @@ class MyHomePage extends ConsumerWidget {
                     ),
                   )
 
-                // Populated state
-                else ...[
-                  // Section header
-                  _sectionHeader(
-                    "Recent Transactions",
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => AlltransactionPage()),
+// Populated state
+                else
+                  ...[
+// Section header
+                    _sectionHeader(
+                      "Recent Transactions",
+                      onTap: () =>
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => AlltransactionPage()
+                            ),
+                          ),
                     ),
-                  ),
-                  SizedBox(height: 12.h),
+                    SizedBox(height: 12.h),
 
-                  ListView.builder(
-                    itemCount: recent.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, i) => ListCard(currentExp: recent[i]),
-                  ),
-
+                    ListView.builder(
+                      itemCount: recent.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (_, i) => ListCard(currentExp: recent[i]),
+                    ),
 
 
+                    SizedBox(height: 12.h),
 
-                  SizedBox(height: 12.h),
+                    CategoryPieChart(),
 
-                  CategoryPieChart(),
-
-                  SizedBox(height: 32.h),
-                ],
+                    SizedBox(height: 32.h),
+                  ],
               ],
             ),
           );
@@ -272,7 +313,7 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 
-  // ── Helpers ─────────────────────────────────────
+// ── Helpers ─────────────────────────────────────
 
   Widget _drawerItem(IconData icon, String label, VoidCallback onTap,
       {bool muted = false}) {
@@ -320,4 +361,5 @@ class MyHomePage extends ConsumerWidget {
       ],
     );
   }
+
 }

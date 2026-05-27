@@ -1,0 +1,443 @@
+{
+  "name": "weekly report generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -256
+      ],
+      "id": "9793d8b4-b6bb-4ef5-bed6-d75137c08aaa",
+      "placeholder": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 7,
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1440,
+        -496
+      ],
+      "id": "49de6736-1dd8-4eb7-aa1b-688e28807b0a",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "profiles",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "onesignal_player_id",
+              "condition": "neq"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        -496
+      ],
+      "id": "e573c934-97fc-42a8-a087-24b40561a917",
+      "name": "Get all users1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "zpm9VYhzIPQB1vo2",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "35ae9aed-9110-4dee-ba3a-c765a32d1e4d",
+              "name": "user_id",
+              "value": "={{$json.id}}",
+              "type": "string"
+            },
+            {
+              "id": "a1b2c3d4-1111-2222-3333-444455556666",
+              "name": "email",
+              "value": "={{$json.email}}",
+              "type": "string"
+            },
+            {
+              "id": "734b89b5-95d7-4ff1-b241-21d73d557ddc",
+              "name": "onesignal_player_id",
+              "value": "={{ $json.onesignal_player_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1056,
+        -480
+      ],
+      "id": "5e64a2dc-2cd0-4b27-94eb-f803c34ee59b",
+      "name": "edit id to user_id1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -848,
+        -480
+      ],
+      "id": "2c421d14-3ba0-4cca-b6d3-f6c8454e8757",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "expenses",
+        "returnAll": true,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "condition": "eq",
+              "keyValue": "={{$('edit id to user_id1').item.json.user_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        -480
+      ],
+      "id": "f9be1a38-94cc-44e3-9443-cd4f38fae9cc",
+      "name": "get all expense of the user1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "zpm9VYhzIPQB1vo2",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);\nconst allItems = $input.all();\nconst weeklyExpenses = allItems.filter(item => {\n   return new Date(item.json.created_at) >= oneWeekAgo;\n});\n\nlet total = 0;\nlet categories = {};\n\nfor (const item of weeklyExpenses) {\n  const amount = parseFloat(item.json.amount) || 0;\n  const category = String(item.json.category_id);\n  total += amount;\n  categories[category] = (categories[category] || 0) + amount;\n}\n\nreturn [\n  {\n    json: {\n      totalSpent: total,\n      categories,\n      expenseCount: weeklyExpenses.length,\n      expenses: weeklyExpenses\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        -480
+      ],
+      "id": "b55e1066-834e-4fa8-9dec-fa51a56963d6",
+      "name": "filter expenses1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a personal finance analyst. Generate a beautiful HTML weekly expense report for a user.\n\nYou will receive:\n- expenses: list of expenses with amount, title, category_id, created_at, note\n- totalSpent: total amount spent this week\n- expenseCount: total number of expenses\n\nCategory mapping:\n1 = Food\n2 = Shopping\n3 = Transport\n4 = Salary\n5 = Entertainment\n6 = Other\n\nRules:\n- Currency is Indian Rupees (₹)\n- Use category_id from expenses to get category name from mapping above\n- Parse created_at dates (format: \"2026-03-18 00:00:00+00\") to get day of week\n\nGenerate a single clean HTML page with:\n1. Header with weekly report title and date range\n2. Summary card: total spent, total transactions\n3. Category breakdown table: category name, total amount, percentage of total\n4. Day wise spending table: day, total amount spent\n5. Top 5 biggest expenses: title, category, amount\n6. AI insights: 2-3 smart observations about spending habits\n\nUse inline CSS only. Make it professional, clean and colorful.\nReturn ONLY the HTML. No explanation. No markdown. No backticks.\n\nHere is the expense data for this week:\n\nTotal Spent: ₹{{ $('filter expenses1').item.json.totalSpent }}\nExpense Count: {{ $('filter expenses1').item.json.expenseCount }}\nExpenses: {{ JSON.stringify($('filter expenses1').item.json.expenses) }}\n\nGenerate the full HTML report now.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -176,
+        -480
+      ],
+      "id": "21d0574a-1667-403c-8694-99d154eecbe3",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -304
+      ],
+      "id": "33adf7e0-a01a-4856-a288-859a35276c9c",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "YIp38ocT9ngTejiZ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "reports",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "user_id",
+              "fieldValue": "={{$('edit id to user_id1').item.json.user_id}}"
+            },
+            {
+              "fieldId": "html_content",
+              "fieldValue": "={{$('AI Agent1').item.json.output}}"
+            },
+            {
+              "fieldId": "week_start",
+              "fieldValue": "={{new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}}"
+            },
+            {
+              "fieldId": "week_end",
+              "fieldValue": "={{new Date().toISOString().split('T')[0]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -480
+      ],
+      "id": "cabedb06-94f0-4121-b278-c021730bbce9",
+      "name": "Create a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "zpm9VYhzIPQB1vo2",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "reports",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "condition": "eq",
+              "keyValue": "={{ $('edit id to user_id1').item.json.user_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        128,
+        -480
+      ],
+      "id": "cea68783-0343-4ed6-a8d9-bdaf66074f76",
+      "name": "Delete a row",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "zpm9VYhzIPQB1vo2",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://onesignal.com/api/v1/notifications",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "os_v2_app_xqzwmda67ra7liqlsptoueqamzvbcjndryyuhe45e3t37lku7z4lvs6f4lil4vv4hzzywahh4ijdqmzfzrxqdrv2ge4ym2ogplc5esa"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"app_id\": \"bc33660c-1efc-41f5-a20b-93e6ea120066\",\n  \"include_player_ids\": [\"{{$('edit id to user_id1').item.json.onesignal_player_id }}\"],\n  \"headings\": {\n    \"en\": \"Your Weekly report is Ready📊\"\n  },\n  \"contents\": {\n    \"en\": \"tap here to View.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        464,
+        -496
+      ],
+      "id": "54a20c5a-ad1a-4897-a659-c3e6fb0a0176",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get all users1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get all users1": {
+      "main": [
+        [
+          {
+            "node": "edit id to user_id1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "edit id to user_id1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "get all expense of the user1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get all expense of the user1": {
+      "main": [
+        [
+          {
+            "node": "filter expenses1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter expenses1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Delete a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a row": {
+      "main": [
+        [
+          {
+            "node": "Create a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a1225f45-acaf-410c-86f2-bc77866d61d2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "39b7c1bf36dc373b83854334d7dcf2c9d0da3093d44b26fe8978abca424e2cc6"
+  },
+  "id": "klgb0iCwTiJJrRmL",
+  "tags": []
+}
